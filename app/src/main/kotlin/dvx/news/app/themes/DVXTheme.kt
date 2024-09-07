@@ -10,9 +10,20 @@ import androidx.compose.ui.unit.sp
 fun DVXTheme(content: @Composable () -> Unit) {
     val colorScheme = MaterialTheme.colorScheme.copy(
         primary = primaryColor,
+        surface = surfaceColor,
+        surfaceContainer = surfaceColor,
+        primaryContainer = surfaceColor,
+        secondaryContainer = surfaceColor,
+        tertiaryContainer = surfaceColor
     )
 
     val typography = MaterialTheme.typography.copy(
+        bodySmall = TextStyle(
+            fontSize = 12.sp,
+            lineHeight = 24.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondFontFamily
+        ),
         bodyMedium = TextStyle(
             fontSize = 20.sp,
             lineHeight = 24.sp,
