@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.android.application)
 }
 
@@ -8,18 +9,22 @@ kotlin {
 }
 
 android {
-    namespace = "com.example.app"
+    namespace = "dvx.news.app"
 
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.app"
+        applicationId = "dvx.news.app"
 
         minSdk = 28
         targetSdk = 35
 
         versionCode = 1
         versionName = "1.0.0"
+    }
+
+    buildFeatures {
+        compose = true
     }
 
     buildTypes {
@@ -30,4 +35,15 @@ android {
             )
         }
     }
+}
+
+dependencies {
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
+
+    implementation(libs.ui.tooling.preview)
+    debugImplementation(libs.ui.tooling)
+
+    implementation(libs.activity.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
 }
