@@ -1,0 +1,9 @@
+[versions]
+android = "8.6.0"
+kotlin = "2.0.20"
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "android" }
+android-application = { id = "com.android.application", version.ref = "android" }
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
