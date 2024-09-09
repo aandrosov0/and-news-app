@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dvx.news.app.components.DVXBottomNavigation
 import dvx.news.app.components.DVXTopAppBar
-import dvx.news.app.screens.CategoryScreen
+import dvx.news.app.screens.HomeScreen
 import dvx.news.app.themes.DVXTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,7 +38,7 @@ fun App(modifier: Modifier = Modifier) {
         },
         bottomBar = { DVXBottomNavigation() },
     ) { paddingValues ->
-        CategoryScreen(modifier = Modifier.padding(paddingValues))
+        HomeScreen(modifier = Modifier.padding(paddingValues))
     }
 }
 
