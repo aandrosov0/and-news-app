@@ -1,12 +1,17 @@
 package dvx.news.app.components
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +32,7 @@ fun DVXTopAppBar(
     val elementsColor = Color(0xFF484C56)
     CenterAlignedTopAppBar(
         modifier = modifier,
+        expandedHeight = 52.dp,
         title = {
             Text(
                 text = title,
@@ -36,11 +42,19 @@ fun DVXTopAppBar(
         },
         navigationIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.KeyboardArrowLeft,
-                    contentDescription = null,
-                    tint = elementsColor
-                )
+                IconButton(
+                    onClick = {},
+                    modifier = Modifier
+                        .size(31.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.KeyboardArrowLeft,
+                        contentDescription = null,
+                        tint = elementsColor,
+                        modifier = Modifier
+                            .size(31.dp)
+                    )
+                }
                 Text(
                     text = destination,
                     style = MaterialTheme.typography.bodyMedium,

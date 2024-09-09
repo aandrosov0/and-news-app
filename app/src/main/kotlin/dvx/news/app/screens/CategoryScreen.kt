@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,11 +37,17 @@ fun CategoryScreen(modifier: Modifier = Modifier) = Column(
     Image(
         painter = painterResource(R.drawable.img_small_preview),
         contentDescription = null,
-        modifier = Modifier.fillMaxWidth()
+        contentScale = ContentScale.FillWidth,
+        modifier = Modifier
+            .fillMaxWidth()
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 10.dp, vertical = 20.dp)
+        modifier = Modifier
+            .padding(
+                horizontal = 10.dp,
+                vertical = 20.dp
+            )
     ) {
         Text(
             text = "FOOD",
@@ -49,21 +57,26 @@ fun CategoryScreen(modifier: Modifier = Modifier) = Column(
         Icon(
             imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
             contentDescription = null,
+            tint = Color(0XFF484C56),
             modifier = Modifier
                 .padding(start = 13.dp)
+                .size(28.dp)
         )
     }
     Image(
         painter = painterResource(R.drawable.img_large_preview),
         contentDescription = null,
-        modifier = Modifier.fillMaxWidth()
+        contentScale = ContentScale.FillWidth,
+        modifier = Modifier
+            .fillMaxWidth()
     )
     Column(
         verticalArrangement = Arrangement.spacedBy(11.dp),
-        modifier = Modifier.padding(
-            start = 10.dp, end = 10.dp,
-            top = 10.dp, bottom = 103.dp
-        )
+        modifier = Modifier
+            .padding(
+                start = 10.dp, end = 10.dp,
+                top = 10.dp, bottom = 103.dp
+            )
     ) {
         repeat(2) {
             Row(

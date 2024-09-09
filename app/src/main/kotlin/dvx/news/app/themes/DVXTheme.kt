@@ -19,7 +19,7 @@ fun DVXTheme(content: @Composable () -> Unit) {
 
     val typography = MaterialTheme.typography.copy(
         bodySmall = TextStyle(
-            fontSize = 12.sp,
+            fontSize = 12.5.sp,
             lineHeight = 24.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = openSansCondFontFamily
@@ -31,7 +31,7 @@ fun DVXTheme(content: @Composable () -> Unit) {
             fontFamily = openSansCondFontFamily
         ),
         bodyLarge = TextStyle(
-            fontSize = 26.sp,
+            fontSize = 24.sp,
             lineHeight = 27.sp,
             fontFamily = openSansCondFontFamily,
             fontWeight = FontWeight.Bold
@@ -42,6 +42,13 @@ fun DVXTheme(content: @Composable () -> Unit) {
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
             lineHeight = 18.sp
+        ),
+        titleMedium = TextStyle(
+            color = colorScheme.primary,
+            fontFamily = openSansCondFontFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            lineHeight = 24.sp
         )
     )
 
