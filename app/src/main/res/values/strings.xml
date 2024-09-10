@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DVX News</string>
-    <string name="all_news">ALL NEWS</string>
+    <string name="all_news">ALLE NEWS</string>
     <string name="headers">SCHLAGZEILEN</string>
 </resources>

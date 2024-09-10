@@ -36,6 +36,13 @@ fun DVXTheme(content: @Composable () -> Unit) {
             fontFamily = openSansCondFontFamily,
             fontWeight = FontWeight.Bold
         ),
+        labelMedium = TextStyle(
+            color = colorScheme.primary,
+            fontFamily = openSansCondFontFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            lineHeight = 18.sp
+        ),
         titleSmall = TextStyle(
             color = colorScheme.primary,
             fontFamily = openSansCondFontFamily,

@@ -1,6 +1,7 @@
 package dvx.news.app.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
@@ -46,9 +47,11 @@ fun NewsTabs(
                 selected = tab == currentTab,
                 onClick = { onTabSelect(tab) },
                 text = {
+                    val alpha = if (tab == currentTab) 1f else 0.64f
                     Text(
                         text = tab.localizedName,
-                        color = Color.Black
+                        color = Color.Black.copy(alpha = alpha),
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             )

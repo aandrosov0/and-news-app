@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -53,14 +54,14 @@ fun ComprehensivePostCardHeader(
     ) {
         Text(
             text = time,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.labelMedium,
             color = Color(0xFF484C56),
             modifier = Modifier
                 .alpha(0.64f)
         )
         Text(
             text = type,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.labelMedium,
             color = Color(0xFF484C56),
             modifier = Modifier
                 .alpha(0.64f)
@@ -93,14 +94,16 @@ fun ComprehensivePostCardFooter(
     ) {
         Text(
             text = title,
+            fontSize = 16.sp,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .fillMaxWidth()
         )
         Text(
             text = description,
-            fontSize = 22.sp,
+            fontSize = 18.5.sp,
             lineHeight = 20.sp,
+            color = Color.Black,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .fillMaxWidth()
@@ -120,6 +123,7 @@ fun ComprehensivePostCard(
     Column(
         modifier = modifier
             .width(456.dp)
+            .shadow(elevation = 8.dp)
     ) {
         ComprehensivePostCardHeader(
             time = time,
