@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dvx.news.app.components.DVXBottomNavigation
 import dvx.news.app.components.DVXTopAppBar
+import dvx.news.app.components.DVXTopLogoAppBar
+import dvx.news.app.screens.CategoryScreen
+import dvx.news.app.screens.HomeScreen
 import dvx.news.app.screens.NewsScreen
 import dvx.news.app.states.Screen
 import dvx.news.app.themes.DVXTheme
@@ -34,19 +36,31 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(modifier: Modifier = Modifier) {
-    var currentScreen by remember { mutableStateOf(Screen.NEWS) }
+    val currentScreen by remember { mutableStateOf(Screen.HOME) }
+
     Scaffold(
         modifier = modifier,
         topBar = {
-            DVXTopAppBar(
-                title = "",
-                destination = "Mehr"
-            )
+            when (currentScreen) {
+                Screen.HOME -> DVXTopLogoAppBar()
+                Screen.NEWS -> DVXTopAppBar(
+                    title = "",
+                    destination = "Mehr"
+                )
+                Screen.CATEGORY -> DVXTopAppBar(
+                    title = "Lifestyle",
+                    destination = "Mehr"
+                )
+            }
         },
         bottomBar = { DVXBottomNavigation() },
         containerColor = MaterialTheme.colorScheme.surfaceContainer
     ) { paddingValues ->
-        NewsScreen(modifier = Modifier.padding(paddingValues))
+        when (currentScreen) {
+            Screen.HOME -> HomeScreen(modifier = Modifier.padding(paddingValues))
+            Screen.NEWS -> NewsScreen(modifier = Modifier.padding(paddingValues))
+            Screen.CATEGORY -> CategoryScreen(modifier = Modifier.padding(paddingValues))
+        }
     }
 }
 
