@@ -56,6 +56,13 @@ fun DVXTheme(content: @Composable () -> Unit) {
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             lineHeight = 24.sp
+        ),
+        titleLarge = TextStyle(
+            color = colorScheme.primary,
+            fontFamily = openSansCondFontFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 27.sp,
+            lineHeight = 24.sp
         )
     )
 

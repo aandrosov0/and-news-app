@@ -34,6 +34,7 @@ fun DVXBottomNavigation(
     )
 
     NavigationBar(
+        containerColor = Color.White,
         modifier = modifier
     ) {
         for (destination in destinations) {

@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import dvx.news.app.components.DVXBottomNavigation
 import dvx.news.app.components.DVXTopAppBar
 import dvx.news.app.components.DVXTopLogoAppBar
+import dvx.news.app.screens.ArticleScreen
 import dvx.news.app.screens.CategoryScreen
 import dvx.news.app.screens.HomeScreen
 import dvx.news.app.screens.NewsScreen
@@ -36,19 +37,24 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(modifier: Modifier = Modifier) {
-    val currentScreen by remember { mutableStateOf(Screen.HOME) }
+    val currentScreen by remember { mutableStateOf(Screen.ARTICLE) }
 
     Scaffold(
         modifier = modifier,
         topBar = {
             when (currentScreen) {
                 Screen.HOME -> DVXTopLogoAppBar()
-                Screen.NEWS -> DVXTopAppBar(
-                    title = "",
-                    destination = "Mehr"
-                )
                 Screen.CATEGORY -> DVXTopAppBar(
                     title = "Lifestyle",
+                    destination = "Mehr",
+                )
+                Screen.ARTICLE -> DVXTopAppBar(
+                    title = "",
+                    destination = "Zurück",
+                    activeExport = true
+                )
+                else -> DVXTopAppBar(
+                    title = "",
                     destination = "Mehr"
                 )
             }
@@ -60,6 +66,7 @@ fun App(modifier: Modifier = Modifier) {
             Screen.HOME -> HomeScreen(modifier = Modifier.padding(paddingValues))
             Screen.NEWS -> NewsScreen(modifier = Modifier.padding(paddingValues))
             Screen.CATEGORY -> CategoryScreen(modifier = Modifier.padding(paddingValues))
+            Screen.ARTICLE -> ArticleScreen(modifier = Modifier.padding(paddingValues))
         }
     }
 }

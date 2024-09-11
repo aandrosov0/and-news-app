@@ -15,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dvx.news.app.R
 import dvx.news.app.themes.DVXTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +26,8 @@ import dvx.news.app.themes.DVXTheme
 fun DVXTopAppBar(
     title: String,
     destination: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    activeExport: Boolean = false
 ) {
     val elementsColor = Color(0xFF484C56)
     CenterAlignedTopAppBar(
@@ -58,6 +61,16 @@ fun DVXTopAppBar(
                     color = elementsColor,
                     modifier = Modifier.padding(start = 8.dp)
                 )
+            }
+        },
+        actions = {
+            if (activeExport) {
+                IconButton(onClick = {}) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_export),
+                        contentDescription = null
+                    )
+                }
             }
         }
     )
