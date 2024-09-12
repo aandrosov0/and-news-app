@@ -19,6 +19,7 @@ import dvx.news.app.screens.ArticleScreen
 import dvx.news.app.screens.CategoryScreen
 import dvx.news.app.screens.HomeScreen
 import dvx.news.app.screens.NewsScreen
+import dvx.news.app.screens.OverviewScreen
 import dvx.news.app.states.Screen
 import dvx.news.app.themes.DVXTheme
 
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(modifier: Modifier = Modifier) {
-    val currentScreen by remember { mutableStateOf(Screen.ARTICLE) }
+    val currentScreen by remember { mutableStateOf(Screen.OVERVIEW) }
 
     Scaffold(
         modifier = modifier,
@@ -53,6 +54,7 @@ fun App(modifier: Modifier = Modifier) {
                     destination = "Zurück",
                     activeExport = true
                 )
+                Screen.OVERVIEW -> DVXTopLogoAppBar(title = "Mehr")
                 else -> DVXTopAppBar(
                     title = "",
                     destination = "Mehr"
@@ -67,6 +69,7 @@ fun App(modifier: Modifier = Modifier) {
             Screen.NEWS -> NewsScreen(modifier = Modifier.padding(paddingValues))
             Screen.CATEGORY -> CategoryScreen(modifier = Modifier.padding(paddingValues))
             Screen.ARTICLE -> ArticleScreen(modifier = Modifier.padding(paddingValues))
+            Screen.OVERVIEW -> OverviewScreen(modifier = Modifier.padding(paddingValues))
         }
     }
 }

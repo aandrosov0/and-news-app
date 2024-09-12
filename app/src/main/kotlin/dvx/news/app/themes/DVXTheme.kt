@@ -2,6 +2,7 @@ package dvx.news.app.themes
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -14,7 +15,7 @@ fun DVXTheme(content: @Composable () -> Unit) {
         surfaceContainer = surfaceColor,
         primaryContainer = surfaceColor,
         secondaryContainer = surfaceColor,
-        tertiaryContainer = surfaceColor
+        tertiaryContainer = surfaceColor,
     )
 
     val typography = MaterialTheme.typography.copy(
@@ -22,19 +23,22 @@ fun DVXTheme(content: @Composable () -> Unit) {
             fontSize = 12.5.sp,
             lineHeight = 24.sp,
             fontWeight = FontWeight.Bold,
-            fontFamily = openSansCondFontFamily
+            fontFamily = openSansCondFontFamily,
+            color = Color.Black
         ),
         bodyMedium = TextStyle(
             fontSize = 20.sp,
             lineHeight = 24.sp,
             fontWeight = FontWeight.W600,
-            fontFamily = openSansCondFontFamily
+            fontFamily = openSansCondFontFamily,
+            color = Color.Black
         ),
         bodyLarge = TextStyle(
             fontSize = 24.sp,
             lineHeight = 27.sp,
             fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
         ),
         labelMedium = TextStyle(
             color = colorScheme.primary,

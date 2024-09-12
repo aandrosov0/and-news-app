@@ -4,5 +4,6 @@ enum class Screen {
     HOME,
     NEWS,
     CATEGORY,
-    ARTICLE
+    ARTICLE,
+    OVERVIEW,
 }
