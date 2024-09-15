@@ -16,13 +16,16 @@ import dvx.news.app.themes.DVXTheme
 fun TopTopicsOverviewSection(
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .padding(top = 28.dp)
+    ) {
         Text(
             text = "TOP-THEMEN",
-            fontSize = 32.sp,
+            fontSize = 26.sp,
             modifier = Modifier.padding(
-                start = 20.dp,
-                end = 20.dp,
+                start = 10.dp,
+                end = 10.dp,
                 bottom = 8.dp
             )
         )

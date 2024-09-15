@@ -1,7 +1,6 @@
 package dvx.news.app.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -13,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dvx.news.app.components.HeadersTabContent
 import dvx.news.app.components.NewsTabContent
-import dvx.news.app.components.NewsTabs
+import dvx.news.app.components.Tabs
 import dvx.news.app.states.Tab
 import dvx.news.app.themes.DVXTheme
 
@@ -23,7 +22,7 @@ fun NewsScreen(modifier: Modifier = Modifier) {
 
     Column(modifier = modifier
     ) {
-        NewsTabs(
+        Tabs(
             tabs = listOf(Tab.ALL_NEWS, Tab.HEADERS),
             currentTab = currentTab,
             onTabSelect = { currentTab = it }
@@ -31,6 +30,7 @@ fun NewsScreen(modifier: Modifier = Modifier) {
         when (currentTab) {
             Tab.ALL_NEWS -> NewsTabContent(modifier = Modifier.fillMaxSize())
             Tab.HEADERS -> HeadersTabContent(modifier = Modifier.fillMaxSize())
+            else -> throw IllegalStateException("Expected ${Tab.ALL_NEWS} or ${Tab.HEADERS}")
         }
     }
 }

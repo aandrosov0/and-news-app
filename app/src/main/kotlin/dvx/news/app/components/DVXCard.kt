@@ -64,7 +64,7 @@ fun DVXCard(
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(32.dp)
             )
             Text(
                 text = text,

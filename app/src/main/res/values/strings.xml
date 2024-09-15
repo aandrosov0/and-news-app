@@ -3,4 +3,14 @@
     <string name="app_name">DVX News</string>
     <string name="all_news">ALLE NEWS</string>
     <string name="headers">SCHLAGZEILEN</string>
+    <string name="representation">DARSTELLUNG</string>
+    <string name="messages">MITTEILUNGEN</string>
+    <string name="settings1_main">Personalisiere Deine App, indem Du zwischen\nSystemeinstellung, hellem oder dunklem\nFarbmodus wahlst deine</string>
+    <string name="headlines">Schlagzeilen</string>
+    <string name="bright">Hell</string>
+    <string name="dark">Dunkel</string>
+    <string name="eligibility_title">Berechtigung erforderlich</string>
+    <string name="eligibility_text">Um Push-Benachrichtigungen zu aktivieren, ist eine Autorisierung in den Systemeinstellungen erforderlich.</string>
+    <string name="abort">ABBRECHEN</string>
+    <string name="settings">EINSTELLUNGEN</string>
 </resources>

@@ -17,11 +17,12 @@ fun HeadingsOverviewSection(modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(
             text = "RUBRIKEN",
-            fontSize = 32.sp,
+            fontSize = 26.sp,
             modifier = Modifier.padding(
-                start = 20.dp,
-                end = 20.dp,
-                bottom = 8.dp
+                start = 10.dp,
+                end = 10.dp,
+                bottom = 8.dp,
+                top = 18.dp
             )
         )
         HorizontalDivider()

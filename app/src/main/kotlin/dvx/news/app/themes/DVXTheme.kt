@@ -11,11 +11,13 @@ import androidx.compose.ui.unit.sp
 fun DVXTheme(content: @Composable () -> Unit) {
     val colorScheme = MaterialTheme.colorScheme.copy(
         primary = primaryColor,
+        onPrimary = onPrimaryColor,
         surface = surfaceColor,
         surfaceContainer = surfaceColor,
         primaryContainer = surfaceColor,
         secondaryContainer = surfaceColor,
         tertiaryContainer = surfaceColor,
+        background = Color.Gray
     )
 
     val typography = MaterialTheme.typography.copy(

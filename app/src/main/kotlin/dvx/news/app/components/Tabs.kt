@@ -22,7 +22,7 @@ import dvx.news.app.themes.DVXTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsTabs(
+fun Tabs(
     tabs: List<Tab>,
     currentTab: Tab,
     onTabSelect: (Tab) -> Unit,
@@ -42,7 +42,7 @@ fun NewsTabs(
         },
         modifier = modifier
     ) {
-        for (tab in tabs) {
+        tabs.forEach { tab ->
             Tab(
                 selected = tab == currentTab,
                 onClick = { onTabSelect(tab) },
@@ -63,7 +63,7 @@ fun NewsTabs(
 @Composable
 private fun NewsTabsPreview() = DVXTheme {
     var currentTab by remember { mutableStateOf(Tab.ALL_NEWS) }
-    NewsTabs(
+    Tabs(
         tabs = listOf(Tab.ALL_NEWS, Tab.HEADERS),
         currentTab = currentTab,
         onTabSelect = { currentTab = it }
