@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,8 +37,8 @@ fun HeadersTabContent(modifier: Modifier = Modifier) {
             .verticalScroll(rememberScrollState())
     ) {
         Text(
-            text = "Die Top-Themen von BILD in der Übersicht",
-            color = Color(0xFF18191C).copy(alpha = 0.64f),
+            text = stringResource(R.string.haders_tab_title),
+            color = Color.Unspecified.copy(alpha = 0.64f),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
             style = MaterialTheme.typography.bodyMedium,

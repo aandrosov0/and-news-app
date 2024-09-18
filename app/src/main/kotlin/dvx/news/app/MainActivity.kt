@@ -1,6 +1,5 @@
 package dvx.news.app
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,11 +13,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import dvx.news.app.components.DVXBottomNavigation
 import dvx.news.app.components.DVXTopAppBar
 import dvx.news.app.components.DVXTopLogoAppBar
@@ -29,7 +28,8 @@ import dvx.news.app.screens.MainScreen
 import dvx.news.app.screens.NewsScreen
 import dvx.news.app.screens.OverviewScreen
 import dvx.news.app.screens.SettingsScreen
-import dvx.news.app.states.Screen
+import dvx.news.app.states.Destination
+import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
 
 class MainActivity : ComponentActivity() {
@@ -46,81 +46,120 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun AppTopBar(
+    destination: Destination,
+    onNavigateUp: () -> Unit,
+) {
+    val title = when (destination) {
+        Destination.Article -> ""
+        else -> destination.localizedName
+    }
+
+    val destinationText = when (destination) {
+        Destination.Article -> "Zurück"
+        else -> Destination.Menu.localizedName
+    }
+
+    when (destination) {
+        Destination.Main -> {}
+        Destination.Home -> DVXTopLogoAppBar()
+        else -> DVXTopAppBar(
+            title = title,
+            destination = destinationText,
+            onNavigateUp = onNavigateUp
+        )
+    }
+}
+
+@Composable
+fun AppBottomBar(
+    destination: Destination,
+    onDestinationChange: (Destination) -> Unit
+) {
+    when (destination) {
+        Destination.Main -> {}
+        else -> DVXBottomNavigation(
+            current = destination,
+            onDestinationSelect = { onDestinationChange(it) }
+        )
+    }
+}
+
+fun NavGraphBuilder.initializeAppNavigationGraph(
+    navHostController: NavHostController,
+    onDestinationChange: (Destination) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    composable<Destination.Main> {
+        onDestinationChange(Destination.Main)
+        MainScreen(
+            onDestinationChange = { navHostController.navigate(route = it) },
+            modifier = modifier
+        )
+    }
+    composable<Destination.Home> {
+        onDestinationChange(Destination.Home)
+        HomeScreen(modifier = modifier)
+    }
+    composable<Destination.News> {
+        onDestinationChange(Destination.News)
+        NewsScreen(modifier = modifier)
+    }
+    composable<Destination.Category> {
+        onDestinationChange(Destination.Category)
+        CategoryScreen(modifier = modifier)
+    }
+    composable<Destination.Article> {
+        onDestinationChange(Destination.Article)
+        ArticleScreen(modifier = modifier)
+    }
+    composable<Destination.Overview> {
+        onDestinationChange(Destination.Overview)
+        OverviewScreen(modifier = modifier)
+    }
+    composable<Destination.Settings> {
+        onDestinationChange(Destination.Settings)
+        SettingsScreen(modifier = modifier)
+    }
+}
+
+@Composable
 fun App(
     modifier: Modifier = Modifier,
     navHostController: NavHostController = rememberNavController()
 ) {
-    var currentScreen: Screen by remember { mutableStateOf(Screen.Main) }
-
+    var destination: Destination by remember { mutableStateOf(Destination.Main) }
     Scaffold(
         modifier = modifier,
         topBar = {
-            when (currentScreen) {
-                Screen.Main -> {}
-                Screen.Category -> DVXTopAppBar(
-                    title = "Lifestyle",
-                    destination = "Mehr",
-                )
-                Screen.Article -> DVXTopAppBar(
-                    title = "",
-                    destination = "Zurück",
-                    activeExport = true
-                )
-                Screen.Home -> DVXTopLogoAppBar()
-                else -> DVXTopAppBar(
-                    title = "",
-                    destination = "Mehr"
-                )
-            }
+            AppTopBar(
+                destination = destination,
+                onNavigateUp = navHostController::navigateUp
+            )
         },
         bottomBar = {
-            if (currentScreen != Screen.Main) {
-                DVXBottomNavigation()
-            }
+            AppBottomBar(
+                destination,
+                onDestinationChange = { destination = it }
+            )
         },
         containerColor = MaterialTheme.colorScheme.surfaceContainer
     ) { paddingValues ->
         NavHost(
             navController = navHostController,
-            startDestination = Screen.Main
+            startDestination = Destination.Main
         ) {
-            composable<Screen.Main> { backStackEntry ->
-                currentScreen = backStackEntry.toRoute<Screen.Main>()
-                MainScreen(
-                    onChangeScreen = { navHostController.navigate(route = it) },
-                    modifier.padding(paddingValues)
-                )
-            }
-            composable<Screen.Home> { backStackEntry ->
-                currentScreen = backStackEntry.toRoute<Screen.Home>()
-                HomeScreen(modifier = Modifier.padding(paddingValues))
-            }
-            composable<Screen.News> { backStackEntry ->
-                currentScreen = backStackEntry.toRoute<Screen.News>()
-                NewsScreen(modifier = Modifier.padding(paddingValues))
-            }
-            composable<Screen.Category> { backStackEntry ->
-                currentScreen = backStackEntry.toRoute<Screen.Category>()
-                CategoryScreen(modifier = Modifier.padding(paddingValues))
-            }
-            composable<Screen.Article> { backStackEntry ->
-                currentScreen = backStackEntry.toRoute<Screen.Article>()
-                ArticleScreen(modifier = Modifier.padding(paddingValues))
-            }
-            composable<Screen.Overview> { backStackEntry ->
-                currentScreen = backStackEntry.toRoute<Screen.Overview>()
-                OverviewScreen(modifier = Modifier.padding(paddingValues))
-            }
-            composable<Screen.Settings> { backStackEntry ->
-                currentScreen = backStackEntry.toRoute<Screen.Overview>()
-                SettingsScreen(modifier = Modifier.padding(paddingValues))
-            }
+            initializeAppNavigationGraph(
+                navHostController = navHostController,
+                modifier = Modifier.padding(paddingValues),
+                onDestinationChange = { destination = it }
+            )
         }
     }
 }
 
 @Preview
 @Composable
-private fun AppPreview() {
+private fun AppPreview() = DVXTheme {
     App()
 }

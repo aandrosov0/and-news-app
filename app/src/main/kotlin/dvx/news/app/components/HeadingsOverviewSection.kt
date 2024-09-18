@@ -6,6 +6,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -16,7 +17,7 @@ import dvx.news.app.themes.DVXTheme
 fun HeadingsOverviewSection(modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(
-            text = "RUBRIKEN",
+            text = stringResource(R.string.topics),
             fontSize = 26.sp,
             modifier = Modifier.padding(
                 start = 10.dp,
@@ -28,21 +29,21 @@ fun HeadingsOverviewSection(modifier: Modifier = Modifier) {
         HorizontalDivider()
         HorizontalButton(
             onClick = {},
-            text = "Sport",
+            text = stringResource(R.string.sport),
             prefixIconId = R.drawable.ic_sport,
             postfixIconId = R.drawable.ic_down
         )
         HorizontalDivider()
         HorizontalButton(
             onClick = {},
-            text = "Lifestyle",
+            text = stringResource(R.string.lifestyle),
             prefixIconId = R.drawable.ic_lifestyle,
             postfixIconId = R.drawable.ic_down
         )
         HorizontalDivider()
         HorizontalButton(
             onClick = {},
-            text = "Unterhaltung",
+            text = stringResource(R.string.entertainment),
             prefixIconId = R.drawable.ic_unterhaltung,
             postfixIconId = R.drawable.ic_down
         )

@@ -15,9 +15,10 @@ fun DVXTheme(content: @Composable () -> Unit) {
         surface = surfaceColor,
         surfaceContainer = surfaceColor,
         primaryContainer = surfaceColor,
+        secondary = secondaryColor,
         secondaryContainer = surfaceColor,
         tertiaryContainer = surfaceColor,
-        background = Color.Gray
+        background = Color.Gray,
     )
 
     val typography = MaterialTheme.typography.copy(

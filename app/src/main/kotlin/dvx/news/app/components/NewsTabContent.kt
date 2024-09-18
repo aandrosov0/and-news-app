@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +36,7 @@ fun NewsTabContent(modifier: Modifier = Modifier) {
             .verticalScroll(rememberScrollState())
     ) {
         Text(
-            text = "Alle Ressorts in der Übersicht",
+            text = stringResource(R.string.news_tab_title),
             color = Color(0xFF18191C).copy(alpha = 0.64f),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,

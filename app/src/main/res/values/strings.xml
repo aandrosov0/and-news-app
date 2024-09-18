@@ -12,5 +12,20 @@
     <string name="eligibility_title">Berechtigung erforderlich</string>
     <string name="eligibility_text">Um Push-Benachrichtigungen zu aktivieren, ist eine Autorisierung in den Systemeinstellungen erforderlich.</string>
     <string name="abort">ABBRECHEN</string>
-    <string name="settings">EINSTELLUNGEN</string>
+    <string name="settings">Einstellungen</string>
+    <string name="food">Food</string>
+    <string name="my_account">Mein Konto</string>
+    <string name="sport">Sport</string>
+    <string name="entertainment">Unterhaltung</string>
+    <string name="home">Starseite</string>
+    <string name="lifestyle">Lifestyle</string>
+    <string name="menu">Mehr</string>
+    <string name="haders_tab_title">Die Top-Themen von BILD in der Übersicht</string>
+    <string name="topics">RUBRIKEN</string>
+    <string name="news_tab_title">Alle Ressorts in der Übersicht</string>
+    <string name="article">Article</string>
+    <string name="category">Category</string>
+    <string name="main">Main</string>
+    <string name="news">News</string>
+    <string name="overview">Overview</string>
 </resources>

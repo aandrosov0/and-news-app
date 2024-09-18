@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import dvx.news.app.states.Screen
-import dvx.news.app.states.Screen.*
+import dvx.news.app.states.Destination
+import dvx.news.app.states.Destination.*
 import dvx.news.app.themes.DVXTheme
 
 @Composable
 fun MainScreen(
-    onChangeScreen: (Screen) -> Unit,
+    onDestinationChange: (Destination) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -24,22 +24,22 @@ fun MainScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-        Button(onClick = { onChangeScreen(Home) }) {
+        Button(onClick = { onDestinationChange(Home) }) {
             Text(text = "HOME")
         }
-        Button(onClick = { onChangeScreen(News) }) {
+        Button(onClick = { onDestinationChange(News) }) {
             Text(text = "NEWS")
         }
-        Button(onClick = { onChangeScreen(Category) }) {
+        Button(onClick = { onDestinationChange(Category) }) {
             Text(text = "CATEGORY")
         }
-        Button(onClick = { onChangeScreen(Article) }) {
+        Button(onClick = { onDestinationChange(Article) }) {
             Text(text = "ARTICLE")
         }
-        Button(onClick = { onChangeScreen(Overview) }) {
+        Button(onClick = { onDestinationChange(Overview) }) {
             Text(text = "OVERVIEW")
         }
-        Button(onClick = { onChangeScreen(Settings) }) {
+        Button(onClick = { onDestinationChange(Settings) }) {
             Text(text = "SETTINGS")
         }
     }
@@ -48,5 +48,5 @@ fun MainScreen(
 @Preview
 @Composable
 private fun MainScreenPreview() = DVXTheme {
-    MainScreen(onChangeScreen = {})
+    MainScreen(onDestinationChange = {})
 }

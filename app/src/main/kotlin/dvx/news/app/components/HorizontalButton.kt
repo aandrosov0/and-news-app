@@ -52,7 +52,7 @@ fun HorizontalButton(
         }
         Text(
             text = text,
-            color = Color(0xFF18191C).copy(alpha = 0.64f),
+            color = Color.Unspecified.copy(alpha = 0.64f),
             fontSize = 18.sp,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier

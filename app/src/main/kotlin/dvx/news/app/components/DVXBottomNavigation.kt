@@ -4,33 +4,44 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dvx.news.app.R
+import dvx.news.app.states.Destination
+import dvx.news.app.states.localizedIcon
+import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DVXBottomNavigation(
+    current: Destination,
+    onDestinationSelect: (Destination) -> Unit,
     modifier: Modifier = Modifier,
-    current: String = "Starseite",
 ) {
     val destinations = listOf(
-        "Starseite" to R.drawable.ic_startseite,
-        "Sport" to R.drawable.ic_sport,
-        "Lifestyle" to R.drawable.ic_lifestyle,
-        "Unterhaltung" to R.drawable.ic_unterhaltung,
-        "Mehr" to R.drawable.ic_mehr,
+        Destination.Home,
+        Destination.Sport,
+        Destination.Lifestyle,
+        Destination.Entertainment,
+        Destination.Menu
     )
 
     NavigationBar(
@@ -38,33 +49,49 @@ fun DVXBottomNavigation(
         modifier = modifier
     ) {
         for (destination in destinations) {
-            val selected = destination.first == current
-            val color = if (selected) Color.Unspecified else Color(0xff18191C).copy(alpha = 0.6f)
-            NavigationBarItem(
-                selected = selected,
-                onClick = {},
-                icon = {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(destination.second),
-                            contentDescription = null,
-                            tint = Color.Unspecified,
-                            modifier = Modifier.size(28.dp)
-                        )
-                        Text(
-                            text = destination.first,
-                            style = MaterialTheme.typography.bodySmall,
-                            textAlign = TextAlign.Center,
-                            color = color,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                },
-                alwaysShowLabel = false
-            )
+            val selected = destination == current
+
+            val iconColor = if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.secondary
+            }
+
+            val textColor = if (selected) {
+                Color.Unspecified
+            } else {
+                Color.Unspecified.copy(alpha = 0.64f)
+            }
+
+            CompositionLocalProvider(LocalRippleConfiguration provides RippleConfiguration(
+                color = MaterialTheme.colorScheme.primary,
+            )) {
+                NavigationBarItem(
+                    selected = selected,
+                    onClick = { onDestinationSelect(destination) },
+                    icon = {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                painter = destination.localizedIcon,
+                                contentDescription = null,
+                                tint = iconColor,
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Text(
+                                text = destination.localizedName,
+                                style = MaterialTheme.typography.bodySmall,
+                                textAlign = TextAlign.Center,
+                                color = textColor,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
+                    alwaysShowLabel = false,
+                )
+            }
         }
     }
 }
@@ -72,5 +99,9 @@ fun DVXBottomNavigation(
 @Preview(widthDp = 360)
 @Composable
 private fun DVXBottomAppBarPreview() = DVXTheme {
-    DVXBottomNavigation()
+    var current: Destination by remember { mutableStateOf(Destination.Home) }
+    DVXBottomNavigation(
+        current = current,
+        onDestinationSelect = { current = it }
+    )
 }
