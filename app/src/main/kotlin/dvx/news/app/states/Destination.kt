@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.dp
 import dvx.news.app.R
 import kotlinx.serialization.Serializable
 
-@Serializable
 sealed class Destination {
     @Serializable
     data object Article : Destination()
