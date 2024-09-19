@@ -3,6 +3,7 @@ package dvx.news.app.components
 import dvx.news.app.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,7 +20,7 @@ import androidx.compose.ui.unit.*
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun PostCard(
+fun VerticalPostCard(
     title: String,
     description: String,
     imagePainter: Painter,
@@ -39,24 +40,21 @@ fun PostCard(
             text = title,
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(top = 6.dp)
         )
         Text(
             text = description,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier
-                .fillMaxWidth()
         )
     }
 }
 
 @Preview
 @Composable
-private fun PostCardPreview() = DVXTheme {
-    PostCard(
+private fun VerticalPostCardPreview() = DVXTheme {
+    VerticalPostCard(
         title = "Hamburg weit abgeschlagen",
         description = "Deutsches Burger-Mekka ist...",
-        imagePainter = painterResource(R.drawable.img_preview)
+        imagePainter = painterResource(R.drawable.img_preview),
     )
 }

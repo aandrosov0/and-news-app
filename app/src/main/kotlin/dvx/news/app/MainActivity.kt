@@ -24,6 +24,7 @@ import dvx.news.app.components.DVXTopLogoAppBar
 import dvx.news.app.screens.ArticleScreen
 import dvx.news.app.screens.CategoryScreen
 import dvx.news.app.screens.HomeScreen
+import dvx.news.app.screens.IncludesScreen
 import dvx.news.app.screens.MainScreen
 import dvx.news.app.screens.NewsScreen
 import dvx.news.app.screens.OverviewScreen
@@ -120,6 +121,10 @@ fun NavGraphBuilder.initializeAppNavigationGraph(
     composable<Destination.Settings> {
         onDestinationChange(Destination.Settings)
         SettingsScreen(modifier = modifier)
+    }
+    composable<Destination.Includes> {
+        onDestinationChange(Destination.Includes)
+        IncludesScreen(modifier = modifier)
     }
 }
 

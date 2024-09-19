@@ -1,0 +1,81 @@
+package dvx.news.app.screens
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import dvx.news.app.R
+import dvx.news.app.components.HorizontalPostCard
+import dvx.news.app.components.PlayerView
+import dvx.news.app.components.VerticalPostCard
+import dvx.news.app.themes.DVXTheme
+
+@Composable
+fun IncludesScreen(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(
+                top = 30.dp,
+                start = 10.dp,
+                end = 10.dp,
+                bottom = 10.dp
+            )
+            .verticalScroll(rememberScrollState()),
+    ) {
+        PlayerView()
+        HorizontalDivider(
+            modifier = Modifier
+                .padding(top = 54.dp)
+        )
+        HorizontalPostCard(
+            title = "Sei sind die Beeeesten’’",
+            description = "Uefa verandert beruhmte Champions-League-Hymne!",
+            imagePainter = painterResource(R.drawable.img_preview),
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+        )
+        HorizontalDivider(
+            modifier = Modifier
+                .padding(bottom = 36.dp)
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(space = 10.dp)
+        ) {
+            repeat(2) {
+                VerticalPostCard(
+                    title = "Hamburg weit abgeschlagen",
+                    description = "Deutsches Burger-Mekka ist...",
+                    imagePainter = painterResource(R.drawable.img_preview),
+                    modifier = Modifier
+                        .weight(1f)
+                )
+            }
+        }
+        VerticalPostCard(
+            title = "Schutz vor tollen Sachen",
+            description = "Ruckgang von HPV-Impfung bei Kindern",
+            imagePainter = painterResource(R.drawable.img_small_preview),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 22.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun IncludesScreenPreview() = DVXTheme {
+    IncludesScreen()
+}

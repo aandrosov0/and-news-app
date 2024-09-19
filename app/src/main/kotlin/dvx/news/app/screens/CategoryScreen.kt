@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dvx.news.app.R
-import dvx.news.app.components.PostCard
+import dvx.news.app.components.VerticalPostCard
 import dvx.news.app.themes.DVXTheme
 
 @Composable
@@ -84,7 +84,7 @@ fun CategoryScreen(modifier: Modifier = Modifier) = Column(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 repeat(2) {
-                    PostCard(
+                    VerticalPostCard(
                         title = "Hamburg weit abgeschlagen",
                         description = "Deutsches Burger-Mekka ist...",
                         imagePainter = painterResource(R.drawable.img_preview),

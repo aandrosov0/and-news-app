@@ -32,6 +32,8 @@ sealed class Destination {
     data object Menu : Destination()
     @Serializable
     data object News : Destination()
+    @Serializable
+    data object Includes : Destination()
 }
 
 val Destination.localizedName
@@ -48,6 +50,7 @@ val Destination.localizedName
         Destination.News -> stringResource(R.string.news)
         Destination.Overview -> stringResource(R.string.overview)
         Destination.Settings -> stringResource(R.string.settings)
+        Destination.Includes -> stringResource(R.string.includes)
     }
 
 val Destination.localizedIcon

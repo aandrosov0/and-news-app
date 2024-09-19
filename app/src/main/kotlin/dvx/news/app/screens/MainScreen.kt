@@ -42,6 +42,9 @@ fun MainScreen(
         Button(onClick = { onDestinationChange(Settings) }) {
             Text(text = "SETTINGS")
         }
+        Button(onClick = { onDestinationChange(Includes) }) {
+            Text(text = "INCLUDES")
+        }
     }
 }
 
