@@ -2,8 +2,9 @@ package dvx.news.app.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -28,22 +29,28 @@ import dvx.news.app.themes.openSansCondFontFamily
 fun ArticleScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .fillMaxSize()
+            .height(intrinsicSize = IntrinsicSize.Min)
             .verticalScroll(rememberScrollState())
     ) {
         Text(
             text = "Nach dem Untergang seiner Luxus-Jacht",
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 21.sp,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .fillMaxWidth()
         )
         Text(
             text = "Die seltsamen Zufälle um den Tod des Tech-Milliardärs",
             textAlign = TextAlign.Center,
             fontFamily = openSansCondFontFamily,
             lineHeight = 62.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            style = MaterialTheme.typography.displayLarge,
+            fontSize = 44.sp,
+            fontWeight = FontWeight.ExtraBold,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
         )
         Image(
             painter = painterResource(R.drawable.img_small_preview),
@@ -51,7 +58,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 13.dp,)
+                .padding(top = 13.dp)
         )
         Text(
             text = "Beim Bau 2008 war der Mast der Superjacht mit 75 Metern der zweithöchste der Welt",

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -91,6 +92,12 @@ fun ComprehensivePostCardFooter(
                 end = 8.dp,
                 bottom = 10.5.dp
             )
+            .clip(
+                shape = RoundedCornerShape(
+                    bottomStart = 8.dp,
+                    bottomEnd = 8.dp
+                )
+            )
     ) {
         Text(
             text = title,
@@ -123,7 +130,10 @@ fun ComprehensivePostCard(
     Column(
         modifier = modifier
             .width(456.dp)
-            .shadow(elevation = 8.dp)
+            .shadow(
+                elevation = 8.dp,
+                shape = RoundedCornerShape(size = 8.dp)
+            )
     ) {
         ComprehensivePostCardHeader(
             time = time,

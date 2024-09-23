@@ -2,7 +2,6 @@ package dvx.news.app.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -12,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -27,7 +27,10 @@ import dvx.news.app.themes.DVXTheme
 @Composable
 fun SettingsThemeSection(modifier: Modifier = Modifier) {
     var currentTheme by remember { mutableStateOf(Theme.HEADLINES) }
-    Column(modifier = modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
         Text(
             text = stringResource(R.string.settings1_main),
             textAlign = TextAlign.Center,
@@ -41,7 +44,6 @@ fun SettingsThemeSection(modifier: Modifier = Modifier) {
                     start = 40.dp,
                     end = 40.dp
                 )
-                .fillMaxWidth()
         )
         Column(
             modifier = Modifier
@@ -54,8 +56,8 @@ fun SettingsThemeSection(modifier: Modifier = Modifier) {
                     onClick = { currentTheme = theme }
                 )
                 HorizontalDivider(
-                    thickness = 1.dp,
-                    color = Color(0x3D18191C)
+                    color = Color(0XFF18191C)
+                        .copy(alpha = 0.24f),
                 )
             }
         }

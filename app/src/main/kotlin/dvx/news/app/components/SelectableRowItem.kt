@@ -54,7 +54,7 @@ fun SelectableRowItem(
             )
             .padding(
                 horizontal = 10.dp,
-                vertical = 14.dp
+                vertical = 20.dp
             )
             .clip(shape = RectangleShape)
     ) {

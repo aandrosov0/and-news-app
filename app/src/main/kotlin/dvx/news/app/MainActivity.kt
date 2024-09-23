@@ -52,7 +52,7 @@ fun AppTopBar(
     onNavigateUp: () -> Unit,
 ) {
     val title = when (destination) {
-        Destination.Article -> ""
+        Destination.Article, Destination.News -> ""
         else -> destination.localizedName
     }
 
@@ -67,7 +67,8 @@ fun AppTopBar(
         else -> DVXTopAppBar(
             title = title,
             destination = destinationText,
-            onNavigateUp = onNavigateUp
+            onNavigateUp = onNavigateUp,
+            activeExport = destination == Destination.Article
         )
     }
 }

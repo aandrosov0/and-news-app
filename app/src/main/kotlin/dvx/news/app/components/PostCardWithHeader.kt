@@ -25,7 +25,10 @@ fun PostCardWithHeader(
     Column(
         modifier = modifier
             .width(456.dp)
-            .shadow(elevation = 8.dp)
+            .shadow(
+                elevation = 8.dp,
+                shape = RoundedCornerShape(size = 8.dp)
+            )
     ) {
         ComprehensivePostCardHeader(
             time = time,

@@ -3,7 +3,6 @@ package dvx.news.app.components
 import dvx.news.app.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -39,12 +38,16 @@ fun VerticalPostCard(
         Text(
             text = title,
             style = MaterialTheme.typography.titleSmall,
+            fontSize = 15.sp,
             modifier = Modifier
                 .padding(top = 6.dp)
         )
         Text(
             text = description,
+            fontSize = 20.sp,
             style = MaterialTheme.typography.bodyLarge,
+            letterSpacing = (-0.3).sp,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
