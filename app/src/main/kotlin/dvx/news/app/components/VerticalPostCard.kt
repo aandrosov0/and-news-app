@@ -41,13 +41,15 @@ fun VerticalPostCard(
             fontSize = 15.sp,
             modifier = Modifier
                 .padding(top = 6.dp)
+                .fillMaxWidth()
         )
         Text(
             text = description,
             fontSize = 20.sp,
             style = MaterialTheme.typography.bodyLarge,
             letterSpacing = (-0.3).sp,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
         )
     }
 }

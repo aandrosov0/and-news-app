@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,10 +36,14 @@ fun EligibilityNotificationBox(
             .background(color = MaterialTheme.colorScheme.surfaceContainer)
             .padding(all = 20.dp)
     ) {
-        Text(text = stringResource(R.string.eligibility_title))
+        Text(
+            text = stringResource(R.string.eligibility_title),
+            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyMedium
+        )
         Text(
             text = stringResource(R.string.eligibility_text),
-            fontSize = 18.sp,
+            fontSize = 16.sp,
             color = Color.Unspecified.copy(alpha = 0.64f),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
@@ -54,8 +59,9 @@ fun EligibilityNotificationBox(
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Text(
-                    text = stringResource(R.string.abort),
-                    fontSize = 12.sp
+                    text = stringResource(R.string.abort).uppercase(),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.ExtraBold
                 )
             }
             Spacer(
@@ -67,9 +73,10 @@ fun EligibilityNotificationBox(
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.settings),
+                    text = stringResource(R.string.settings).uppercase(),
                     fontSize = 12.sp,
-                    color = Color.White
+                    color = Color.White,
+                    fontWeight = FontWeight.ExtraBold
                 )
             }
         }

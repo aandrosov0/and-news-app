@@ -2,6 +2,7 @@ package dvx.news.app.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -41,9 +42,10 @@ fun SettingsThemeSection(modifier: Modifier = Modifier) {
                 .padding(
                     top = 40.dp,
                     bottom = 22.dp,
-                    start = 40.dp,
-                    end = 40.dp
+                    start = 20.dp,
+                    end = 20.dp
                 )
+                .fillMaxWidth()
         )
         Column(
             modifier = Modifier

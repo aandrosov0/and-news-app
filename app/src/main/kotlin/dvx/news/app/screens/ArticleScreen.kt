@@ -1,8 +1,10 @@
 package dvx.news.app.screens
 
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,7 +47,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
             text = "Die seltsamen Zufälle um den Tod des Tech-Milliardärs",
             textAlign = TextAlign.Center,
             fontFamily = openSansCondFontFamily,
-            lineHeight = 62.sp,
+            lineHeight = 44.sp,
             fontSize = 44.sp,
             fontWeight = FontWeight.ExtraBold,
             style = MaterialTheme.typography.bodyLarge,
@@ -63,12 +65,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
         Text(
             text = "Beim Bau 2008 war der Mast der Superjacht mit 75 Metern der zweithöchste der Welt",
             textAlign = TextAlign.Justify,
-            style = TextStyle(
-                fontSize = 20.sp,
-                lineHeight = 28.sp,
-                fontWeight = FontWeight(700),
-                color = Color(0xFF18191C),
-            ),
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
                     top = 3.dp,
@@ -78,50 +75,46 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
         )
         Text(
             text = "Foto: EPA",
-            style = TextStyle(
-                fontSize = 22.sp,
-                lineHeight = 24.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFF18191C),
-            ),
+            fontWeight = FontWeight.Light,
+            fontSize = 24.sp,
+            color = Color(0xff626362),
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
                     top = 7.dp,
                     start = 20.dp,
                     end = 20.dp
                 )
+                .fillMaxWidth()
         )
         Text(
             text = "Die Nacht zu Montag war lau in Porticello, einem kleinen Jachthafen an der Nordküste Siziliens.",
-            style = TextStyle(
-                fontSize = 22.sp,
-                lineHeight = 38.sp,
-                fontWeight = FontWeight(700),
-                color = Color(0xFF18191C),
-            ),
             textAlign = TextAlign.Justify,
+            fontSize = 23.5.sp,
+            lineHeight = 28.sp,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
-                    top = 41.dp,
+                    top = 22.dp,
                     start = 20.dp,
                     end = 20.dp
                 )
+                .fillMaxWidth()
         )
         Text(
             text = "700 Meter vor dem Hafen lag die Bayesian\" im Tyrrhenischen Meer vor Anker, eine 35- Millionen-Euro Segeljacht, die dem britischen Tech-Milliardär Mike Lynch (59) und seiner Frau Angela Bacares (57) gehört. Die Menschen an Bord, zwölf Passagiere und die zehnköpfige Besatzung, hatten etwas zu feiern.",
-            style = TextStyle(
-                fontSize = 22.sp,
-                lineHeight = 38.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFF18191C),
-            ),
             textAlign = TextAlign.Justify,
+            fontWeight = FontWeight.Light,
+            lineHeight = 28.sp,
+            fontSize = 24.sp,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
                     top = 14.dp,
                     start = 20.dp,
                     end = 20.dp
                 )
+                .fillMaxWidth()
         )
         Image(
             painter = painterResource(R.drawable.img_large_preview),
@@ -134,35 +127,34 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
         Text(
             text = "Milliardär Mike Lynch und seine Tochter Hannah ertranken, als die Jacht sank",
             textAlign = TextAlign.Justify,
-            style = TextStyle(
-                fontSize = 18.sp,
-                lineHeight = 30.sp,
-                fontWeight = FontWeight(700),
-                color = Color(0xFF18191C)
-            ),
+            fontSize = 23.sp,
+            lineHeight = 28.sp,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
                     top = 7.dp,
                     start = 20.dp,
                     end = 20.dp
                 )
+                .fillMaxWidth()
         )
         Text(
             text = "Foto: Uncredited/Lynch family via TANCREDI/AP",
             textAlign = TextAlign.Justify,
-            style = TextStyle(
-                fontSize = 18.sp,
-                lineHeight = 24.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFF3A3A3A),
-            ),
+            fontWeight = FontWeight.Light,
+            fontSize = 19.sp,
+            color = Color(0xff626362),
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
                     top = 3.dp,
                     start = 20.dp,
-                    end = 20.dp
+                    end = 20.dp,
                 )
+                .fillMaxWidth()
+
         )
+        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 

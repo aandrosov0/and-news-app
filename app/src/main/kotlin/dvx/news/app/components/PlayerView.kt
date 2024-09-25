@@ -20,6 +20,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -58,7 +59,10 @@ fun PlayerViewHeader(modifier: Modifier = Modifier) {
 fun PlayerView(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .shadow(elevation = 8.dp)
+            .shadow(
+                elevation = 8.dp,
+                shape = RoundedCornerShape(size = 8.dp)
+            )
             .background(
                 color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(size = 8.dp)
@@ -67,7 +71,7 @@ fun PlayerView(modifier: Modifier = Modifier) {
     ) {
         Image(
             painter = painterResource(R.drawable.ic_play),
-            contentDescription = null
+            contentDescription = null,
         )
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
