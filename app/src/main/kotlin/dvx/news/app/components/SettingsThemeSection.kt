@@ -36,7 +36,7 @@ fun SettingsThemeSection(modifier: Modifier = Modifier) {
             text = stringResource(R.string.settings1_main),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
-            color = Color(0xFF18191C).copy(alpha = 0.64f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -58,7 +58,7 @@ fun SettingsThemeSection(modifier: Modifier = Modifier) {
                     onClick = { currentTheme = theme }
                 )
                 HorizontalDivider(
-                    color = Color(0XFF18191C)
+                    color = MaterialTheme.colorScheme.onSurface
                         .copy(alpha = 0.24f),
                 )
             }

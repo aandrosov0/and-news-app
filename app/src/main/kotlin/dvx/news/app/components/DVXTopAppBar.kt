@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,14 +29,13 @@ fun DVXTopAppBar(
     modifier: Modifier = Modifier,
     activeExport: Boolean = false
 ) {
-    val elementsColor = Color(0xFF484C56)
     CenterAlignedTopAppBar(
         modifier = modifier,
         expandedHeight = 52.dp,
         title = {
             Text(
                 text = title,
-                color = elementsColor,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium,
             )
         },
@@ -51,7 +49,7 @@ fun DVXTopAppBar(
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.KeyboardArrowLeft,
                         contentDescription = null,
-                        tint = elementsColor,
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
                             .size(31.dp)
                     )
@@ -59,7 +57,7 @@ fun DVXTopAppBar(
                 Text(
                     text = destination,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = elementsColor,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
@@ -69,7 +67,8 @@ fun DVXTopAppBar(
                 IconButton(onClick = {}) {
                     Icon(
                         painter = painterResource(R.drawable.ic_export),
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }

@@ -43,7 +43,7 @@ fun SelectableRowItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.surfaceContainer)
+            .background(color = Color.Transparent)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(
@@ -62,7 +62,7 @@ fun SelectableRowItem(
             text = text,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
-            color = Color.Unspecified.copy(alpha = 0.64f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             style = MaterialTheme.typography.bodySmall,
         )
         if (selected) {

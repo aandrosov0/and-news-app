@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,6 +48,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
             fontFamily = openSansCondFontFamily,
             lineHeight = 44.sp,
             fontSize = 44.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.ExtraBold,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier
@@ -65,6 +65,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
         Text(
             text = "Beim Bau 2008 war der Mast der Superjacht mit 75 Metern der zweithöchste der Welt",
             textAlign = TextAlign.Justify,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -90,6 +91,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
         Text(
             text = "Die Nacht zu Montag war lau in Porticello, einem kleinen Jachthafen an der Nordküste Siziliens.",
             textAlign = TextAlign.Justify,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 23.5.sp,
             lineHeight = 28.sp,
             style = MaterialTheme.typography.bodyMedium,
@@ -107,6 +109,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Light,
             lineHeight = 28.sp,
             fontSize = 24.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -129,6 +132,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
             textAlign = TextAlign.Justify,
             fontSize = 23.sp,
             lineHeight = 28.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(

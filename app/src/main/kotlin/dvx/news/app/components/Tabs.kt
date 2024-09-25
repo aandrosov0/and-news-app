@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -50,7 +49,8 @@ fun Tabs(
                     val alpha = if (tab == currentTab) 1f else 0.64f
                     Text(
                         text = tab.localizedName,
-                        color = Color.Black.copy(alpha = alpha),
+                        color = MaterialTheme.colorScheme.onSurface
+                            .copy(alpha = alpha),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }

@@ -1,4 +1,5 @@
 [versions]
+activityKtx = "1.9.2"
 android = "8.6.0"
 kotlin = "2.0.20"
 
@@ -12,6 +13,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [libraries]
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 compose-bom = { module = "androidx.compose:compose-bom", version = "2024.09.00" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 

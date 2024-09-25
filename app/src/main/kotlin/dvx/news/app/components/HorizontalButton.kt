@@ -31,7 +31,7 @@ fun HorizontalButton(
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.primary
         ),
         shape = RectangleShape,
@@ -45,14 +45,14 @@ fun HorizontalButton(
             Icon(
                 painter = painterResource(prefixIconId),
                 contentDescription = null,
-                tint = Color.Unspecified,
+                tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .size(32.dp)
             )
         }
         Text(
             text = text,
-            color = Color.Unspecified.copy(alpha = 0.64f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             fontSize = 18.sp,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier
@@ -66,7 +66,7 @@ fun HorizontalButton(
             Icon(
                 painter = painterResource(postfixIconId),
                 contentDescription = null,
-                tint = Color.Unspecified,
+                tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .size(16.dp)
             )

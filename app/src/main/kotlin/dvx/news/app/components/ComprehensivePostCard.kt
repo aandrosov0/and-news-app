@@ -38,7 +38,7 @@ fun ComprehensivePostCardHeader(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(
                     topStart = 8.dp,
                     topEnd = 8.dp
@@ -56,14 +56,14 @@ fun ComprehensivePostCardHeader(
         Text(
             text = time,
             style = MaterialTheme.typography.labelMedium,
-            color = Color(0xFF484C56),
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .alpha(0.64f)
         )
         Text(
             text = type,
             style = MaterialTheme.typography.labelMedium,
-            color = Color(0xFF484C56),
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .alpha(0.64f)
         )
@@ -79,7 +79,7 @@ fun ComprehensivePostCardFooter(
     Column(
         modifier = modifier
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(
                     bottomStart = 8.dp,
                     bottomEnd = 8.dp
@@ -103,6 +103,7 @@ fun ComprehensivePostCardFooter(
             text = title,
             fontSize = 16.sp,
             style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -110,7 +111,7 @@ fun ComprehensivePostCardFooter(
             text = description,
             fontSize = 18.5.sp,
             lineHeight = 20.sp,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .fillMaxWidth()

@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +33,7 @@ fun HeadersTabContent(modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(R.string.haders_tab_title),
-            color = Color.Unspecified.copy(alpha = 0.64f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
             style = MaterialTheme.typography.bodyMedium,

@@ -33,18 +33,19 @@ fun EligibilityNotificationBox(
     Column(
         modifier = modifier
             .clip(shape = RoundedCornerShape(8.dp))
-            .background(color = MaterialTheme.colorScheme.surfaceContainer)
+            .background(color = MaterialTheme.colorScheme.surface)
             .padding(all = 20.dp)
     ) {
         Text(
             text = stringResource(R.string.eligibility_title),
             fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
             text = stringResource(R.string.eligibility_text),
             fontSize = 16.sp,
-            color = Color.Unspecified.copy(alpha = 0.64f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(vertical = 10.dp)
@@ -61,6 +62,7 @@ fun EligibilityNotificationBox(
                 Text(
                     text = stringResource(R.string.abort).uppercase(),
                     fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.ExtraBold
                 )
             }

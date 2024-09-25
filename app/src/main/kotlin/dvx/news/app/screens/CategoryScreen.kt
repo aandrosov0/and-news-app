@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,7 +34,6 @@ import dvx.news.app.themes.DVXTheme
 fun CategoryScreen(modifier: Modifier = Modifier) = Column(
     modifier = modifier
         .verticalScroll(rememberScrollState())
-        .background(color = Color.White)
 ) {
     Image(
         painter = painterResource(R.drawable.img_small_preview),
@@ -54,11 +54,12 @@ fun CategoryScreen(modifier: Modifier = Modifier) = Column(
             text = stringResource(R.string.food).uppercase(),
             fontSize = 34.sp,
             fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.onSurface
         )
         Icon(
             imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
             contentDescription = null,
-            tint = Color(0XFF484C56),
+            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             modifier = Modifier
                 .padding(start = 13.dp)
                 .size(28.dp)

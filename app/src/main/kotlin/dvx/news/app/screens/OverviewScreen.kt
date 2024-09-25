@@ -17,7 +17,10 @@ fun OverviewScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 10.dp)
+            .padding(
+                horizontal = 10.dp,
+                vertical = 20.dp
+            )
     ) {
         ActionsOverviewSection()
         TopTopicsOverviewSection()

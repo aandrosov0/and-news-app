@@ -36,6 +36,7 @@ fun PlayerViewHeader(modifier: Modifier = Modifier) {
         Text(
             text = "Artikel anhören",
             fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Spacer(
             modifier = Modifier
@@ -44,10 +45,12 @@ fun PlayerViewHeader(modifier: Modifier = Modifier) {
         Text(
             text = "1x",
             fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             text = "-04:23",
             fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .padding(start = 26.dp)
         )
@@ -64,7 +67,7 @@ fun PlayerView(modifier: Modifier = Modifier) {
                 shape = RoundedCornerShape(size = 8.dp)
             )
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(size = 8.dp)
             )
             .height(intrinsicSize = IntrinsicSize.Min)
@@ -96,7 +99,7 @@ fun PlayerView(modifier: Modifier = Modifier) {
                     Icon(
                         painter = painterResource(R.drawable.bar),
                         contentDescription = null,
-                        tint = Color.Unspecified,
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
                             .fillMaxWidth()
                     )

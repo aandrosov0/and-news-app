@@ -33,7 +33,7 @@ fun NewsTabContent(modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(R.string.news_tab_title),
-            color = Color(0xFF18191C).copy(alpha = 0.64f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
             style = MaterialTheme.typography.bodyMedium,

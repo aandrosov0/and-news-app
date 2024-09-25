@@ -46,6 +46,7 @@ fun VerticalPostCard(
         Text(
             text = description,
             fontSize = 20.sp,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyLarge,
             letterSpacing = (-0.3).sp,
             modifier = Modifier

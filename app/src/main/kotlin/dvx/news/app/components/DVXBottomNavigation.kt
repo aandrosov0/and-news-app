@@ -45,7 +45,7 @@ fun DVXBottomNavigation(
     )
 
     NavigationBar(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
         modifier = modifier
     ) {
         for (destination in destinations) {
@@ -54,13 +54,13 @@ fun DVXBottomNavigation(
             val iconColor = if (selected) {
                 MaterialTheme.colorScheme.primary
             } else {
-                MaterialTheme.colorScheme.secondary
+                MaterialTheme.colorScheme.tertiary
             }
 
             val textColor = if (selected) {
-                Color.Unspecified
+                MaterialTheme.colorScheme.onSurface
             } else {
-                Color.Unspecified.copy(alpha = 0.64f)
+                MaterialTheme.colorScheme.tertiary
             }
 
             CompositionLocalProvider(LocalRippleConfiguration provides RippleConfiguration(
