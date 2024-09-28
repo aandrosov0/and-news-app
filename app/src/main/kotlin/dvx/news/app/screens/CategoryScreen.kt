@@ -3,10 +3,12 @@ package dvx.news.app.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -72,15 +74,17 @@ fun CategoryScreen(modifier: Modifier = Modifier) = Column(
     )
     Column(
         verticalArrangement = Arrangement.spacedBy(11.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(
                 start = 10.dp, end = 10.dp,
                 top = 10.dp, bottom = 103.dp
-            )
+            ).fillMaxWidth()
     ) {
         repeat(2) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.width(intrinsicSize = IntrinsicSize.Min)
             ) {
                 repeat(2) {
                     VerticalPostCard(

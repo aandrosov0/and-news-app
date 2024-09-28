@@ -21,8 +21,8 @@ fun VerticalDirectionLine(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.TopCenter,
         modifier = modifier
-            .height(IntrinsicSize.Min)
             .width(IntrinsicSize.Min)
+            .height(IntrinsicSize.Min)
     ) {
         Image(
             painter = painterResource(R.drawable.line),

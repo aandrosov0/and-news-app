@@ -1,9 +1,12 @@
 package dvx.news.app
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -37,12 +40,15 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : ComponentActivity() {
     private lateinit var settingsState: MutableState<Settings>
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) = runBlocking {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
         enableEdgeToEdge()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         settingsState = mutableStateOf(getSavedSettings())
+
         setContent {
             var settings by remember { settingsState }
 
@@ -72,40 +78,40 @@ fun NavGraphBuilder.initializeAppNavigationGraph(
         onDestinationChange(Destination.Main)
         MainScreen(
             onDestinationChange = { navHostController.navigate(route = it) },
-            modifier = modifier
+            modifier = modifier.fillMaxSize()
         )
     }
     composable<Destination.Home> {
         onDestinationChange(Destination.Home)
-        HomeScreen(modifier = modifier)
+        HomeScreen(modifier = modifier.fillMaxSize())
     }
     composable<Destination.News> {
         onDestinationChange(Destination.News)
-        NewsScreen(modifier = modifier)
+        NewsScreen(modifier = modifier.fillMaxSize())
     }
     composable<Destination.Category> {
         onDestinationChange(Destination.Category)
-        CategoryScreen(modifier = modifier)
+        CategoryScreen(modifier = modifier.fillMaxSize())
     }
     composable<Destination.Article> {
         onDestinationChange(Destination.Article)
-        ArticleScreen(modifier = modifier)
+        ArticleScreen(modifier = modifier.fillMaxSize())
     }
     composable<Destination.Overview> {
         onDestinationChange(Destination.Overview)
-        OverviewScreen(modifier = modifier)
+        OverviewScreen(modifier = modifier.fillMaxSize())
     }
     composable<Destination.Settings> {
         onDestinationChange(Destination.Settings)
         SettingsScreen(
-            modifier = modifier,
+            modifier = modifier.fillMaxSize(),
             settings = settings,
             onChangeSettings = onChangeSettings,
         )
     }
     composable<Destination.Includes> {
         onDestinationChange(Destination.Includes)
-        IncludesScreen(modifier = modifier)
+        IncludesScreen(modifier = modifier.fillMaxSize())
     }
 }
 

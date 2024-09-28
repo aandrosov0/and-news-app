@@ -1,14 +1,17 @@
 package dvx.news.app.themes
 
+import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
 import dvx.news.app.states.Theme
 
 private val lightColorScheme = lightColorScheme(
@@ -40,6 +43,11 @@ fun DVXTheme(
         Theme.BRIGHT -> lightColorScheme
         Theme.DARK -> darkColorScheme
     }
+
+    val window = (LocalContext.current as Activity).window
+    WindowCompat
+        .getInsetsController(window, window.decorView)
+        .isAppearanceLightStatusBars = colorScheme == lightColorScheme
 
     val typography = MaterialTheme.typography.copy(
         bodySmall = TextStyle(
