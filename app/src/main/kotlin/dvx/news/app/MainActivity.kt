@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,9 +20,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import dvx.news.app.components.DVXBottomNavigation
-import dvx.news.app.components.DVXTopAppBar
-import dvx.news.app.components.DVXTopLogoAppBar
+import dvx.news.app.components.AppBottomBar
+import dvx.news.app.components.AppTopBar
 import dvx.news.app.screens.ArticleScreen
 import dvx.news.app.screens.CategoryScreen
 import dvx.news.app.screens.HomeScreen
@@ -31,67 +31,41 @@ import dvx.news.app.screens.NewsScreen
 import dvx.news.app.screens.OverviewScreen
 import dvx.news.app.screens.SettingsScreen
 import dvx.news.app.states.Destination
-import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var settingsState: MutableState<Settings>
+
+    override fun onCreate(savedInstanceState: Bundle?) = runBlocking {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
         enableEdgeToEdge()
 
+        settingsState = mutableStateOf(getSavedSettings())
         setContent {
-            DVXTheme {
-                App()
+            var settings by remember { settingsState }
+
+            DVXTheme(theme = settings.theme) {
+                App(
+                    settings = settings,
+                    onChangeSettings = { settings = it }
+                )
             }
         }
     }
-}
 
-@Composable
-fun AppTopBar(
-    destination: Destination,
-    onNavigateUp: () -> Unit,
-) {
-    val title = when (destination) {
-        Destination.Article, Destination.News -> ""
-        else -> destination.localizedName
-    }
-
-    val destinationText = when (destination) {
-        Destination.Article -> "Zurück"
-        else -> Destination.Menu.localizedName
-    }
-
-    when (destination) {
-        Destination.Main -> {}
-        Destination.Home -> DVXTopLogoAppBar()
-        else -> DVXTopAppBar(
-            title = title,
-            destination = destinationText,
-            onNavigateUp = onNavigateUp,
-            activeExport = destination == Destination.Article
-        )
-    }
-}
-
-@Composable
-fun AppBottomBar(
-    destination: Destination,
-    onDestinationChange: (Destination) -> Unit
-) {
-    when (destination) {
-        Destination.Main -> {}
-        else -> DVXBottomNavigation(
-            current = destination,
-            onDestinationSelect = { onDestinationChange(it) }
-        )
+    override fun onSaveInstanceState(outState: Bundle) = runBlocking {
+        saveSettings(settingsState.value)
+        super.onSaveInstanceState(outState)
     }
 }
 
 fun NavGraphBuilder.initializeAppNavigationGraph(
     navHostController: NavHostController,
+    settings: Settings,
     onDestinationChange: (Destination) -> Unit,
+    onChangeSettings: (Settings) -> Unit,
     modifier: Modifier = Modifier
 ) {
     composable<Destination.Main> {
@@ -123,7 +97,11 @@ fun NavGraphBuilder.initializeAppNavigationGraph(
     }
     composable<Destination.Settings> {
         onDestinationChange(Destination.Settings)
-        SettingsScreen(modifier = modifier)
+        SettingsScreen(
+            modifier = modifier,
+            settings = settings,
+            onChangeSettings = onChangeSettings,
+        )
     }
     composable<Destination.Includes> {
         onDestinationChange(Destination.Includes)
@@ -133,6 +111,8 @@ fun NavGraphBuilder.initializeAppNavigationGraph(
 
 @Composable
 fun App(
+    settings: Settings,
+    onChangeSettings: (Settings) -> Unit,
     modifier: Modifier = Modifier,
     navHostController: NavHostController = rememberNavController()
 ) {
@@ -160,7 +140,9 @@ fun App(
             initializeAppNavigationGraph(
                 navHostController = navHostController,
                 modifier = Modifier.padding(paddingValues),
-                onDestinationChange = { destination = it }
+                onDestinationChange = { destination = it },
+                settings = settings,
+                onChangeSettings = onChangeSettings
             )
         }
     }
@@ -169,5 +151,8 @@ fun App(
 @Preview
 @Composable
 private fun AppPreview() = DVXTheme {
-    App()
+    App(
+        settings = Settings(),
+        onChangeSettings = {}
+    )
 }

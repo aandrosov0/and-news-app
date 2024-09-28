@@ -8,13 +8,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,8 +21,11 @@ import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun SettingsThemeSection(modifier: Modifier = Modifier) {
-    var currentTheme by remember { mutableStateOf(Theme.HEADLINES) }
+fun SettingsThemeSection(
+    currentTheme: Theme,
+    onChangeTheme: (Theme) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -55,7 +53,7 @@ fun SettingsThemeSection(modifier: Modifier = Modifier) {
                 SelectableRowItem(
                     text = theme.localizedName,
                     selected = theme == currentTheme,
-                    onClick = { currentTheme = theme }
+                    onClick = { onChangeTheme(theme) }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface
@@ -69,5 +67,8 @@ fun SettingsThemeSection(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun SettingsThemeSectionPreview() = DVXTheme {
-    SettingsThemeSection()
+    SettingsThemeSection(
+        currentTheme = Theme.SYSTEM,
+        onChangeTheme = {}
+    )
 }

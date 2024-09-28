@@ -3,6 +3,7 @@ package dvx.news.app.components
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,7 +41,7 @@ fun DVXCard(
             )
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.surface,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.16f),
                 shape = RoundedCornerShape(12.dp)
             )
             .clip(RoundedCornerShape(12.dp))
@@ -62,7 +63,7 @@ fun DVXCard(
             Icon(
                 painter = painterResource(iconId),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else Color.Unspecified,
                 modifier = Modifier
                     .size(32.dp)
             )

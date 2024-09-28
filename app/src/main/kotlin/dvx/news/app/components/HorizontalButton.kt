@@ -1,5 +1,6 @@
 package dvx.news.app.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -45,7 +46,7 @@ fun HorizontalButton(
             Icon(
                 painter = painterResource(prefixIconId),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else Color.Unspecified,
                 modifier = Modifier
                     .size(32.dp)
             )

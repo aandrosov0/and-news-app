@@ -5,7 +5,7 @@ import androidx.compose.ui.res.stringResource
 import dvx.news.app.R
 
 enum class Theme {
-    HEADLINES,
+    SYSTEM,
     BRIGHT,
     DARK
 }
@@ -14,7 +14,7 @@ val Theme.localizedName: String
     @Composable
     get() = stringResource(
         when (this) {
-            Theme.HEADLINES -> R.string.headlines
+            Theme.SYSTEM -> R.string.headlines
             Theme.BRIGHT -> R.string.bright
             Theme.DARK -> R.string.dark
         }

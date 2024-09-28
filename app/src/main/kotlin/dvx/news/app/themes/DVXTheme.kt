@@ -1,22 +1,24 @@
 package dvx.news.app.themes
 
-import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import dvx.news.app.states.Theme
 
 private val lightColorScheme = lightColorScheme(
     primary = primaryColor,
     onPrimary = onPrimaryColor,
-    tertiary = tertiaryColor
+    tertiary = tertiaryColor,
+    surface = surfaceLightColor,
+    onSurface = onSurfaceLightColor,
+    surfaceVariant = surfaceVariantLightColor,
+    onSurfaceVariant = onSurfaceVariantLightColor
 )
 
 private val darkColorScheme = darkColorScheme(
@@ -30,14 +32,13 @@ private val darkColorScheme = darkColorScheme(
 
 @Composable
 fun DVXTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    theme: Theme = Theme.SYSTEM,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) darkColorScheme else lightColorScheme
-    val activity = LocalContext.current as Activity
-    activity.window.attributes
-
-    SideEffect {
+    val colorScheme = when (theme) {
+        Theme.SYSTEM -> if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
+        Theme.BRIGHT -> lightColorScheme
+        Theme.DARK -> darkColorScheme
     }
 
     val typography = MaterialTheme.typography.copy(

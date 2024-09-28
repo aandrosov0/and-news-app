@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dvx.news.app.Settings
 import dvx.news.app.components.SettingsMessagesSection
 import dvx.news.app.components.SettingsThemeSection
 import dvx.news.app.components.Tabs
@@ -16,8 +17,13 @@ import dvx.news.app.states.Tab
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier) {
+fun SettingsScreen(
+    settings: Settings,
+    onChangeSettings: (Settings) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var currentTab by remember { mutableStateOf(Tab.REPRESENTATION) }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -28,7 +34,16 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
             onTabSelect = { currentTab = it }
         )
         when (currentTab) {
-            Tab.REPRESENTATION -> SettingsThemeSection()
+            Tab.REPRESENTATION -> SettingsThemeSection(
+                currentTheme = settings.theme,
+                onChangeTheme = {
+                    onChangeSettings(
+                        settings.copy(
+                            theme = it
+                        )
+                    )
+                }
+            )
             Tab.MESSAGES -> SettingsMessagesSection()
             else -> throw IllegalStateException("Expected ${Tab.REPRESENTATION} or ${Tab.MESSAGES}")
         }
@@ -38,5 +53,8 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun SettingsScreenPreview() = DVXTheme {
-    SettingsScreen()
+    SettingsScreen(
+        settings = Settings(),
+        onChangeSettings = {}
+    )
 }

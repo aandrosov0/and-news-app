@@ -1,6 +1,7 @@
 [versions]
 activityKtx = "1.9.2"
-android = "8.6.0"
+android = "8.6.1"
+datastorePreferences = "1.1.1"
 kotlin = "2.0.20"
 
 [plugins]
@@ -14,14 +15,15 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 
 [libraries]
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
-compose-bom = { module = "androidx.compose:compose-bom", version = "2024.09.00" }
+compose-bom = { module = "androidx.compose:compose-bom", version = "2024.09.02" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 
 activity-compose = { module = "androidx.activity:activity-compose", version = "1.9.2" }
-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.8.5" }
-navigation-compose = { module = "androidx.navigation:navigation-compose", version = "2.8.0" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.8.6" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version = "2.8.1" }
 
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.7.2" }
