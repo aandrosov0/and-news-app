@@ -16,19 +16,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
+import dvx.news.app.components.DVXTopAppBar
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.themes.openSansCondFontFamily
 
 @Composable
-fun ArticleScreen(modifier: Modifier = Modifier) {
+fun ArticleScreen(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) = Column(modifier = modifier) {
+    DVXTopAppBar(
+        title = "",
+        destination = stringResource(R.string.article),
+        onNavigateUp = navController::navigateUp,
+        activeExport = true
+    )
     Column(
-        modifier = modifier
+        modifier = Modifier
             .height(intrinsicSize = IntrinsicSize.Min)
             .verticalScroll(rememberScrollState())
     ) {
@@ -164,5 +177,5 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun ArticleScreenPreview() = DVXTheme {
-    ArticleScreen()
+    ArticleScreen(rememberNavController())
 }

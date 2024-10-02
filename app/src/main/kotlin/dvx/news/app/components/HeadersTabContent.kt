@@ -1,5 +1,7 @@
 package dvx.news.app.components
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -13,7 +15,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,7 +30,10 @@ import dvx.news.app.themes.DVXTheme
 
 
 @Composable
-fun HeadersTabContent(modifier: Modifier = Modifier) {
+fun HeadersTabContent(
+    onArticle: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -63,6 +70,13 @@ fun HeadersTabContent(modifier: Modifier = Modifier) {
                     imageId = R.drawable.post_img_preview,
                     modifier = Modifier
                         .padding(bottom = 10.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(
+                                color = MaterialTheme.colorScheme.primary
+                            ),
+                            onClick = onArticle
+                        )
                 )
             }
             Row(
@@ -80,6 +94,13 @@ fun HeadersTabContent(modifier: Modifier = Modifier) {
                     imageId = R.drawable.post_img_preview,
                     modifier = Modifier
                         .padding(bottom = 10.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(
+                                color = MaterialTheme.colorScheme.primary
+                            ),
+                            onClick = onArticle
+                        )
                 )
             }
             Row(
@@ -97,6 +118,13 @@ fun HeadersTabContent(modifier: Modifier = Modifier) {
                     imageId = R.drawable.post_img_preview,
                     modifier = Modifier
                         .padding(bottom = 10.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(
+                                color = MaterialTheme.colorScheme.primary
+                            ),
+                            onClick = onArticle
+                        )
                 )
             }
         }
@@ -106,5 +134,7 @@ fun HeadersTabContent(modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true)
 @Composable
 private fun HeadersTabContentPreview() = DVXTheme {
-    HeadersTabContent()
+    HeadersTabContent(
+        onArticle = {}
+    )
 }

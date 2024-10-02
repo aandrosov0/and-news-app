@@ -20,7 +20,6 @@ fun AppTopBar(
     }
 
     when (destination) {
-        Destination.Main -> {}
         Destination.Home -> DVXTopLogoAppBar()
         else -> DVXTopAppBar(
             title = title,

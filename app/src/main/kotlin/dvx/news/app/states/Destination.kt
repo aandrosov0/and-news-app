@@ -17,8 +17,6 @@ sealed class Destination {
     @Serializable
     data object Entertainment : Destination()
     @Serializable
-    data object Main : Destination()
-    @Serializable
     data object Home : Destination()
     @Serializable
     data object Overview : Destination()
@@ -46,7 +44,6 @@ val Destination.localizedName
         Destination.Sport -> stringResource(R.string.sport)
         Destination.Article -> stringResource(R.string.article)
         Destination.Category -> stringResource(R.string.category)
-        Destination.Main -> stringResource(R.string.main)
         Destination.News -> stringResource(R.string.news)
         Destination.Overview -> stringResource(R.string.overview)
         Destination.Settings -> stringResource(R.string.settings)

@@ -1,10 +1,9 @@
-package dvx.news.app
+package dvx.news.app.states
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dvx.news.app.states.Theme
 import kotlinx.coroutines.flow.first
 
 private val Context.dataStore by preferencesDataStore(name = "settings")

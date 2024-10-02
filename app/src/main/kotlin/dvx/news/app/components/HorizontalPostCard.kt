@@ -1,13 +1,17 @@
 package dvx.news.app.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -23,11 +27,17 @@ fun HorizontalPostCard(
     title: String,
     description: String,
     imagePainter: Painter,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp),
         modifier = modifier
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = ripple(color = MaterialTheme.colorScheme.primary),
+                onClick = onClick
+            )
     ) {
         Image(
             painter = imagePainter,
@@ -62,5 +72,6 @@ private fun HorizontalPostCardPreview() = DVXTheme {
         title = "Hamburg weit abgeschlagen",
         description = "Deutsches Burger-Mekka ist...",
         imagePainter = painterResource(R.drawable.img_preview),
+        onClick = {}
     )
 }

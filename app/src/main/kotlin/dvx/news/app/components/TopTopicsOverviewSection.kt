@@ -15,6 +15,8 @@ import dvx.news.app.themes.DVXTheme
 
 @Composable
 fun TopTopicsOverviewSection(
+    onNews: () -> Unit,
+    onIncludes: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -39,8 +41,14 @@ fun TopTopicsOverviewSection(
         )
         HorizontalDivider()
         HorizontalButton(
-            onClick = {},
+            onClick = onNews,
             text = "Newsticker",
+            prefixIconId = R.drawable.ic_schlagzeilen,
+        )
+        HorizontalDivider()
+        HorizontalButton(
+            onClick = onIncludes,
+            text = "Includes",
             prefixIconId = R.drawable.ic_schlagzeilen,
         )
         HorizontalDivider()
@@ -50,6 +58,9 @@ fun TopTopicsOverviewSection(
 @Preview(showBackground = true)
 @Composable
 private fun TopTopicsOverviewSectionPreview() = DVXTheme {
-    TopTopicsOverviewSection()
+    TopTopicsOverviewSection(
+        onNews = {},
+        onIncludes = {}
+    )
 }
 

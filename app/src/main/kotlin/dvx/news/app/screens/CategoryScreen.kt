@@ -26,73 +26,88 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
+import dvx.news.app.components.DVXTopAppBar
 import dvx.news.app.components.VerticalPostCard
+import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun CategoryScreen(modifier: Modifier = Modifier) = Column(
-    modifier = modifier
-        .verticalScroll(rememberScrollState())
-) {
-    Image(
-        painter = painterResource(R.drawable.img_small_preview),
-        contentDescription = null,
-        contentScale = ContentScale.FillWidth,
-        modifier = Modifier
-            .fillMaxWidth()
-    )
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(
-                horizontal = 10.dp,
-                vertical = 20.dp
-            )
-    ) {
-        Text(
-            text = stringResource(R.string.food).uppercase(),
-            fontSize = 34.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Icon(
-            imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
-            modifier = Modifier
-                .padding(start = 13.dp)
-                .size(28.dp)
-        )
-    }
-    Image(
-        painter = painterResource(R.drawable.img_large_preview),
-        contentDescription = null,
-        contentScale = ContentScale.FillWidth,
-        modifier = Modifier
-            .fillMaxWidth()
+fun CategoryScreen(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) = Column(modifier = modifier) {
+    DVXTopAppBar(
+        title = stringResource(R.string.lifestyle),
+        destination = stringResource(R.string.menu),
+        onNavigateUp = { navController.navigate(Destination.Menu) }
     )
     Column(
-        verticalArrangement = Arrangement.spacedBy(11.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .padding(
-                start = 10.dp, end = 10.dp,
-                top = 10.dp, bottom = 103.dp
-            ).fillMaxWidth()
+            .verticalScroll(rememberScrollState())
     ) {
-        repeat(2) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.width(intrinsicSize = IntrinsicSize.Min)
-            ) {
-                repeat(2) {
-                    VerticalPostCard(
-                        title = "Hamburg weit abgeschlagen",
-                        description = "Deutsches Burger-Mekka ist...",
-                        imagePainter = painterResource(R.drawable.img_preview),
-                        modifier = Modifier.weight(1f)
-                    )
+        Image(
+            painter = painterResource(R.drawable.img_small_preview),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(
+                    horizontal = 10.dp,
+                    vertical = 20.dp
+                )
+        ) {
+            Text(
+                text = stringResource(R.string.food).uppercase(),
+                fontSize = 34.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
+                modifier = Modifier
+                    .padding(start = 13.dp)
+                    .size(28.dp)
+            )
+        }
+        Image(
+            painter = painterResource(R.drawable.img_large_preview),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(11.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(
+                    start = 10.dp, end = 10.dp,
+                    top = 10.dp, bottom = 103.dp
+                ).fillMaxWidth()
+        ) {
+            repeat(2) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.width(intrinsicSize = IntrinsicSize.Min)
+                ) {
+                    repeat(2) {
+                        VerticalPostCard(
+                            title = "Hamburg weit abgeschlagen",
+                            description = "Deutsches Burger-Mekka ist...",
+                            imagePainter = painterResource(R.drawable.img_preview),
+                            modifier = Modifier.weight(1f),
+                            onClick = { navController.navigate(Destination.Article) }
+                        )
+                    }
                 }
             }
         }
@@ -102,5 +117,7 @@ fun CategoryScreen(modifier: Modifier = Modifier) = Column(
 @Preview
 @Composable
 private fun CategoryScreenPreview() = DVXTheme {
-    CategoryScreen()
+    CategoryScreen(
+        navController = rememberNavController()
+    )
 }

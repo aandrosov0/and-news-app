@@ -8,8 +8,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import dvx.news.app.Settings
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import dvx.news.app.R
+import dvx.news.app.components.DVXTopAppBar
+import dvx.news.app.states.Settings
 import dvx.news.app.components.SettingsMessagesSection
 import dvx.news.app.components.SettingsThemeSection
 import dvx.news.app.components.Tabs
@@ -18,6 +23,7 @@ import dvx.news.app.themes.DVXTheme
 
 @Composable
 fun SettingsScreen(
+    navController: NavController,
     settings: Settings,
     onChangeSettings: (Settings) -> Unit,
     modifier: Modifier = Modifier
@@ -28,6 +34,11 @@ fun SettingsScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
+        DVXTopAppBar(
+            title = stringResource(R.string.settings),
+            destination = stringResource(R.string.menu),
+            onNavigateUp = { navController.navigateUp() }
+        )
         Tabs(
             tabs = listOf(Tab.REPRESENTATION, Tab.MESSAGES),
             currentTab = currentTab,
@@ -55,6 +66,7 @@ fun SettingsScreen(
 private fun SettingsScreenPreview() = DVXTheme {
     SettingsScreen(
         settings = Settings(),
-        onChangeSettings = {}
+        onChangeSettings = {},
+        navController = rememberNavController()
     )
 }

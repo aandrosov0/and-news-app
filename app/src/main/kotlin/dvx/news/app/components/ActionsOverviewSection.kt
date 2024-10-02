@@ -13,7 +13,11 @@ import dvx.news.app.R
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun ActionsOverviewSection(modifier: Modifier = Modifier) {
+fun ActionsOverviewSection(
+    onProfile: () -> Unit,
+    onSettings: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
@@ -23,12 +27,14 @@ fun ActionsOverviewSection(modifier: Modifier = Modifier) {
         DVXCard(
             iconId = R.drawable.ic_profile,
             text = stringResource(R.string.my_account),
+            onClick = onProfile,
             modifier = Modifier
                 .weight(0.5f)
         )
         DVXCard(
             iconId = R.drawable.ic_settings,
             text = stringResource(R.string.settings),
+            onClick = onSettings,
             modifier = Modifier
                 .weight(0.5f)
         )
@@ -38,5 +44,8 @@ fun ActionsOverviewSection(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun ActionsOverviewSectionPreview() = DVXTheme {
-    ActionsOverviewSection()
+    ActionsOverviewSection(
+        onProfile = {},
+        onSettings = {},
+    )
 }

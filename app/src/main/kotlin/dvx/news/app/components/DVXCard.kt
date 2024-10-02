@@ -30,6 +30,7 @@ import dvx.news.app.themes.DVXTheme
 fun DVXCard(
     iconId: Int,
     text: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -51,7 +52,7 @@ fun DVXCard(
                     bounded = true,
                     color = MaterialTheme.colorScheme.primary
                 ),
-                onClick = {}
+                onClick = onClick
             )
     ) {
         Column(
@@ -81,6 +82,7 @@ fun DVXCard(
 private fun DVXCardPreview() = DVXTheme {
     DVXCard(
         iconId = R.drawable.ic_profile,
-        text = "Mein Konto"
+        text = "Mein Konto",
+        onClick = {}
     )
 }

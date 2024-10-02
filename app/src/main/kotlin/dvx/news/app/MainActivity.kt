@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,22 +17,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.components.AppBottomBar
-import dvx.news.app.components.AppTopBar
 import dvx.news.app.screens.ArticleScreen
 import dvx.news.app.screens.CategoryScreen
 import dvx.news.app.screens.HomeScreen
 import dvx.news.app.screens.IncludesScreen
-import dvx.news.app.screens.MainScreen
 import dvx.news.app.screens.NewsScreen
 import dvx.news.app.screens.OverviewScreen
 import dvx.news.app.screens.SettingsScreen
 import dvx.news.app.states.Destination
+import dvx.news.app.states.Settings
+import dvx.news.app.states.getSavedSettings
+import dvx.news.app.states.saveSettings
 import dvx.news.app.themes.DVXTheme
 import kotlinx.coroutines.runBlocking
 
@@ -67,89 +66,104 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-fun NavGraphBuilder.initializeAppNavigationGraph(
-    navHostController: NavHostController,
-    settings: Settings,
-    onDestinationChange: (Destination) -> Unit,
-    onChangeSettings: (Settings) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    composable<Destination.Main> {
-        onDestinationChange(Destination.Main)
-        MainScreen(
-            onDestinationChange = { navHostController.navigate(route = it) },
-            modifier = modifier.fillMaxSize()
-        )
-    }
-    composable<Destination.Home> {
-        onDestinationChange(Destination.Home)
-        HomeScreen(modifier = modifier.fillMaxSize())
-    }
-    composable<Destination.News> {
-        onDestinationChange(Destination.News)
-        NewsScreen(modifier = modifier.fillMaxSize())
-    }
-    composable<Destination.Category> {
-        onDestinationChange(Destination.Category)
-        CategoryScreen(modifier = modifier.fillMaxSize())
-    }
-    composable<Destination.Article> {
-        onDestinationChange(Destination.Article)
-        ArticleScreen(modifier = modifier.fillMaxSize())
-    }
-    composable<Destination.Overview> {
-        onDestinationChange(Destination.Overview)
-        OverviewScreen(modifier = modifier.fillMaxSize())
-    }
-    composable<Destination.Settings> {
-        onDestinationChange(Destination.Settings)
-        SettingsScreen(
-            modifier = modifier.fillMaxSize(),
-            settings = settings,
-            onChangeSettings = onChangeSettings,
-        )
-    }
-    composable<Destination.Includes> {
-        onDestinationChange(Destination.Includes)
-        IncludesScreen(modifier = modifier.fillMaxSize())
-    }
-}
-
 @Composable
 fun App(
     settings: Settings,
     onChangeSettings: (Settings) -> Unit,
     modifier: Modifier = Modifier,
-    navHostController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController()
 ) {
-    var destination: Destination by remember { mutableStateOf(Destination.Main) }
+    var destination: Destination by remember { mutableStateOf(Destination.Home) }
+
     Scaffold(
         modifier = modifier,
-        topBar = {
-            AppTopBar(
-                destination = destination,
-                onNavigateUp = navHostController::navigateUp
-            )
-        },
         bottomBar = {
             AppBottomBar(
                 destination,
-                onDestinationChange = { destination = it }
+                onDestinationChange = {
+                    navController.navigate(it)
+                    destination = it
+                }
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) { paddingValues ->
         NavHost(
-            navController = navHostController,
-            startDestination = Destination.Main
+            navController = navController,
+            startDestination = destination
         ) {
-            initializeAppNavigationGraph(
-                navHostController = navHostController,
-                modifier = Modifier.padding(paddingValues),
-                onDestinationChange = { destination = it },
-                settings = settings,
-                onChangeSettings = onChangeSettings
-            )
+            composable<Destination.Home> {
+                HomeScreen(
+                    navController = navController,
+                    modifier = Modifier.padding(
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                )
+            }
+            composable<Destination.Sport> {
+                CategoryScreen(
+                    navController = navController,
+                    modifier = Modifier.padding(
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                )
+            }
+            composable<Destination.Lifestyle> {
+                CategoryScreen(
+                    navController = navController,
+                    modifier = Modifier.padding(
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                )
+            }
+            composable<Destination.Entertainment> {
+                CategoryScreen(
+                    navController = navController,
+                    modifier = Modifier.padding(
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                )
+            }
+            composable<Destination.Menu> {
+                OverviewScreen(
+                    navController = navController,
+                    modifier = Modifier.padding(
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                )
+            }
+            composable<Destination.Article> {
+                ArticleScreen(
+                    navController = navController,
+                    modifier = Modifier.padding(
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                )
+            }
+            composable<Destination.News> {
+                NewsScreen(
+                    navController = navController,
+                    modifier = Modifier.padding(
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                )
+            }
+            composable<Destination.Settings> {
+                SettingsScreen(
+                    navController = navController,
+                    settings = settings,
+                    onChangeSettings = onChangeSettings,
+                    modifier = Modifier.padding(
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                )
+            }
+            composable<Destination.Includes> {
+                IncludesScreen(
+                    navController = navController,
+                    modifier = Modifier.padding(paddingValues)
+                )
+            }
         }
     }
 }

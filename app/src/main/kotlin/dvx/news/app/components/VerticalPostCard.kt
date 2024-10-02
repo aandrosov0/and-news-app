@@ -2,6 +2,8 @@ package dvx.news.app.components
 
 import dvx.news.app.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -24,6 +28,7 @@ fun VerticalPostCard(
     title: String,
     description: String,
     imagePainter: Painter,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -31,6 +36,14 @@ fun VerticalPostCard(
         modifier = modifier
             .width(268.dp)
             .width(intrinsicSize = IntrinsicSize.Min)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = ripple(
+                    bounded = true,
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                onClick = onClick
+            )
     ) {
         Image(
             painter = imagePainter,
@@ -66,5 +79,6 @@ private fun VerticalPostCardPreview() = DVXTheme {
         title = "Hamburg weit abgeschlagen",
         description = "Deutsches Burger-Mekka ist...",
         imagePainter = painterResource(R.drawable.img_preview),
+        onClick = {}
     )
 }

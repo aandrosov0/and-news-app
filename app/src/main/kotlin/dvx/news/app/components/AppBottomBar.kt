@@ -8,11 +8,8 @@ fun AppBottomBar(
     destination: Destination,
     onDestinationChange: (Destination) -> Unit
 ) {
-    when (destination) {
-        Destination.Main -> {}
-        else -> DVXBottomNavigation(
-            current = destination,
-            onDestinationSelect = { onDestinationChange(it) }
-        )
-    }
+    DVXBottomNavigation(
+        current = destination,
+        onDestinationSelect = { onDestinationChange(it) }
+    )
 }

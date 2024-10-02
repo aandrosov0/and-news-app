@@ -18,14 +18,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
 import dvx.news.app.components.HorizontalPostCard
 import dvx.news.app.components.PlayerView
 import dvx.news.app.components.VerticalPostCard
+import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun IncludesScreen(modifier: Modifier = Modifier) {
+fun IncludesScreen(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -50,6 +56,7 @@ fun IncludesScreen(modifier: Modifier = Modifier) {
             title = "Sei sind die Beeeesten’’",
             description = "Uefa verandert beruhmte Champions-League-Hymne!",
             imagePainter = painterResource(R.drawable.img_preview),
+            onClick = { navController.navigate(Destination.Article) },
             modifier = Modifier
                 .padding(vertical = 10.dp)
         )
@@ -67,8 +74,9 @@ fun IncludesScreen(modifier: Modifier = Modifier) {
                     title = "Hamburg weit abgeschlagen",
                     description = "Deutsches Burger-Mekka ist...",
                     imagePainter = painterResource(R.drawable.img_preview),
+                    onClick = { navController.navigate(Destination.Article) },
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(1f),
                 )
             }
         }
@@ -76,6 +84,7 @@ fun IncludesScreen(modifier: Modifier = Modifier) {
             title = "Schutz vor tollen Sachen",
             description = "Ruckgang von HPV-Impfung bei Kindern",
             imagePainter = painterResource(R.drawable.img_small_preview),
+            onClick = { navController.navigate(Destination.Article) },
             modifier = Modifier
                 .padding(top = 22.dp)
                 .fillMaxWidth()
@@ -86,5 +95,7 @@ fun IncludesScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun IncludesScreenPreview() = DVXTheme {
-    IncludesScreen()
+    IncludesScreen(
+        navController = rememberNavController()
+    )
 }
