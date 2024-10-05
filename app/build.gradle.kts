@@ -12,12 +12,12 @@ kotlin {
 android {
     namespace = "dvx.news.app"
 
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "dvx.news.app"
 
-        minSdk = 28
+        minSdk = 24
         targetSdk = 35
 
         versionCode = 1

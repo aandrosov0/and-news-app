@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -16,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -43,7 +43,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) = runBlocking {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
-        enableEdgeToEdge()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         settingsState = mutableStateOf(getSavedSettings())
@@ -90,79 +89,48 @@ fun App(
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = destination
+            startDestination = destination,
+            modifier = Modifier.padding(paddingValues)
         ) {
             composable<Destination.Home> {
-                HomeScreen(
-                    navController = navController,
-                    modifier = Modifier.padding(
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
-                )
+                HomeScreen(navController = navController)
             }
             composable<Destination.Sport> {
                 CategoryScreen(
                     navController = navController,
-                    modifier = Modifier.padding(
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
+                    category = stringResource(R.string.sport),
                 )
             }
             composable<Destination.Lifestyle> {
                 CategoryScreen(
                     navController = navController,
-                    modifier = Modifier.padding(
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
+                    category = stringResource(R.string.lifestyle),
                 )
             }
             composable<Destination.Entertainment> {
                 CategoryScreen(
                     navController = navController,
-                    modifier = Modifier.padding(
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
+                    category = stringResource(R.string.entertainment),
                 )
             }
             composable<Destination.Menu> {
-                OverviewScreen(
-                    navController = navController,
-                    modifier = Modifier.padding(
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
-                )
+                OverviewScreen(navController = navController)
             }
             composable<Destination.Article> {
-                ArticleScreen(
-                    navController = navController,
-                    modifier = Modifier.padding(
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
-                )
+                ArticleScreen(navController = navController)
             }
             composable<Destination.News> {
-                NewsScreen(
-                    navController = navController,
-                    modifier = Modifier.padding(
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
-                )
+                NewsScreen(navController = navController)
             }
             composable<Destination.Settings> {
                 SettingsScreen(
                     navController = navController,
                     settings = settings,
                     onChangeSettings = onChangeSettings,
-                    modifier = Modifier.padding(
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
                 )
             }
             composable<Destination.Includes> {
-                IncludesScreen(
-                    navController = navController,
-                    modifier = Modifier.padding(paddingValues)
-                )
+                IncludesScreen(navController = navController)
             }
         }
     }

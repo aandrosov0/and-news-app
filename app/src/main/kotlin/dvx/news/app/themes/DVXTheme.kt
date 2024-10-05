@@ -7,6 +7,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,11 +44,6 @@ fun DVXTheme(
         Theme.BRIGHT -> lightColorScheme
         Theme.DARK -> darkColorScheme
     }
-
-    val window = (LocalContext.current as Activity).window
-    WindowCompat
-        .getInsetsController(window, window.decorView)
-        .isAppearanceLightStatusBars = colorScheme == lightColorScheme
 
     val typography = MaterialTheme.typography.copy(
         bodySmall = TextStyle(
@@ -101,10 +97,19 @@ fun DVXTheme(
         )
     )
 
+    val context = LocalContext.current
+    if (context is Activity) {
+        val window = context.window
+        val isLightTheme = colorScheme == lightColorScheme
+
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = isLightTheme
+        window.statusBarColor = colorScheme.surface.toArgb()
+    }
+
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = typography
-    ) {
-        content()
-    }
+        typography = typography,
+        content = content
+    )
 }

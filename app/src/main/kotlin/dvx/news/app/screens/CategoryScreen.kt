@@ -1,6 +1,8 @@
 package dvx.news.app.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -16,7 +18,9 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -37,10 +41,11 @@ import dvx.news.app.themes.DVXTheme
 @Composable
 fun CategoryScreen(
     navController: NavController,
+    category: String,
     modifier: Modifier = Modifier
 ) = Column(modifier = modifier) {
     DVXTopAppBar(
-        title = stringResource(R.string.lifestyle),
+        title = category,
         destination = stringResource(R.string.menu),
         onNavigateUp = { navController.navigate(Destination.Menu) }
     )
@@ -54,6 +59,11 @@ fun CategoryScreen(
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(color = MaterialTheme.colorScheme.primary),
+                    onClick = { navController.navigate(Destination.Article) }
+                )
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -84,6 +94,11 @@ fun CategoryScreen(
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(color = MaterialTheme.colorScheme.primary),
+                    onClick = { navController.navigate(Destination.Article) }
+                )
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(11.dp),
@@ -118,6 +133,7 @@ fun CategoryScreen(
 @Composable
 private fun CategoryScreenPreview() = DVXTheme {
     CategoryScreen(
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        category = "Lifestyle"
     )
 }

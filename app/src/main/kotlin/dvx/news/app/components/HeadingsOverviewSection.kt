@@ -15,7 +15,12 @@ import dvx.news.app.R
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun HeadingsOverviewSection(modifier: Modifier = Modifier) {
+fun HeadingsOverviewSection(
+    onSport: () -> Unit,
+    onLifestyle: () -> Unit,
+    onEntertainment: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.topics),
@@ -30,21 +35,21 @@ fun HeadingsOverviewSection(modifier: Modifier = Modifier) {
         )
         HorizontalDivider()
         HorizontalButton(
-            onClick = {},
+            onClick = onSport,
             text = stringResource(R.string.sport),
             prefixIconId = R.drawable.ic_sport,
             postfixIconId = R.drawable.ic_down
         )
         HorizontalDivider()
         HorizontalButton(
-            onClick = {},
+            onClick = onLifestyle,
             text = stringResource(R.string.lifestyle),
             prefixIconId = R.drawable.ic_lifestyle,
             postfixIconId = R.drawable.ic_down
         )
         HorizontalDivider()
         HorizontalButton(
-            onClick = {},
+            onClick = onEntertainment,
             text = stringResource(R.string.entertainment),
             prefixIconId = R.drawable.ic_unterhaltung,
             postfixIconId = R.drawable.ic_down
@@ -56,5 +61,9 @@ fun HeadingsOverviewSection(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun HeadingsOverviewSectionPreview() = DVXTheme {
-    HeadingsOverviewSection()
+    HeadingsOverviewSection(
+        onEntertainment = {},
+        onSport = {},
+        onLifestyle = {}
+    )
 }

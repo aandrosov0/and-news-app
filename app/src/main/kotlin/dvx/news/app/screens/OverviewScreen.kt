@@ -3,6 +3,8 @@ package dvx.news.app.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,6 +28,7 @@ fun OverviewScreen(
     DVXTopLogoAppBar(title = stringResource(R.string.menu))
     Column(
         modifier = Modifier
+            .verticalScroll(state = rememberScrollState())
             .fillMaxSize()
             .padding(
                 horizontal = 10.dp,
@@ -40,7 +43,11 @@ fun OverviewScreen(
             onNews = { navController.navigate(Destination.News) },
             onIncludes = { navController.navigate(Destination.Includes) }
         )
-        HeadingsOverviewSection()
+        HeadingsOverviewSection(
+            onSport = { navController.navigate(Destination.Sport) },
+            onLifestyle = { navController.navigate(Destination.Lifestyle) },
+            onEntertainment = { navController.navigate(Destination.Entertainment) }
+        )
     }
 }
 

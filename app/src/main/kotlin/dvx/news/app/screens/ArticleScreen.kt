@@ -49,17 +49,19 @@ fun ArticleScreen(
             text = "Nach dem Untergang seiner Luxus-Jacht",
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.ExtraBold,
-            fontSize = 21.sp,
+            fontSize = 19.sp,
+            lineHeight = 28.sp,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 16.dp)
         )
         Text(
-            text = "Die seltsamen Zufälle um den Tod des Tech-Milliardärs",
+            text = "Die seltsamen Zufälle um den Tod des Tech-\nMilliardärs",
             textAlign = TextAlign.Center,
             fontFamily = openSansCondFontFamily,
             lineHeight = 44.sp,
-            fontSize = 44.sp,
+            fontSize = 42.sp,
             color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.ExtraBold,
             style = MaterialTheme.typography.bodyLarge,
@@ -76,8 +78,9 @@ fun ArticleScreen(
         )
         Text(
             text = "Beim Bau 2008 war der Mast der Superjacht mit 75 Metern der zweithöchste der Welt",
-            textAlign = TextAlign.Justify,
             color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 16.sp,
+            lineHeight = 20.sp,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -88,13 +91,13 @@ fun ArticleScreen(
         )
         Text(
             text = "Foto: EPA",
-            fontWeight = FontWeight.Light,
-            fontSize = 24.sp,
-            color = Color(0xff626362),
+            fontWeight = FontWeight.W400,
+            fontSize = 19.sp,
+            color = Color(0xFFAFAFAF),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
-                    top = 7.dp,
+                    top = 3.dp,
                     start = 20.dp,
                     end = 20.dp
                 )
@@ -102,9 +105,8 @@ fun ArticleScreen(
         )
         Text(
             text = "Die Nacht zu Montag war lau in Porticello, einem kleinen Jachthafen an der Nordküste Siziliens.",
-            textAlign = TextAlign.Justify,
             color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 23.5.sp,
+            fontSize = 19.sp,
             lineHeight = 28.sp,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
@@ -117,10 +119,9 @@ fun ArticleScreen(
         )
         Text(
             text = "700 Meter vor dem Hafen lag die Bayesian\" im Tyrrhenischen Meer vor Anker, eine 35- Millionen-Euro Segeljacht, die dem britischen Tech-Milliardär Mike Lynch (59) und seiner Frau Angela Bacares (57) gehört. Die Menschen an Bord, zwölf Passagiere und die zehnköpfige Besatzung, hatten etwas zu feiern.",
-            textAlign = TextAlign.Justify,
-            fontWeight = FontWeight.Light,
+            fontWeight = FontWeight.W400,
             lineHeight = 28.sp,
-            fontSize = 24.sp,
+            fontSize = 20.sp,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
@@ -141,9 +142,8 @@ fun ArticleScreen(
         )
         Text(
             text = "Milliardär Mike Lynch und seine Tochter Hannah ertranken, als die Jacht sank",
-            textAlign = TextAlign.Justify,
-            fontSize = 23.sp,
-            lineHeight = 28.sp,
+            fontSize = 16.sp,
+            lineHeight = 20.sp,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
@@ -156,10 +156,9 @@ fun ArticleScreen(
         )
         Text(
             text = "Foto: Uncredited/Lynch family via TANCREDI/AP",
-            textAlign = TextAlign.Justify,
             fontWeight = FontWeight.Light,
-            fontSize = 19.sp,
-            color = Color(0xff626362),
+            fontSize = 16.sp,
+            color = Color(0xFFAFAFAF),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(

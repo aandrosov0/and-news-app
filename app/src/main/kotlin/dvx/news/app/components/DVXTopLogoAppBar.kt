@@ -2,7 +2,11 @@ package dvx.news.app.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +29,8 @@ fun DVXTopLogoAppBar(
     title: String = "",
 ) {
     CenterAlignedTopAppBar(
+        modifier = modifier,
+        windowInsets = WindowInsets.statusBars.only(WindowInsetsSides.Top),
         title = {
             Text(
                 text = title,
@@ -46,8 +52,7 @@ fun DVXTopLogoAppBar(
                     fontSize = 16.sp
                 )
             }
-        },
-        modifier = modifier
+        }
     )
 }
 
