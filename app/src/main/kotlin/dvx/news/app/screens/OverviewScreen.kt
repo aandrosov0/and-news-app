@@ -13,10 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
-import dvx.news.app.components.ActionsOverviewSection
+import dvx.news.app.components.sections.OverviewActionsSection
 import dvx.news.app.components.DVXTopLogoAppBar
-import dvx.news.app.components.HeadingsOverviewSection
-import dvx.news.app.components.TopTopicsOverviewSection
+import dvx.news.app.components.sections.OverviewCategoriesSection
+import dvx.news.app.components.sections.OverviewTopicsSection
 import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
 
@@ -35,15 +35,15 @@ fun OverviewScreen(
                 vertical = 20.dp
             )
     ) {
-        ActionsOverviewSection(
+        OverviewActionsSection(
             onProfile = { },
             onSettings = { navController.navigate(Destination.Settings) },
         )
-        TopTopicsOverviewSection(
+        OverviewTopicsSection(
             onNews = { navController.navigate(Destination.News) },
             onIncludes = { navController.navigate(Destination.Includes) }
         )
-        HeadingsOverviewSection(
+        OverviewCategoriesSection(
             onSport = { navController.navigate(Destination.Sport) },
             onLifestyle = { navController.navigate(Destination.Lifestyle) },
             onEntertainment = { navController.navigate(Destination.Entertainment) }

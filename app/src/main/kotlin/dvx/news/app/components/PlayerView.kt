@@ -2,6 +2,8 @@ package dvx.news.app.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -19,7 +21,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -31,10 +35,17 @@ import dvx.news.app.R
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun PlayerViewHeader(modifier: Modifier = Modifier) {
+fun PlayerViewHeader(
+    title: String,
+    position: Int,
+    modifier: Modifier = Modifier
+) {
+    val minutes = position / 60000
+    val seconds = (position % 60000) / 1000
+
     Row(modifier = modifier) {
         Text(
-            text = "Artikel anhören",
+            text = title,
             fontSize = 18.sp,
             color = MaterialTheme.colorScheme.onSurface,
         )
@@ -48,7 +59,7 @@ fun PlayerViewHeader(modifier: Modifier = Modifier) {
             color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
-            text = "-04:23",
+            text = "$minutes:${if (seconds < 10) "0" else ""}$seconds",
             fontSize = 18.sp,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
@@ -59,7 +70,14 @@ fun PlayerViewHeader(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlayerView(modifier: Modifier = Modifier) {
+fun PlayerView(
+    title: String,
+    position: Int,
+    duration: Int,
+    playing: Boolean,
+    onPlay: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .shadow(
@@ -73,9 +91,16 @@ fun PlayerView(modifier: Modifier = Modifier) {
             .height(intrinsicSize = IntrinsicSize.Min)
             .widthIn(max = 450.dp)
     ) {
+        val icon = if (!playing) R.drawable.ic_play else R.drawable.ic_stop
         Image(
-            painter = painterResource(R.drawable.ic_play),
+            painter = painterResource(icon),
             contentDescription = null,
+            modifier = Modifier
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(),
+                    onClick = onPlay
+                )
         )
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
@@ -83,7 +108,10 @@ fun PlayerView(modifier: Modifier = Modifier) {
                 .padding(all = 9.dp)
                 .fillMaxHeight()
         ) {
-            PlayerViewHeader()
+            PlayerViewHeader(
+                title = title,
+                position = position
+            )
             Slider(
                 value = 0f,
                 onValueChange = {},
@@ -115,11 +143,20 @@ fun PlayerView(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun PlayerViewHeaderPreview() = DVXTheme {
-    PlayerViewHeader()
+    PlayerViewHeader(
+        title = "",
+        position = 0
+    )
 }
 
 @Preview
 @Composable
 private fun PlayerViewPreview() = DVXTheme {
-    PlayerView()
+    PlayerView(
+        title = "Bethoven",
+        duration = 0,
+        position = 0,
+        playing = true,
+        onPlay = {}
+    )
 }

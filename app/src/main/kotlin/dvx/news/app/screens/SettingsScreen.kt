@@ -15,11 +15,32 @@ import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
 import dvx.news.app.components.DVXTopAppBar
 import dvx.news.app.states.Settings
-import dvx.news.app.components.SettingsMessagesSection
-import dvx.news.app.components.SettingsThemeSection
+import dvx.news.app.components.sections.SettingsMessagesSection
+import dvx.news.app.components.sections.SettingsThemeSection
 import dvx.news.app.components.Tabs
 import dvx.news.app.states.Tab
 import dvx.news.app.themes.DVXTheme
+
+@Composable
+fun SettingsScreenHeader(
+    currentTab: Tab,
+    onTabSelect: (Tab) -> Unit,
+    onNavigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        DVXTopAppBar(
+            title = stringResource(R.string.settings),
+            destination = stringResource(R.string.menu),
+            onNavigateUp = onNavigateUp
+        )
+        Tabs(
+            tabs = listOf(Tab.REPRESENTATION, Tab.MESSAGES),
+            currentTab = currentTab,
+            onTabSelect = onTabSelect
+        )
+    }
+}
 
 @Composable
 fun SettingsScreen(
@@ -34,15 +55,10 @@ fun SettingsScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        DVXTopAppBar(
-            title = stringResource(R.string.settings),
-            destination = stringResource(R.string.menu),
-            onNavigateUp = { navController.navigateUp() }
-        )
-        Tabs(
-            tabs = listOf(Tab.REPRESENTATION, Tab.MESSAGES),
+        SettingsScreenHeader(
             currentTab = currentTab,
-            onTabSelect = { currentTab = it }
+            onTabSelect = { currentTab = it },
+            onNavigateUp = navController::navigateUp
         )
         when (currentTab) {
             Tab.REPRESENTATION -> SettingsThemeSection(

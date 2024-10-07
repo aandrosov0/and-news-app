@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
 

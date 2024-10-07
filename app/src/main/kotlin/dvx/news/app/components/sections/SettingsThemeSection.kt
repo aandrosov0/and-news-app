@@ -1,4 +1,4 @@
-package dvx.news.app.components
+package dvx.news.app.components.sections
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dvx.news.app.R
+import dvx.news.app.components.SelectableRowItem
 import dvx.news.app.states.Theme
 import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme

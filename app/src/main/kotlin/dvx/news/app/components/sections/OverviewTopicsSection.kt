@@ -1,4 +1,4 @@
-package dvx.news.app.components
+package dvx.news.app.components.sections
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -11,10 +11,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dvx.news.app.R
+import dvx.news.app.components.HorizontalButton
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun TopTopicsOverviewSection(
+fun OverviewTopicsSection(
     onNews: () -> Unit,
     onIncludes: () -> Unit,
     modifier: Modifier = Modifier
@@ -58,7 +59,7 @@ fun TopTopicsOverviewSection(
 @Preview(showBackground = true)
 @Composable
 private fun TopTopicsOverviewSectionPreview() = DVXTheme {
-    TopTopicsOverviewSection(
+    OverviewTopicsSection(
         onNews = {},
         onIncludes = {}
     )

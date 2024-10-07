@@ -1,8 +1,8 @@
 package dvx.news.app.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,16 +11,53 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
 import dvx.news.app.components.DVXTopAppBar
-import dvx.news.app.components.HeadersTabContent
-import dvx.news.app.components.NewsTabContent
 import dvx.news.app.components.Tabs
+import dvx.news.app.components.sections.NewsAllSection
+import dvx.news.app.components.sections.NewsHeadlinesSection
 import dvx.news.app.states.Destination
 import dvx.news.app.states.Tab
 import dvx.news.app.themes.DVXTheme
+
+@Composable
+fun NewsScreenHeader(
+    currentTab: Tab,
+    onTabSelect: (Tab) -> Unit,
+    onNavigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        DVXTopAppBar(
+            title = "",
+            destination = stringResource(R.string.menu),
+            onNavigateUp = onNavigateUp
+        )
+        Tabs(
+            tabs = listOf(Tab.ALL_NEWS, Tab.HEADERS),
+            currentTab = currentTab,
+            onTabSelect = onTabSelect
+        )
+    }
+}
+
+@Composable
+fun NewsScreenContent(
+    currentTab: Tab,
+    onNavigateTo: (Destination) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        when (currentTab) {
+            Tab.ALL_NEWS -> NewsAllSection(onNews = { onNavigateTo(Destination.Article) })
+            Tab.HEADERS -> NewsHeadlinesSection(onNews = { onNavigateTo(Destination.Article) })
+            else -> throw IllegalStateException("Expected ${Tab.ALL_NEWS} or ${Tab.HEADERS}")
+        }
+    }
+}
 
 @Composable
 fun NewsScreen(
@@ -29,29 +66,18 @@ fun NewsScreen(
 ) {
     var currentTab by remember { mutableStateOf(Tab.ALL_NEWS) }
 
-    Column(modifier = modifier
-    ) {
-        DVXTopAppBar(
-            title = "",
-            destination = stringResource(R.string.menu),
+    Column(modifier = modifier) {
+        NewsScreenHeader(
+            currentTab = currentTab,
+            onTabSelect = { currentTab = it },
             onNavigateUp = navController::navigateUp
         )
-        Tabs(
-            tabs = listOf(Tab.ALL_NEWS, Tab.HEADERS),
+        NewsScreenContent(
             currentTab = currentTab,
-            onTabSelect = { currentTab = it }
+            onNavigateTo = { navController.navigate(it) },
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
         )
-        when (currentTab) {
-            Tab.ALL_NEWS -> NewsTabContent(
-                onArticle = { navController.navigate(Destination.Article) },
-                modifier = Modifier.fillMaxSize(),
-            )
-            Tab.HEADERS -> HeadersTabContent(
-                onArticle = { navController.navigate(Destination.Article) },
-                modifier = Modifier.fillMaxSize()
-            )
-            else -> throw IllegalStateException("Expected ${Tab.ALL_NEWS} or ${Tab.HEADERS}")
-        }
     }
 }
 

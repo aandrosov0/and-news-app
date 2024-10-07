@@ -1,4 +1,4 @@
-package dvx.news.app.components
+package dvx.news.app.components.sections
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -12,10 +12,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dvx.news.app.R
+import dvx.news.app.components.HorizontalButton
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun HeadingsOverviewSection(
+fun OverviewCategoriesSection(
     onSport: () -> Unit,
     onLifestyle: () -> Unit,
     onEntertainment: () -> Unit,
@@ -61,7 +62,7 @@ fun HeadingsOverviewSection(
 @Preview(showBackground = true)
 @Composable
 private fun HeadingsOverviewSectionPreview() = DVXTheme {
-    HeadingsOverviewSection(
+    OverviewCategoriesSection(
         onEntertainment = {},
         onSport = {},
         onLifestyle = {}
