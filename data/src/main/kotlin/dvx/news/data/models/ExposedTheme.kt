@@ -1,6 +1,6 @@
 package dvx.news.data.models
 
-enum class Theme {
+enum class ExposedTheme {
     SYSTEM,
     BRIGHT,
     DARK

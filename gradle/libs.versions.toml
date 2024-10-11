@@ -2,6 +2,7 @@
 activityKtx = "1.9.2"
 android = "8.6.1"
 datastorePreferences = "1.1.1"
+koinBom = "4.0.0"
 kotlin = "2.0.20"
 
 [plugins]
@@ -20,6 +21,10 @@ compose-bom = { module = "androidx.compose:compose-bom", version = "2024.09.03" 
 compose-material3 = { module = "androidx.compose.material3:material3" }
 
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
+
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 

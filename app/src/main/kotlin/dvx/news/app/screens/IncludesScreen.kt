@@ -13,8 +13,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,20 +28,35 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
 import dvx.news.app.components.HorizontalPostCard
-import dvx.news.app.components.PlayerView
+import dvx.news.app.components.AudioPlayer
 import dvx.news.app.components.VerticalPostCard
-import dvx.news.app.states.Audio
 import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.viewModels.AudioViewModel
+import kotlinx.coroutines.delay
+import org.koin.androidx.compose.koinViewModel
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun IncludesScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    audioViewModel: AudioViewModel = AudioViewModel()
+    audioViewModel: AudioViewModel = koinViewModel()
 ) {
-    val audioState by audioViewModel.state.collectAsState()
+    val audioSource by audioViewModel.state.collectAsState()
+    var isFetchingSource by remember { mutableStateOf(true) }
+    var url by remember {
+        mutableStateOf("https://upload.wikimedia.org/wikipedia/commons/e/eb/Beethoven_Moonlight_1st_movement.ogg")
+    }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            if (isFetchingSource) {
+                audioViewModel.fetchSource()
+                delay(500.milliseconds)
+            }
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -50,13 +69,23 @@ fun IncludesScreen(
             )
             .verticalScroll(rememberScrollState()),
     ) {
-        PlayerView(
+        AudioPlayer(
             title = "Bethoven",
-            position = audioViewModel.positionInMillis,
-            duration = audioViewModel.durationInMillis,
-            playing = audioState == Audio.PLAYING,
+            position = audioSource.position,
+            duration = audioSource.duration,
+            playing = audioSource.playing,
             onPlay = {
-                audioViewModel.start("https://upload.wikimedia.org/wikipedia/commons/e/eb/Beethoven_Moonlight_1st_movement.ogg")
+                if (audioSource.playing) {
+                    audioViewModel.pause()
+                } else {
+                    audioViewModel.play(url)
+                    url = ""
+                }
+            },
+            onHover = { isFetchingSource = false },
+            onValueChange = {
+                isFetchingSource = true
+                audioViewModel.setPosition(it)
             },
             modifier = Modifier
                 .padding(top = 30.dp)

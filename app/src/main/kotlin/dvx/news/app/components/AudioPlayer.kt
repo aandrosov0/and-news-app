@@ -3,7 +3,9 @@ package dvx.news.app.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -23,6 +25,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -35,7 +38,7 @@ import dvx.news.app.R
 import dvx.news.app.themes.DVXTheme
 
 @Composable
-fun PlayerViewHeader(
+fun AudioPlayerHeader(
     title: String,
     position: Int,
     modifier: Modifier = Modifier
@@ -70,12 +73,57 @@ fun PlayerViewHeader(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlayerView(
+fun AudioPlayerSlider(
+    duration: Int,
+    position: Int,
+    onHover: () -> Unit,
+    onValueChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isHovered by interactionSource.collectIsHoveredAsState()
+    if (isHovered) {
+        onHover()
+    }
+
+    Slider(
+        valueRange = 0f..duration.toFloat(),
+        value = position.toFloat(),
+        interactionSource = interactionSource,
+        onValueChange = { onValueChange(it.toInt()) },
+        thumb = {
+            Icon(
+                painter = painterResource(R.drawable.dot),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier
+                    .size(size = 16.dp)
+                    .hoverable(interactionSource = interactionSource)
+            )
+        },
+        track = {
+            Icon(
+                painter = painterResource(R.drawable.bar),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        },
+        modifier = modifier
+            .height(intrinsicSize = IntrinsicSize.Min)
+    )
+}
+
+@Composable
+fun AudioPlayer(
     title: String,
     position: Int,
     duration: Int,
     playing: Boolean,
+    onHover: () -> Unit,
     onPlay: () -> Unit,
+    onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -108,33 +156,15 @@ fun PlayerView(
                 .padding(all = 9.dp)
                 .fillMaxHeight()
         ) {
-            PlayerViewHeader(
+            AudioPlayerHeader(
                 title = title,
                 position = position
             )
-            Slider(
-                value = 0f,
-                onValueChange = {},
-                thumb = {
-                    Icon(
-                        painter = painterResource(R.drawable.dot),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier
-                            .size(size = 16.dp)
-                    )
-                },
-                track = {
-                    Icon(
-                        painter = painterResource(R.drawable.bar),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                },
-                modifier = Modifier
-                    .height(intrinsicSize = IntrinsicSize.Min)
+            AudioPlayerSlider(
+                duration = duration,
+                position = position,
+                onHover = onHover,
+                onValueChange = onValueChange,
             )
         }
     }
@@ -142,8 +172,8 @@ fun PlayerView(
 
 @Preview
 @Composable
-private fun PlayerViewHeaderPreview() = DVXTheme {
-    PlayerViewHeader(
+private fun AudioPlayerHeaderPreview() = DVXTheme {
+    AudioPlayerHeader(
         title = "",
         position = 0
     )
@@ -151,12 +181,14 @@ private fun PlayerViewHeaderPreview() = DVXTheme {
 
 @Preview
 @Composable
-private fun PlayerViewPreview() = DVXTheme {
-    PlayerView(
+private fun AudioPlayerPreview() = DVXTheme {
+    AudioPlayer(
         title = "Bethoven",
         duration = 0,
         position = 0,
         playing = true,
-        onPlay = {}
+        onPlay = {},
+        onValueChange = {},
+        onHover = {},
     )
 }

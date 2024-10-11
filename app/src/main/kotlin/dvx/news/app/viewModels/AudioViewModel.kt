@@ -4,34 +4,30 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dvx.news.app.states.Audio
+import dvx.news.app.states.AudioSource
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class AudioViewModel : ViewModel() {
-    private var _state = MutableStateFlow(Audio.STOPPED)
+class AudioViewModel(
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : ViewModel() {
+    private val _state = MutableStateFlow(AudioSource())
     val state = _state.asStateFlow()
 
-    private var mediaPlayer: MediaPlayer? = null
+    private lateinit var player: MediaPlayer
 
-    private var startingJob: Job? = null
-    private var continueJob: Job? = null
+    private var playingJob: Job? = null
 
-    val durationInMillis
-        get() = mediaPlayer?.duration ?: 0
-
-    val positionInMillis
-        get() = mediaPlayer?.currentPosition ?: 0
-
-    fun start(url: String) {
-        startingJob?.cancel()
-        if (mediaPlayer == null) {
-            startingJob = viewModelScope.launch(Dispatchers.IO) {
-                mediaPlayer?.release()
-                mediaPlayer = MediaPlayer().apply {
+    fun play(url: String = "") {
+        playingJob?.cancel()
+        playingJob = viewModelScope.launch(dispatcher) {
+            if (url.isNotBlank()) {
+                player = MediaPlayer().apply {
                     setAudioAttributes(
                         AudioAttributes.Builder()
                             .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -40,24 +36,27 @@ class AudioViewModel : ViewModel() {
                     )
                     setDataSource(url)
                     prepare()
-                    start()
-                    _state.value = Audio.PLAYING
                 }
             }
+            player.start()
         }
     }
 
-    fun continueAudio() {
-        continueJob?.cancel()
-        continueJob = viewModelScope.launch(Dispatchers.IO) {
-            mediaPlayer?.prepare()
-            mediaPlayer?.start()
-            _state.value = Audio.PLAYING
-        }
+    fun pause() = player.pause()
+
+    fun setPosition(position: Int) {
+        player.seekTo(position)
     }
 
-    fun stop() {
-        mediaPlayer?.stop()
-        _state.value = Audio.STOPPED
+    fun fetchSource() {
+        viewModelScope.launch(dispatcher) {
+            if (::player.isInitialized) {
+                _state.value = AudioSource(
+                    duration = player.duration,
+                    position = player.currentPosition,
+                    playing = player.isPlaying
+                )
+            }
+        }
     }
 }

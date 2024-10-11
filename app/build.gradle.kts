@@ -41,6 +41,10 @@ android {
 dependencies {
     implementation(project(":data"))
 
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.androidx.compose)
+
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
 

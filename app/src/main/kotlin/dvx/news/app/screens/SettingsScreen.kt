@@ -46,7 +46,7 @@ fun SettingsScreenHeader(
 fun SettingsScreen(
     navController: NavController,
     settings: Settings,
-    onChangeSettings: (Settings) -> Unit,
+    onSettingsChange: (Settings) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var currentTab by remember { mutableStateOf(Tab.REPRESENTATION) }
@@ -63,13 +63,7 @@ fun SettingsScreen(
         when (currentTab) {
             Tab.REPRESENTATION -> SettingsThemeSection(
                 currentTheme = settings.theme,
-                onChangeTheme = {
-                    onChangeSettings(
-                        settings.copy(
-                            theme = it
-                        )
-                    )
-                }
+                onChangeTheme = { onSettingsChange(settings.copy(theme = it)) }
             )
             Tab.MESSAGES -> SettingsMessagesSection()
             else -> throw IllegalStateException("Expected ${Tab.REPRESENTATION} or ${Tab.MESSAGES}")
@@ -81,8 +75,8 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenPreview() = DVXTheme {
     SettingsScreen(
-        settings = Settings(),
-        onChangeSettings = {},
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        onSettingsChange = {},
+        settings = Settings()
     )
 }

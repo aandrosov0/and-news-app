@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,85 +26,88 @@ import dvx.news.app.screens.NewsScreen
 import dvx.news.app.screens.OverviewScreen
 import dvx.news.app.screens.SettingsScreen
 import dvx.news.app.states.Destination
-import dvx.news.app.states.Settings
 import dvx.news.app.themes.DVXTheme
+import dvx.news.app.viewModels.SettingsViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun App(
-    settings: Settings,
-    onChangeSettings: (Settings) -> Unit,
     modifier: Modifier = Modifier,
+    settingsViewModel: SettingsViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController()
 ) {
-    var destination: Destination by remember { mutableStateOf(Destination.Home) }
+    val settings by settingsViewModel.state.collectAsState()
+    LaunchedEffect(Unit) { settingsViewModel.getSaved() }
 
-    Scaffold(
-        modifier = modifier,
-        bottomBar = {
-            AppBottomBar(
-                destination,
-                onDestinationChange = {
-                    navController.navigate(it)
-                    destination = it
+    DVXTheme(theme = settings.theme) {
+        var destination: Destination by remember { mutableStateOf(Destination.Home) }
+
+        Scaffold(
+            modifier = modifier,
+            bottomBar = {
+                AppBottomBar(
+                    destination,
+                    onDestinationChange = {
+                        navController.navigate(it)
+                        destination = it
+                    }
+                )
+            },
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ) { paddingValues ->
+            NavHost(
+                navController = navController,
+                startDestination = destination,
+                modifier = Modifier.padding(paddingValues)
+            ) {
+                composable<Destination.Home> {
+                    HomeScreen(navController = navController)
                 }
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
-    ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = destination,
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            composable<Destination.Home> {
-                HomeScreen(navController = navController)
-            }
-            composable<Destination.Sport> {
-                CategoryScreen(
-                    navController = navController,
-                    category = stringResource(R.string.sport),
-                )
-            }
-            composable<Destination.Lifestyle> {
-                CategoryScreen(
-                    navController = navController,
-                    category = stringResource(R.string.lifestyle),
-                )
-            }
-            composable<Destination.Entertainment> {
-                CategoryScreen(
-                    navController = navController,
-                    category = stringResource(R.string.entertainment),
-                )
-            }
-            composable<Destination.Menu> {
-                OverviewScreen(navController = navController)
-            }
-            composable<Destination.Article> {
-                ArticleScreen(navController = navController)
-            }
-            composable<Destination.News> {
-                NewsScreen(navController = navController)
-            }
-            composable<Destination.Settings> {
-                SettingsScreen(
-                    navController = navController,
-                    settings = settings,
-                    onChangeSettings = onChangeSettings,
-                )
-            }
-            composable<Destination.Includes> {
-                IncludesScreen(navController = navController)
+                composable<Destination.Sport> {
+                    CategoryScreen(
+                        navController = navController,
+                        category = stringResource(R.string.sport),
+                    )
+                }
+                composable<Destination.Lifestyle> {
+                    CategoryScreen(
+                        navController = navController,
+                        category = stringResource(R.string.lifestyle),
+                    )
+                }
+                composable<Destination.Entertainment> {
+                    CategoryScreen(
+                        navController = navController,
+                        category = stringResource(R.string.entertainment),
+                    )
+                }
+                composable<Destination.Menu> {
+                    OverviewScreen(navController = navController)
+                }
+                composable<Destination.Article> {
+                    ArticleScreen(navController = navController)
+                }
+                composable<Destination.News> {
+                    NewsScreen(navController = navController)
+                }
+                composable<Destination.Settings> {
+                    SettingsScreen(
+                        navController = navController,
+                        settings = settings,
+                        onSettingsChange = { settingsViewModel.update(it) }
+                    )
+                }
+                composable<Destination.Includes> {
+                    IncludesScreen(navController = navController)
+                }
             }
         }
     }
+
 }
 
 @Preview
 @Composable
 private fun AppPreview() = DVXTheme {
-    App(
-        settings = Settings(),
-        onChangeSettings = {}
-    )
+    App()
 }
