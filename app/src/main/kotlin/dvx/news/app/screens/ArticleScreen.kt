@@ -13,7 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -91,9 +91,9 @@ fun ArticleScreen(
         )
         Text(
             text = "Foto: EPA",
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.W400,
             fontSize = 19.sp,
-            color = Color(0xFFAFAFAF),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -102,6 +102,7 @@ fun ArticleScreen(
                     end = 20.dp
                 )
                 .fillMaxWidth()
+                .alpha(0.64f)
         )
         Text(
             text = "Die Nacht zu Montag war lau in Porticello, einem kleinen Jachthafen an der Nordküste Siziliens.",
@@ -158,7 +159,7 @@ fun ArticleScreen(
             text = "Foto: Uncredited/Lynch family via TANCREDI/AP",
             fontWeight = FontWeight.Light,
             fontSize = 16.sp,
-            color = Color(0xFFAFAFAF),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -167,6 +168,7 @@ fun ArticleScreen(
                     end = 20.dp,
                 )
                 .fillMaxWidth()
+                .alpha(0.64f)
 
         )
         Spacer(modifier = Modifier.height(40.dp))

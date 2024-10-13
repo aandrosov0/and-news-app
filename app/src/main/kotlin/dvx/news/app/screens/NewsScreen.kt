@@ -1,5 +1,6 @@
 package dvx.news.app.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +41,7 @@ fun NewsScreenHeader(
         Tabs(
             tabs = listOf(Tab.ALL_NEWS, Tab.HEADERS),
             currentTab = currentTab,
-            onTabSelect = onTabSelect
+            onTabSelect = onTabSelect,
         )
     }
 }
@@ -50,7 +52,10 @@ fun NewsScreenContent(
     onNavigateTo: (Destination) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    ) {
         when (currentTab) {
             Tab.ALL_NEWS -> NewsAllSection(onNews = { onNavigateTo(Destination.Article) })
             Tab.HEADERS -> NewsHeadlinesSection(onNews = { onNavigateTo(Destination.Article) })

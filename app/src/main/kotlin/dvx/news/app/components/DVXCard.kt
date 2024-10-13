@@ -64,7 +64,7 @@ fun DVXCard(
             Icon(
                 painter = painterResource(iconId),
                 contentDescription = null,
-                tint = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.onSurface else Color.Unspecified,
+                tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .size(32.dp)
             )

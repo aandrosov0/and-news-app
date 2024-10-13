@@ -1,5 +1,6 @@
 package dvx.news.app.components.sections
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -37,7 +38,7 @@ fun <T> NewsItemsSection(
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         item {
             NewsItemsSectionTitle(

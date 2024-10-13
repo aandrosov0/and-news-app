@@ -42,7 +42,7 @@ fun DVXTopAppBar(
         navigationIcon = {
             TextButton(
                 onClick = onNavigateUp,
-                contentPadding = PaddingValues(0.dp),
+                contentPadding = PaddingValues(8.dp),
                 shape = RectangleShape
             ) {
                 Icon(

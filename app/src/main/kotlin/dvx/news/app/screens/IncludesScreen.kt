@@ -6,19 +6,14 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,15 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
-import dvx.news.app.components.HorizontalPostCard
 import dvx.news.app.components.AudioPlayer
+import dvx.news.app.components.HorizontalPostCard
 import dvx.news.app.components.VerticalPostCard
 import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.viewModels.AudioViewModel
-import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
-import kotlin.time.Duration.Companion.milliseconds
+
+const val MUSIC_URL = "https://www.chosic.com/wp-content/uploads/2020/06/Karine_Gilanyan_-_Beethoven_-_Piano_Sonata_nr15_in_D_major_op28_Pastoral_-_IV_Rondo_Allegro_ma_non_troppo(chosic.com).mp3"
 
 @Composable
 fun IncludesScreen(
@@ -43,20 +38,7 @@ fun IncludesScreen(
     modifier: Modifier = Modifier,
     audioViewModel: AudioViewModel = koinViewModel()
 ) {
-    val audioSource by audioViewModel.state.collectAsState()
-    var isFetchingSource by remember { mutableStateOf(true) }
-    var url by remember {
-        mutableStateOf("https://upload.wikimedia.org/wikipedia/commons/e/eb/Beethoven_Moonlight_1st_movement.ogg")
-    }
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            if (isFetchingSource) {
-                audioViewModel.fetchSource()
-                delay(500.milliseconds)
-            }
-        }
-    }
+    val track by audioViewModel.uiState.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -65,31 +47,27 @@ fun IncludesScreen(
             .padding(
                 start = 10.dp,
                 end = 10.dp,
-                bottom = 10.dp
             )
             .verticalScroll(rememberScrollState()),
     ) {
         AudioPlayer(
-            title = "Bethoven",
-            position = audioSource.position,
-            duration = audioSource.duration,
-            playing = audioSource.playing,
-            onPlay = {
-                if (audioSource.playing) {
+            trackTitle = "Artikel anhören",
+            trackDuration = track.duration,
+            playbackSpeed = track.playbackSpeed,
+            isTrackPlaying = track.isPlaying,
+            isTrackLoading = track.isLoading,
+            currentTrackPosition = track.currentPosition,
+            onActionButtonClick = {
+                if (track.isPlaying) {
                     audioViewModel.pause()
                 } else {
-                    audioViewModel.play(url)
-                    url = ""
+                    audioViewModel.start(MUSIC_URL)
                 }
             },
-            onHover = { isFetchingSource = false },
-            onValueChange = {
-                isFetchingSource = true
-                audioViewModel.setPosition(it)
-            },
+            onPositionChangeFinished = track.onChangePosition,
+            onPlaybackSpeedButtonClicked = track.onPlaybackSpeedChange,
             modifier = Modifier
-                .padding(top = 30.dp)
-                .height(80.dp)
+                .padding(top = 16.dp)
         )
         HorizontalDivider(
             modifier = Modifier
@@ -129,7 +107,7 @@ fun IncludesScreen(
             imagePainter = painterResource(R.drawable.img_small_preview),
             onClick = { navController.navigate(Destination.Article) },
             modifier = Modifier
-                .padding(top = 22.dp)
+                .padding(top = 22.dp, bottom = 10.dp)
                 .fillMaxWidth()
         )
     }
