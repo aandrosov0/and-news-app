@@ -63,7 +63,7 @@ fun SettingsScreen(
         when (currentTab) {
             Tab.REPRESENTATION -> SettingsThemeSection(
                 currentTheme = settings.theme,
-                onChangeTheme = { onSettingsChange(settings.copy(theme = it)) }
+                onThemeChange = { onSettingsChange(settings.copy(theme = it)) }
             )
             Tab.MESSAGES -> SettingsMessagesSection()
             else -> throw IllegalStateException("Expected ${Tab.REPRESENTATION} or ${Tab.MESSAGES}")

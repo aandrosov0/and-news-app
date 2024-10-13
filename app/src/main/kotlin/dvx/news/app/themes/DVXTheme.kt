@@ -6,7 +6,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -51,21 +50,21 @@ fun DVXTheme(
             lineHeight = 24.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = openSansCondFontFamily,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onSurface
         ),
         bodyMedium = TextStyle(
             fontSize = 20.sp,
             lineHeight = 24.sp,
             fontWeight = FontWeight.W600,
             fontFamily = openSansCondFontFamily,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onSurface
         ),
         bodyLarge = TextStyle(
             fontSize = 24.sp,
             lineHeight = 27.sp,
             fontFamily = openSansCondFontFamily,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onSurface
         ),
         labelMedium = TextStyle(
             color = colorScheme.primary,

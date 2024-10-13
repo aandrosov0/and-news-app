@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +25,7 @@ import dvx.news.app.themes.DVXTheme
 @Composable
 fun SettingsThemeSection(
     currentTheme: Theme,
-    onChangeTheme: (Theme) -> Unit,
+    onThemeChange: (Theme) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -35,7 +36,7 @@ fun SettingsThemeSection(
             text = stringResource(R.string.settings1_main),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -45,6 +46,7 @@ fun SettingsThemeSection(
                     end = 20.dp
                 )
                 .fillMaxWidth()
+                .alpha(0.64f)
         )
         Column(
             modifier = Modifier
@@ -54,22 +56,23 @@ fun SettingsThemeSection(
                 SelectableRowItem(
                     text = theme.localizedName,
                     selected = theme == currentTheme,
-                    onClick = { onChangeTheme(theme) }
+                    onClick = { onThemeChange(theme) }
                 )
                 HorizontalDivider(
-                    color = MaterialTheme.colorScheme.onSurface
-                        .copy(alpha = 0.24f),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .alpha(0.24f)
                 )
             }
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun SettingsThemeSectionPreview() = DVXTheme {
     SettingsThemeSection(
         currentTheme = Theme.SYSTEM,
-        onChangeTheme = {}
+        onThemeChange = {}
     )
 }
