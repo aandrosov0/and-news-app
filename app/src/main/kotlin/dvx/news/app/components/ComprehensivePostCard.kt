@@ -106,7 +106,6 @@ fun ComprehensivePostCardFooter(
             text = title,
             fontSize = 16.sp,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -114,7 +113,6 @@ fun ComprehensivePostCardFooter(
             text = description,
             fontSize = 18.5.sp,
             lineHeight = 20.sp,
-            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .fillMaxWidth()

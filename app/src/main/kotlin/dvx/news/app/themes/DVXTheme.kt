@@ -50,49 +50,49 @@ fun DVXTheme(
             lineHeight = 24.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = openSansCondFontFamily,
-            color = MaterialTheme.colorScheme.onSurface
+            color = colorScheme.onSurface
         ),
         bodyMedium = TextStyle(
+            color = colorScheme.onSurface,
             fontSize = 20.sp,
             lineHeight = 24.sp,
             fontWeight = FontWeight.W600,
-            fontFamily = openSansCondFontFamily,
-            color = MaterialTheme.colorScheme.onSurface
+            fontFamily = openSansCondFontFamily
         ),
         bodyLarge = TextStyle(
             fontSize = 24.sp,
             lineHeight = 27.sp,
             fontFamily = openSansCondFontFamily,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
+            color = colorScheme.onSurface
         ),
         labelMedium = TextStyle(
-            color = colorScheme.primary,
             fontFamily = openSansCondFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
-            lineHeight = 18.sp
+            lineHeight = 18.sp,
+            color = colorScheme.primary,
         ),
         titleSmall = TextStyle(
-            color = colorScheme.primary,
             fontFamily = openSansCondFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
-            lineHeight = 18.sp
+            lineHeight = 18.sp,
+            color = colorScheme.primary
         ),
         titleMedium = TextStyle(
-            color = colorScheme.primary,
             fontFamily = openSansCondFontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
-            lineHeight = 24.sp
+            lineHeight = 24.sp,
+            color = colorScheme.primary
         ),
         titleLarge = TextStyle(
-            color = colorScheme.primary,
+            fontSize = 27.sp,
             fontFamily = openSansCondFontFamily,
             fontWeight = FontWeight.Bold,
-            fontSize = 27.sp,
-            lineHeight = 24.sp
+            lineHeight = 24.sp,
+            color = colorScheme.primary
         )
     )
 

@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -62,8 +63,9 @@ fun SelectableRowItem(
             text = text,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier
+                .alpha(.64f)
         )
         if (selected) {
             Icon(

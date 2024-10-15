@@ -35,7 +35,6 @@ fun DVXTopAppBar(
         title = {
             Text(
                 text = title,
-                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium,
             )
         },
@@ -55,7 +54,6 @@ fun DVXTopAppBar(
                 Text(
                     text = destination,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }

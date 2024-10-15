@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,11 +22,11 @@ fun NewsItemsSectionTitle(
 ) {
     Text(
         text = text,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
         textAlign = TextAlign.Center,
         fontSize = 16.sp,
         style = MaterialTheme.typography.bodyMedium,
         modifier = modifier
+            .alpha(.64f)
     )
 }
 

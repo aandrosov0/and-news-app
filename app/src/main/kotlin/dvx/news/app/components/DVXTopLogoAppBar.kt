@@ -34,7 +34,6 @@ fun DVXTopLogoAppBar(
         title = {
             Text(
                 text = title,
-                color =  MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium,
             )
         },
@@ -48,8 +47,7 @@ fun DVXTopLogoAppBar(
                 )
                 Text(
                     text = stringResource(R.string.news).uppercase(),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
                 )
             }
         }

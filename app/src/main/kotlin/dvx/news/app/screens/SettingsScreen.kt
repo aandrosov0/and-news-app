@@ -2,6 +2,7 @@ package dvx.news.app.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,12 +15,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
 import dvx.news.app.components.DVXTopAppBar
-import dvx.news.app.states.Settings
 import dvx.news.app.components.sections.SettingsMessagesSection
 import dvx.news.app.components.sections.SettingsThemeSection
 import dvx.news.app.components.Tabs
 import dvx.news.app.states.Tab
 import dvx.news.app.themes.DVXTheme
+import dvx.news.app.viewModels.SettingsViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsScreenHeader(
@@ -45,11 +47,11 @@ fun SettingsScreenHeader(
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    settings: Settings,
-    onSettingsChange: (Settings) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
     var currentTab by remember { mutableStateOf(Tab.REPRESENTATION) }
+    val settings by settingsViewModel.state.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,7 +65,7 @@ fun SettingsScreen(
         when (currentTab) {
             Tab.REPRESENTATION -> SettingsThemeSection(
                 currentTheme = settings.theme,
-                onThemeChange = { onSettingsChange(settings.copy(theme = it)) }
+                onThemeChange = { settingsViewModel.update(settings.copy(theme = it)) }
             )
             Tab.MESSAGES -> SettingsMessagesSection()
             else -> throw IllegalStateException("Expected ${Tab.REPRESENTATION} or ${Tab.MESSAGES}")
@@ -74,9 +76,5 @@ fun SettingsScreen(
 @Preview(showBackground = true)
 @Composable
 private fun SettingsScreenPreview() = DVXTheme {
-    SettingsScreen(
-        navController = rememberNavController(),
-        onSettingsChange = {},
-        settings = Settings()
-    )
+    SettingsScreen(navController = rememberNavController())
 }

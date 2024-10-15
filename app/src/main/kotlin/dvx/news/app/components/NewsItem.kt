@@ -22,8 +22,9 @@ fun NewsItem(
     modifier: Modifier = Modifier
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(space = 12.dp),
-        modifier = modifier.height(intrinsicSize = IntrinsicSize.Min)
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier
+            .height(intrinsicSize = IntrinsicSize.Min)
     ) {
         VerticalDirectionLine(
             modifier = Modifier

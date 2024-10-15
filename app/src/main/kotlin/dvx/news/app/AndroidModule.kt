@@ -1,20 +1,15 @@
 package dvx.news.app
 
-import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import dvx.news.app.viewModels.AudioViewModel
 import dvx.news.app.viewModels.SettingsViewModel
-import dvx.news.data.repositories.SettingsRepository
-import dvx.news.data.repositories.SettingsRepositoryImpl
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-fun getAndroidModule(context: Context) = module {
-    single<SettingsRepository> {
-        SettingsRepositoryImpl(
-            dataStore = context.dataStore
-        )
-    }
-
+val androidModule = module {
+    single<DataStore<Preferences>>{ androidContext().dataStore }
     viewModel { AudioViewModel() }
     viewModel { SettingsViewModel(settingsRepository = get()) }
 }

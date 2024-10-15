@@ -35,7 +35,6 @@ fun NotificationAlertDialog(
             Text(
                 text = title,
                 fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium
             )
         },
@@ -43,7 +42,6 @@ fun NotificationAlertDialog(
             Text(
                 text = text,
                 fontSize = 14.5.sp,
-                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .alpha(.64f)
             )
@@ -69,7 +67,6 @@ fun NotificationAlertDialog(
                 Text(
                     text = stringResource(R.string.abort).uppercase(),
                     style = buttonTextStyle,
-                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .alpha(.4f)
                 )

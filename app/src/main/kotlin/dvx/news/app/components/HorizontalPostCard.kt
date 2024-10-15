@@ -58,7 +58,6 @@ fun HorizontalPostCard(
             Text(
                 text = description,
                 fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

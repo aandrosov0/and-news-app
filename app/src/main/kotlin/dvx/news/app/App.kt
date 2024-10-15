@@ -93,8 +93,7 @@ fun App(
                 composable<Destination.Settings> {
                     SettingsScreen(
                         navController = navController,
-                        settings = settings,
-                        onSettingsChange = { settingsViewModel.update(it) }
+                        settingsViewModel = settingsViewModel
                     )
                 }
                 composable<Destination.Includes> {

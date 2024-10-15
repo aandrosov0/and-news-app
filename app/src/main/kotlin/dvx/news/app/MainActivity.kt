@@ -1,20 +1,13 @@
 package dvx.news.app
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.datastore.preferences.preferencesDataStore
+import dvx.news.data.dataModule
+import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
-import org.koin.core.KoinApplication
-
-val Context.dataStore by preferencesDataStore("preferences")
-
-fun KoinApplication.configureKoin(context: Context) {
-    modules(getAndroidModule(context))
-}
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -24,7 +17,10 @@ class MainActivity : ComponentActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
-            KoinApplication({ configureKoin(this@MainActivity) }) {
+            KoinApplication({
+                androidContext(this@MainActivity)
+                modules(dataModule, androidModule)
+            }) {
                 App()
             }
         }

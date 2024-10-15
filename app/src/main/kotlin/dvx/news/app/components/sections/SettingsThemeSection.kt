@@ -36,7 +36,6 @@ fun SettingsThemeSection(
             text = stringResource(R.string.settings1_main),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(

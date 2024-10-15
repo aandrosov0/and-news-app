@@ -62,7 +62,6 @@ fun ArticleScreen(
             fontFamily = openSansCondFontFamily,
             lineHeight = 44.sp,
             fontSize = 42.sp,
-            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.ExtraBold,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier
@@ -78,7 +77,6 @@ fun ArticleScreen(
         )
         Text(
             text = "Beim Bau 2008 war der Mast der Superjacht mit 75 Metern der zweithöchste der Welt",
-            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 16.sp,
             lineHeight = 20.sp,
             style = MaterialTheme.typography.bodyMedium,
@@ -91,7 +89,6 @@ fun ArticleScreen(
         )
         Text(
             text = "Foto: EPA",
-            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.W400,
             fontSize = 19.sp,
             style = MaterialTheme.typography.bodyMedium,
@@ -106,7 +103,6 @@ fun ArticleScreen(
         )
         Text(
             text = "Die Nacht zu Montag war lau in Porticello, einem kleinen Jachthafen an der Nordküste Siziliens.",
-            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 19.sp,
             lineHeight = 28.sp,
             style = MaterialTheme.typography.bodyMedium,
@@ -123,7 +119,6 @@ fun ArticleScreen(
             fontWeight = FontWeight.W400,
             lineHeight = 28.sp,
             fontSize = 20.sp,
-            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -145,7 +140,6 @@ fun ArticleScreen(
             text = "Milliardär Mike Lynch und seine Tochter Hannah ertranken, als die Jacht sank",
             fontSize = 16.sp,
             lineHeight = 20.sp,
-            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(
@@ -159,7 +153,6 @@ fun ArticleScreen(
             text = "Foto: Uncredited/Lynch family via TANCREDI/AP",
             fontWeight = FontWeight.Light,
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .padding(

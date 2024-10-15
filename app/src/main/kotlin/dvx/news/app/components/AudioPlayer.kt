@@ -126,7 +126,6 @@ fun AudioPlayer(
                     Text(
                         text = trackTitle,
                         fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodySmall
                     )
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -146,7 +145,6 @@ fun AudioPlayer(
                         Text(
                             text = currentTrackPositionText,
                             fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

@@ -77,7 +77,6 @@ fun CategoryScreen(
                 text = stringResource(R.string.food).uppercase(),
                 fontSize = 34.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.onSurface
             )
             Icon(
                 imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,

@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -46,12 +47,11 @@ fun Tabs(
                 selected = tab == currentTab,
                 onClick = { onTabSelect(tab) },
                 text = {
-                    val alpha = if (tab == currentTab) 1f else 0.64f
                     Text(
                         text = tab.localizedName,
-                        color = MaterialTheme.colorScheme.onSurface
-                            .copy(alpha = alpha),
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = modifier
+                            .alpha(if (tab == currentTab) 1f else .64f)
                     )
                 }
             )

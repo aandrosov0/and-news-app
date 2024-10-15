@@ -1,6 +1,5 @@
 package dvx.news.app.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -12,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
@@ -31,10 +31,7 @@ fun HorizontalButton(
 ) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.primary
-        ),
+        colors = ButtonDefaults.buttonColors(Color.Transparent),
         shape = RectangleShape,
         contentPadding = PaddingValues(
             horizontal = 20.dp,
@@ -53,11 +50,11 @@ fun HorizontalButton(
         }
         Text(
             text = text,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.64f),
             fontSize = 18.sp,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier
                 .padding(start = 20.dp)
+                .alpha(.64f)
         )
         Spacer(
             modifier

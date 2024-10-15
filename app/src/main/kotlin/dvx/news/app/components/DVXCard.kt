@@ -3,7 +3,6 @@ package dvx.news.app.components
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,11 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dvx.news.app.R
+import dvx.news.app.states.Theme
 import dvx.news.app.themes.DVXTheme
 
 @Composable
@@ -71,7 +70,6 @@ fun DVXCard(
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -79,7 +77,7 @@ fun DVXCard(
 
 @Preview
 @Composable
-private fun DVXCardPreview() = DVXTheme {
+private fun DVXCardPreview() = DVXTheme(Theme.DARK) {
     DVXCard(
         iconId = R.drawable.ic_profile,
         text = "Mein Konto",

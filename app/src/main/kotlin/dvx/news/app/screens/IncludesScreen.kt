@@ -30,7 +30,7 @@ import dvx.news.app.themes.DVXTheme
 import dvx.news.app.viewModels.AudioViewModel
 import org.koin.androidx.compose.koinViewModel
 
-const val MUSIC_URL = "https://www.chosic.com/wp-content/uploads/2020/06/Karine_Gilanyan_-_Beethoven_-_Piano_Sonata_nr15_in_D_major_op28_Pastoral_-_IV_Rondo_Allegro_ma_non_troppo(chosic.com).mp3"
+private const val MUSIC_URL = "https://www.chosic.com/wp-content/uploads/2020/06/Karine_Gilanyan_-_Beethoven_-_Piano_Sonata_nr15_in_D_major_op28_Pastoral_-_IV_Rondo_Allegro_ma_non_troppo(chosic.com).mp3"
 
 @Composable
 fun IncludesScreen(

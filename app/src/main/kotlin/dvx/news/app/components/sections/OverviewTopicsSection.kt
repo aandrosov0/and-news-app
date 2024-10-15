@@ -3,7 +3,6 @@ package dvx.news.app.components.sections
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +26,6 @@ fun OverviewTopicsSection(
         Text(
             text = "TOP-THEMEN",
             fontSize = 26.sp,
-            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(
                 start = 10.dp,
                 end = 10.dp,
