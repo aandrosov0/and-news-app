@@ -15,6 +15,7 @@ import dvx.news.app.themes.DVXTheme
 
 @Composable
 fun OverviewTopicsSection(
+    onHeadlines: () -> Unit,
     onNews: () -> Unit,
     onIncludes: () -> Unit,
     modifier: Modifier = Modifier
@@ -34,7 +35,7 @@ fun OverviewTopicsSection(
         )
         HorizontalDivider()
         HorizontalButton(
-            onClick = {},
+            onClick = onHeadlines,
             text = "Schlagzeilen",
             prefixIconId = R.drawable.ic_schlagzeilen,
         )
@@ -58,6 +59,7 @@ fun OverviewTopicsSection(
 @Composable
 private fun TopTopicsOverviewSectionPreview() = DVXTheme {
     OverviewTopicsSection(
+        onHeadlines = {},
         onNews = {},
         onIncludes = {}
     )

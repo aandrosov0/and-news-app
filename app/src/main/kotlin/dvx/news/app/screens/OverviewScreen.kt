@@ -18,6 +18,7 @@ import dvx.news.app.components.DVXTopLogoAppBar
 import dvx.news.app.components.sections.OverviewCategoriesSection
 import dvx.news.app.components.sections.OverviewTopicsSection
 import dvx.news.app.states.Destination
+import dvx.news.app.states.NewsTab
 import dvx.news.app.themes.DVXTheme
 
 @Composable
@@ -40,7 +41,8 @@ fun OverviewScreen(
             onSettings = { navController.navigate(Destination.Settings) },
         )
         OverviewTopicsSection(
-            onNews = { navController.navigate(Destination.News) },
+            onHeadlines = { navController.navigate(Destination.News(NewsTab.HEADERS)) },
+            onNews = { navController.navigate(Destination.News(NewsTab.ALL_NEWS)) },
             onIncludes = { navController.navigate(Destination.Includes) }
         )
         OverviewCategoriesSection(

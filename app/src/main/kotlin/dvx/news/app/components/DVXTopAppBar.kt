@@ -3,6 +3,7 @@ package dvx.news.app.components
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -14,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,9 +26,10 @@ import dvx.news.app.themes.DVXTheme
 fun DVXTopAppBar(
     title: String,
     destination: String,
-    onNavigateUp: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    activeExport: Boolean = false
+    isActiveExport: Boolean = false,
+    onExport: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
@@ -40,9 +41,9 @@ fun DVXTopAppBar(
         },
         navigationIcon = {
             TextButton(
-                onClick = onNavigateUp,
+                onClick = onBack,
                 contentPadding = PaddingValues(8.dp),
-                shape = RectangleShape
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.KeyboardArrowLeft,
@@ -59,8 +60,8 @@ fun DVXTopAppBar(
             }
         },
         actions = {
-            if (activeExport) {
-                IconButton(onClick = {}) {
+            if (isActiveExport) {
+                IconButton(onClick = onExport) {
                     Icon(
                         painter = painterResource(R.drawable.ic_export),
                         contentDescription = null,
@@ -78,6 +79,6 @@ private fun DVXTopAppBarPreview() = DVXTheme {
     DVXTopAppBar(
         title = "Lifestyle",
         destination = "Mehr",
-        onNavigateUp = {}
+        onBack = {}
     )
 }

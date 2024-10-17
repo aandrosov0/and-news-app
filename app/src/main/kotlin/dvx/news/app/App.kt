@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import dvx.news.app.components.AppBottomBar
 import dvx.news.app.screens.ArticleScreen
 import dvx.news.app.screens.CategoryScreen
@@ -88,7 +89,10 @@ fun App(
                     ArticleScreen(navController = navController)
                 }
                 composable<Destination.News> {
-                    NewsScreen(navController = navController)
+                    NewsScreen(
+                        initialTab = it.toRoute<Destination.News>().initialTab,
+                        navController = navController
+                    )
                 }
                 composable<Destination.Settings> {
                     SettingsScreen(

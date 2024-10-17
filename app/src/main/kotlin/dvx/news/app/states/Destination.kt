@@ -29,7 +29,7 @@ sealed class Destination {
     @Serializable
     data object Menu : Destination()
     @Serializable
-    data object News : Destination()
+    data class News(val initialTab: NewsTab) : Destination()
     @Serializable
     data object Includes : Destination()
 }
@@ -44,7 +44,7 @@ val Destination.localizedName
         Destination.Sport -> stringResource(R.string.sport)
         Destination.Article -> stringResource(R.string.article)
         Destination.Category -> stringResource(R.string.category)
-        Destination.News -> stringResource(R.string.news)
+        is Destination.News -> stringResource(R.string.news)
         Destination.Overview -> stringResource(R.string.overview)
         Destination.Settings -> stringResource(R.string.settings)
         Destination.Includes -> stringResource(R.string.includes)

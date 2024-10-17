@@ -9,18 +9,26 @@ import dvx.news.app.components.NewsComprehensiveItem
 import dvx.news.app.states.News
 import dvx.news.app.themes.DVXTheme
 
-val newsList = listOf(
-    News(
-        time = "12:38 Uhr",
-        type = "Regional",
-        title = "Polizei-Grobeinsatz in Radeberg",
-        description = "Polizei schiebt Messer-Angreifer (54) ins",),
-    News(
-        time = "12:00 Uhr",
-        type = "Leben",
-        title = "Polizei-Grobeinsatz in Radeberg",
-        description = "Polizei schiebt Messer-Angreifer (54) ins",),
-)
+val newsList = buildList {
+    repeat(8) {
+        add(
+            News(
+                time = "12:38 Uhr",
+                type = "Regional",
+                title = "Polizei-Grobeinsatz in Radeberg",
+                description = "Polizei schiebt Messer-Angreifer (54) ins"
+            )
+        )
+        add(
+            News(
+                time = "12:00 Uhr",
+                type = "Leben",
+                title = "Polizei-Grobeinsatz in Radeberg",
+                description = "Polizei schiebt Messer-Angreifer (54) ins"
+            )
+        )
+    }
+}
 
 @Composable
 fun NewsHeadlinesSection(

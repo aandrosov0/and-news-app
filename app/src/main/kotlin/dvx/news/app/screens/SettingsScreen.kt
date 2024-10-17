@@ -34,7 +34,7 @@ fun SettingsScreenHeader(
         DVXTopAppBar(
             title = stringResource(R.string.settings),
             destination = stringResource(R.string.menu),
-            onNavigateUp = onNavigateUp
+            onBack = onNavigateUp
         )
         Tabs(
             tabs = listOf(Tab.REPRESENTATION, Tab.MESSAGES),

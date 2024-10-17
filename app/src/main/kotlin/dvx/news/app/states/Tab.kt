@@ -4,19 +4,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import dvx.news.app.R
 
-enum class Tab {
+enum class NewsTab {
     ALL_NEWS,
-    HEADERS,
+    HEADERS
+}
+
+val NewsTab.localizedName
+    @Composable
+    get() = stringResource(
+        when (this) {
+            NewsTab.ALL_NEWS -> R.string.all_news
+            NewsTab.HEADERS -> R.string.headers
+        }
+    )
+
+enum class Tab {
     REPRESENTATION,
     MESSAGES
 }
 
-val Tab.localizedName: String
+val Tab.localizedName
     @Composable
     get() = stringResource(
         when (this) {
-            Tab.ALL_NEWS -> R.string.all_news
-            Tab.HEADERS -> R.string.headers
             Tab.REPRESENTATION -> R.string.representation
             Tab.MESSAGES -> R.string.messages
         }

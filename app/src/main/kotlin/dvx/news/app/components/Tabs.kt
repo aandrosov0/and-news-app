@@ -4,6 +4,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
+import androidx.compose.material3.TabIndicatorScope
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,20 @@ import androidx.compose.ui.unit.Dp
 import dvx.news.app.states.Tab
 import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TabIndicatorScope.DVXTabIndicator(
+    selectedTabIndex: Int,
+    modifier: Modifier = Modifier
+) = TabRowDefaults.PrimaryIndicator(
+    modifier = modifier.tabIndicatorOffset(
+        selectedTabIndex = selectedTabIndex,
+        matchContentSize = false
+    ),
+    width = Dp.Unspecified,
+    shape = RectangleShape
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,9 +77,9 @@ fun Tabs(
 @Preview
 @Composable
 private fun NewsTabsPreview() = DVXTheme {
-    var currentTab by remember { mutableStateOf(Tab.ALL_NEWS) }
+    var currentTab by remember { mutableStateOf(Tab.MESSAGES) }
     Tabs(
-        tabs = listOf(Tab.ALL_NEWS, Tab.HEADERS),
+        tabs = listOf(Tab.MESSAGES, Tab.REPRESENTATION),
         currentTab = currentTab,
         onTabSelect = { currentTab = it }
     )

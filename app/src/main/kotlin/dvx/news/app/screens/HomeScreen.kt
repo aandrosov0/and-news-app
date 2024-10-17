@@ -36,7 +36,7 @@ fun HomeScreen(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
         ) {
-            repeat(2) {
+            repeat(6) {
                 Image(
                     painter = painterResource(R.drawable.img_large_preview),
                     contentDescription = null,

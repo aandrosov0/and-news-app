@@ -31,7 +31,10 @@ fun HorizontalButton(
 ) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(Color.Transparent),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.primary
+            ),
         shape = RectangleShape,
         contentPadding = PaddingValues(
             horizontal = 20.dp,
