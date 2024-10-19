@@ -4,7 +4,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabIndicatorScope
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,30 +16,16 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import dvx.news.app.states.SettingsTab
 import dvx.news.app.states.Tab
-import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TabIndicatorScope.DVXTabIndicator(
-    selectedTabIndex: Int,
-    modifier: Modifier = Modifier
-) = TabRowDefaults.PrimaryIndicator(
-    modifier = modifier.tabIndicatorOffset(
-        selectedTabIndex = selectedTabIndex,
-        matchContentSize = false
-    ),
-    width = Dp.Unspecified,
-    shape = RectangleShape
-)
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Tabs(
-    tabs: List<Tab>,
-    currentTab: Tab,
-    onTabSelect: (Tab) -> Unit,
+fun <T : Tab> Tabs(
+    tabs: List<T>,
+    currentTab: T,
+    onTabSelect: (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
     PrimaryTabRow(
@@ -77,10 +62,10 @@ fun Tabs(
 @Preview
 @Composable
 private fun NewsTabsPreview() = DVXTheme {
-    var currentTab by remember { mutableStateOf(Tab.MESSAGES) }
+    var currentSettingsTab by remember { mutableStateOf(SettingsTab.MESSAGES) }
     Tabs(
-        tabs = listOf(Tab.MESSAGES, Tab.REPRESENTATION),
-        currentTab = currentTab,
-        onTabSelect = { currentTab = it }
+        tabs = listOf(SettingsTab.MESSAGES, SettingsTab.REPRESENTATION),
+        currentTab = currentSettingsTab,
+        onTabSelect = { currentSettingsTab = it }
     )
 }

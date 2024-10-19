@@ -7,28 +7,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
-import dvx.news.app.components.DVXTabIndicator
 import dvx.news.app.components.DVXTopAppBar
+import dvx.news.app.components.Tabs
 import dvx.news.app.components.sections.NewsAllSection
 import dvx.news.app.components.sections.NewsHeadlinesSection
 import dvx.news.app.states.Destination
 import dvx.news.app.states.NewsTab
-import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
 import kotlinx.coroutines.launch
 
@@ -39,12 +33,12 @@ fun NewsScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
-    val availableTabs = NewsTab.entries
+    val tabs = NewsTab.entries
     val composableCoroutine = rememberCoroutineScope()
 
     val pagerState = rememberPagerState(
-        initialPage = availableTabs.indexOf(initialTab),
-        pageCount = { availableTabs.size }
+        initialPage = tabs.indexOf(initialTab),
+        pageCount = { tabs.size }
     )
 
     Column(modifier = modifier) {
@@ -54,32 +48,20 @@ fun NewsScreen(
                 destination = stringResource(R.string.menu),
                 onBack = navController::navigateUp
             )
-            PrimaryTabRow(
-                selectedTabIndex = pagerState.currentPage,
-                indicator = { DVXTabIndicator(pagerState.currentPage) }
-            ) {
-                availableTabs.forEachIndexed { index, tab ->
-                    Tab(
-                        selected = index == pagerState.currentPage,
-                        onClick = { composableCoroutine.launch { pagerState.animateScrollToPage(index) } },
-                        text = {
-                            Text(
-                                text = tab.localizedName,
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = modifier
-                                    .alpha(if (index == pagerState.currentPage) 1f else .64f)
-                            )
-                        }
-                    )
+            Tabs(
+                tabs = tabs,
+                currentTab = tabs[pagerState.currentPage],
+                onTabSelect = {
+                    composableCoroutine.launch { pagerState.animateScrollToPage(tabs.indexOf(it))  }
                 }
-            }
+            )
         }
         HorizontalPager(
             state = pagerState,
             verticalAlignment = Alignment.Top,
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            when (availableTabs[page]) {
+            when (tabs[page]) {
                 NewsTab.ALL_NEWS -> NewsAllSection(
                     onNews = { navController.navigate(Destination.Article) },
                     modifier = Modifier.padding(horizontal = 16.dp)

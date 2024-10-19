@@ -1,12 +1,13 @@
 package dvx.news.app.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,31 +19,11 @@ import dvx.news.app.components.DVXTopAppBar
 import dvx.news.app.components.sections.SettingsMessagesSection
 import dvx.news.app.components.sections.SettingsThemeSection
 import dvx.news.app.components.Tabs
-import dvx.news.app.states.Tab
+import dvx.news.app.states.SettingsTab
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.viewModels.SettingsViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
-@Composable
-fun SettingsScreenHeader(
-    currentTab: Tab,
-    onTabSelect: (Tab) -> Unit,
-    onNavigateUp: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        DVXTopAppBar(
-            title = stringResource(R.string.settings),
-            destination = stringResource(R.string.menu),
-            onBack = onNavigateUp
-        )
-        Tabs(
-            tabs = listOf(Tab.REPRESENTATION, Tab.MESSAGES),
-            currentTab = currentTab,
-            onTabSelect = onTabSelect
-        )
-    }
-}
 
 @Composable
 fun SettingsScreen(
@@ -50,25 +31,44 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     settingsViewModel: SettingsViewModel = koinViewModel()
 ) {
-    var currentTab by remember { mutableStateOf(Tab.REPRESENTATION) }
     val settings by settingsViewModel.state.collectAsState()
+
+    val composableCoroutine = rememberCoroutineScope()
+
+    val tabs = SettingsTab.entries
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        pageCount = { tabs.size }
+    )
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        SettingsScreenHeader(
-            currentTab = currentTab,
-            onTabSelect = { currentTab = it },
-            onNavigateUp = navController::navigateUp
+        DVXTopAppBar(
+            title = stringResource(R.string.settings),
+            destination = stringResource(R.string.menu),
+            onBack = navController::navigateUp
         )
-        when (currentTab) {
-            Tab.REPRESENTATION -> SettingsThemeSection(
-                currentTheme = settings.theme,
-                onThemeChange = { settingsViewModel.update(settings.copy(theme = it)) }
-            )
-            Tab.MESSAGES -> SettingsMessagesSection()
-            else -> throw IllegalStateException("Expected ${Tab.REPRESENTATION} or ${Tab.MESSAGES}")
+        Tabs(
+            tabs = tabs,
+            currentTab = tabs[pagerState.currentPage],
+            onTabSelect = {
+                composableCoroutine.launch { pagerState.animateScrollToPage(tabs.indexOf(it))  }
+            }
+        )
+        HorizontalPager(
+            state = pagerState,
+            verticalAlignment = Alignment.Top,
+            modifier = Modifier.fillMaxSize()
+        ) { page ->
+            when (tabs[page]) {
+                SettingsTab.REPRESENTATION -> SettingsThemeSection(
+                    currentTheme = settings.theme,
+                    onThemeChange = { settingsViewModel.update(settings.copy(theme = it)) }
+                )
+                SettingsTab.MESSAGES -> SettingsMessagesSection()
+            }
         }
     }
 }
