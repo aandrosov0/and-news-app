@@ -6,15 +6,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
+import dvx.news.app.adaptCurrentTheme
 import dvx.news.app.states.Theme
 
-private val lightColorScheme = lightColorScheme(
+val lightColorScheme = lightColorScheme(
     primary = primaryColor,
     onPrimary = onPrimaryColor,
     tertiary = tertiaryColor,
@@ -24,7 +23,7 @@ private val lightColorScheme = lightColorScheme(
     onSurfaceVariant = onSurfaceVariantLightColor
 )
 
-private val darkColorScheme = darkColorScheme(
+val darkColorScheme = darkColorScheme(
     primary = primaryColor,
     tertiary = tertiaryColor,
     surface = surfaceDarkColor,
@@ -32,6 +31,7 @@ private val darkColorScheme = darkColorScheme(
     surfaceVariant = surfaceVariantDarkColor,
     onSurfaceVariant = onSurfaceVariantDarkColor,
 )
+
 
 @Composable
 fun DVXTheme(
@@ -98,12 +98,7 @@ fun DVXTheme(
 
     val context = LocalContext.current
     if (context is Activity) {
-        val window = context.window
-        val isLightTheme = colorScheme == lightColorScheme
-
-        WindowCompat.getInsetsController(window, window.decorView)
-            .isAppearanceLightStatusBars = isLightTheme
-        window.statusBarColor = colorScheme.surface.toArgb()
+        context.adaptCurrentTheme(colorScheme == lightColorScheme, colorScheme)
     }
 
     MaterialTheme(
@@ -112,3 +107,4 @@ fun DVXTheme(
         content = content
     )
 }
+

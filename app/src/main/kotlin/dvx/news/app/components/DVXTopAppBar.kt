@@ -26,7 +26,7 @@ import dvx.news.app.themes.DVXTheme
 fun DVXTopAppBar(
     title: String,
     destination: String,
-    onBack: () -> Unit,
+    onNavigationClicked: () -> Unit,
     modifier: Modifier = Modifier,
     isActiveExport: Boolean = false,
     onExport: () -> Unit = {}
@@ -41,7 +41,7 @@ fun DVXTopAppBar(
         },
         navigationIcon = {
             TextButton(
-                onClick = onBack,
+                onClick = onNavigationClicked,
                 contentPadding = PaddingValues(8.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -79,6 +79,6 @@ private fun DVXTopAppBarPreview() = DVXTheme {
     DVXTopAppBar(
         title = "Lifestyle",
         destination = "Mehr",
-        onBack = {}
+        onNavigationClicked = {}
     )
 }

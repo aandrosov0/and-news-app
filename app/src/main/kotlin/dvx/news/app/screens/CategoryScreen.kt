@@ -47,7 +47,7 @@ fun CategoryScreen(
     DVXTopAppBar(
         title = category,
         destination = stringResource(R.string.menu),
-        onBack = { navController.navigate(Destination.Menu) }
+        onNavigationClicked = { navController.navigate(Destination.Menu) }
     )
     Column(
         modifier = Modifier

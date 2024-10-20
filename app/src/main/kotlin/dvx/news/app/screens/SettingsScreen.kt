@@ -35,7 +35,7 @@ fun SettingsScreen(
         DVXTopAppBar(
             title = stringResource(R.string.settings),
             destination = stringResource(R.string.menu),
-            onBack = navController::navigateUp
+            onNavigationClicked = navController::navigateUp
         )
         HorizontalTabPager(
             tabs = SettingsTab.entries,

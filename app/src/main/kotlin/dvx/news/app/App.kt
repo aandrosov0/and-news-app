@@ -18,7 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import dvx.news.app.components.AppBottomBar
+import dvx.news.app.components.DVXBottomNavigation
 import dvx.news.app.screens.ArticleScreen
 import dvx.news.app.screens.CategoryScreen
 import dvx.news.app.screens.HomeScreen
@@ -46,12 +46,9 @@ fun App(
         Scaffold(
             modifier = modifier,
             bottomBar = {
-                AppBottomBar(
-                    destination,
-                    onDestinationChange = {
-                        navController.navigate(it)
-                        destination = it
-                    }
+                DVXBottomNavigation(
+                    current = destination,
+                    onDestinationSelect = { destination = it }
                 )
             },
             containerColor = MaterialTheme.colorScheme.surfaceVariant

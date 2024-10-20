@@ -37,7 +37,7 @@ fun ArticleScreen(
     DVXTopAppBar(
         title = "",
         destination = stringResource(R.string.article),
-        onBack = navController::navigateUp,
+        onNavigationClicked = navController::navigateUp,
         isActiveExport = true
     )
     Column(

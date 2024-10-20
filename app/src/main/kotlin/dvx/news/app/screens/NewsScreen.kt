@@ -29,7 +29,7 @@ fun NewsScreen(
         DVXTopAppBar(
             title = "",
             destination = stringResource(R.string.menu),
-            onBack = navController::navigateUp
+            onNavigationClicked = navController::navigateUp
         )
         HorizontalTabPager(
             tabs = NewsTab.entries,
