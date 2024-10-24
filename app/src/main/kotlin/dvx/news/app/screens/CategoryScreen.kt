@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
-import dvx.news.app.components.DVXTopAppBar
 import dvx.news.app.components.VerticalPostCard
 import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
@@ -41,16 +40,10 @@ import dvx.news.app.themes.DVXTheme
 @Composable
 fun CategoryScreen(
     navController: NavController,
-    category: String,
     modifier: Modifier = Modifier
-) = Column(modifier = modifier) {
-    DVXTopAppBar(
-        title = category,
-        destination = stringResource(R.string.menu),
-        onNavigationClicked = { navController.navigate(Destination.Menu) }
-    )
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .verticalScroll(rememberScrollState())
     ) {
         Image(
@@ -131,8 +124,5 @@ fun CategoryScreen(
 @Preview
 @Composable
 private fun CategoryScreenPreview() = DVXTheme {
-    CategoryScreen(
-        navController = rememberNavController(),
-        category = "Lifestyle"
-    )
+    CategoryScreen(navController = rememberNavController())
 }

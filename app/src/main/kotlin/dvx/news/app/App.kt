@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dvx.news.app.components.DVXBottomNavigation
+import dvx.news.app.components.DVXTopAppBar
 import dvx.news.app.screens.ArticleScreen
 import dvx.news.app.screens.CategoryScreen
 import dvx.news.app.screens.HomeScreen
@@ -27,6 +27,7 @@ import dvx.news.app.screens.NewsScreen
 import dvx.news.app.screens.OverviewScreen
 import dvx.news.app.screens.SettingsScreen
 import dvx.news.app.states.Destination
+import dvx.news.app.states.topAppBarParameters
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.viewModels.SettingsViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -45,59 +46,72 @@ fun App(
 
         Scaffold(
             modifier = modifier,
-            bottomBar = {
-                DVXBottomNavigation(
-                    current = destination,
-                    onDestinationSelect = { destination = it }
-                )
+            topBar = {
+                val topAppBarParameters = destination.topAppBarParameters
+                if (topAppBarParameters != null) {
+                    DVXTopAppBar(
+                        parent = topAppBarParameters.parent,
+                        destination = topAppBarParameters.destination,
+                        navController = navController,
+                        isShowingLogo = topAppBarParameters.isShowingLogo,
+                        isShowingBack = topAppBarParameters.isShowingBack,
+                        isShowingShare = topAppBarParameters.isShowingShare
+                    )
+                }
             },
+            bottomBar = { DVXBottomNavigation(navController) },
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ) { paddingValues ->
             NavHost(
                 navController = navController,
-                startDestination = destination,
+                startDestination = Destination.Home,
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable<Destination.Home> {
+                    destination = Destination.Home
                     HomeScreen(navController = navController)
                 }
                 composable<Destination.Sport> {
+                    destination = Destination.Sport
                     CategoryScreen(
                         navController = navController,
-                        category = stringResource(R.string.sport),
                     )
                 }
                 composable<Destination.Lifestyle> {
+                    destination = Destination.Lifestyle
                     CategoryScreen(
                         navController = navController,
-                        category = stringResource(R.string.lifestyle),
                     )
                 }
                 composable<Destination.Entertainment> {
+                    destination = Destination.Entertainment
                     CategoryScreen(
                         navController = navController,
-                        category = stringResource(R.string.entertainment),
                     )
                 }
                 composable<Destination.Menu> {
+                    destination = Destination.Menu
                     OverviewScreen(navController = navController)
                 }
                 composable<Destination.Article> {
-                    ArticleScreen(navController = navController)
+                    destination = Destination.Article
+                    ArticleScreen()
                 }
                 composable<Destination.News> {
+                    destination = it.toRoute<Destination.News>()
                     NewsScreen(
                         initialTab = it.toRoute<Destination.News>().initialTab,
                         navController = navController
                     )
                 }
                 composable<Destination.Settings> {
+                    destination = it.toRoute<Destination.Settings>()
                     SettingsScreen(
-                        navController = navController,
                         settingsViewModel = settingsViewModel
                     )
                 }
                 composable<Destination.Includes> {
+                    destination = Destination.Includes
                     IncludesScreen(navController = navController)
                 }
             }

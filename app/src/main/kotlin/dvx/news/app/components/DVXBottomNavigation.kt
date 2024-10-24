@@ -25,6 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import dvx.news.app.states.Destination
 import dvx.news.app.states.localizedIcon
 import dvx.news.app.states.localizedName
@@ -33,8 +35,7 @@ import dvx.news.app.themes.DVXTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DVXBottomNavigation(
-    current: Destination,
-    onDestinationSelect: (Destination) -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier,
 ) {
     val destinations = listOf(
@@ -44,6 +45,7 @@ fun DVXBottomNavigation(
         Destination.Entertainment,
         Destination.Menu
     )
+    var current by remember { mutableStateOf(destinations.first()) }
 
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
@@ -69,7 +71,10 @@ fun DVXBottomNavigation(
             )) {
                 NavigationBarItem(
                     selected = selected,
-                    onClick = { onDestinationSelect(destination) },
+                    onClick = {
+                        current = destination
+                        navController.navigate(current)
+                    },
                     icon = {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,9 +108,7 @@ fun DVXBottomNavigation(
 @Preview(widthDp = 360)
 @Composable
 private fun DVXBottomAppBarPreview() = DVXTheme {
-    var current: Destination by remember { mutableStateOf(Destination.Home) }
     DVXBottomNavigation(
-        current = current,
-        onDestinationSelect = { current = it }
+        navController = rememberNavController()
     )
 }

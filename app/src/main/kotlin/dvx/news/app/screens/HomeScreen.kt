@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
-import dvx.news.app.components.DVXTopLogoAppBar
 import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
 
@@ -29,27 +28,24 @@ fun HomeScreen(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
-        DVXTopLogoAppBar()
-        Column(
-            verticalArrangement = Arrangement.spacedBy(14.dp),
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-        ) {
-            repeat(6) {
-                Image(
-                    painter = painterResource(R.drawable.img_large_preview),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(color = MaterialTheme.colorScheme.primary),
-                            onClick = { navController.navigate(Destination.Article) }
-                        )
-                )
-            }
+    Column(
+        verticalArrangement = Arrangement.spacedBy(14.dp),
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        repeat(6) {
+            Image(
+                painter = painterResource(R.drawable.img_large_preview),
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(color = MaterialTheme.colorScheme.primary),
+                        onClick = { navController.navigate(Destination.Article) }
+                    )
+            )
         }
     }
 }

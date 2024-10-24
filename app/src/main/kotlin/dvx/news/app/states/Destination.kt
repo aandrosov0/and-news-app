@@ -67,3 +67,19 @@ val Destination.localizedIcon
             ).build()
         )
     }
+
+val Destination.topAppBarParameters: TopAppBarParameters?
+    @Composable
+    get() = when (this) {
+        Destination.Home -> TopAppBarDefaults.topAppBarParameters.copy(
+            isShowingLogo = true,
+            isShowingBack = false
+        )
+        Destination.Menu -> Destination.Home.topAppBarParameters?.copy(
+            destination = localizedName
+        )
+        Destination.Includes -> null
+        else -> TopAppBarDefaults.topAppBarParameters.copy(
+            destination = localizedName
+        )
+    }
