@@ -15,45 +15,43 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
+import dvx.news.app.states.TopAppBarDefaults
+import dvx.news.app.states.TopAppBarParameters
 import dvx.news.app.themes.DVXTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DVXTopAppBar(
-    parent: String,
-    destination: String,
     navController: NavController,
+    topAppBarParameters: TopAppBarParameters,
     modifier: Modifier = Modifier,
-    isShowingBack: Boolean = true,
-    isShowingLogo: Boolean = false,
-    isShowingShare: Boolean = true,
     onExport: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
         title = {
             Text(
-                text = destination,
+                text = topAppBarParameters.destination,
                 style = MaterialTheme.typography.bodyMedium,
             )
         },
         navigationIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (isShowingLogo) {
+                if (topAppBarParameters.isShowingLogo) {
                     AppLogo()
                 }
 
-                if (isShowingBack) {
+                if (topAppBarParameters.isShowingBack) {
                     HorizontalButton(
                         onClick = navController::navigateUp,
                         icon = R.drawable.ic_arrow_left,
-                        label = parent
+                        label = topAppBarParameters.parent
                     )
                 }
             }
         },
         actions = {
-            if (isShowingShare) {
+            if (topAppBarParameters.isShowingShare) {
                 IconButton(onClick = onExport) {
                     Icon(
                         painter = painterResource(R.drawable.ic_export),
@@ -70,8 +68,7 @@ fun DVXTopAppBar(
 @Composable
 private fun DVXTopAppBarPreview() = DVXTheme {
     DVXTopAppBar(
-        parent = "Lifestyle",
-        destination = "Mehr",
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        topAppBarParameters = TopAppBarDefaults.topAppBarParameters
     )
 }

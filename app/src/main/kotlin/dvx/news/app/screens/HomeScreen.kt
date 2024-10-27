@@ -1,6 +1,7 @@
 package dvx.news.app.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp),
         modifier = modifier
             .verticalScroll(rememberScrollState())
+            .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         repeat(6) {
             Image(

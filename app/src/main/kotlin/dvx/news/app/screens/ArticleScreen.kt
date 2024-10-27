@@ -1,6 +1,7 @@
 package dvx.news.app.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +31,7 @@ fun ArticleScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .height(intrinsicSize = IntrinsicSize.Min)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .verticalScroll(rememberScrollState())
     ) {
         Text(

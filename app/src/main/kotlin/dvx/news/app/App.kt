@@ -1,5 +1,14 @@
 package dvx.news.app
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring.StiffnessLow
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -10,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -27,6 +37,7 @@ import dvx.news.app.screens.NewsScreen
 import dvx.news.app.screens.OverviewScreen
 import dvx.news.app.screens.SettingsScreen
 import dvx.news.app.states.Destination
+import dvx.news.app.states.TopAppBarDefaults
 import dvx.news.app.states.topAppBarParameters
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.viewModels.SettingsViewModel
@@ -47,15 +58,15 @@ fun App(
         Scaffold(
             modifier = modifier,
             topBar = {
-                val topAppBarParameters = destination.topAppBarParameters
-                if (topAppBarParameters != null) {
+                AnimatedVisibility(
+                    destination.topAppBarParameters != null,
+                    exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.Center),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     DVXTopAppBar(
-                        parent = topAppBarParameters.parent,
-                        destination = topAppBarParameters.destination,
                         navController = navController,
-                        isShowingLogo = topAppBarParameters.isShowingLogo,
-                        isShowingBack = topAppBarParameters.isShowingBack,
-                        isShowingShare = topAppBarParameters.isShowingShare
+                        topAppBarParameters = destination.topAppBarParameters ?: TopAppBarDefaults.topAppBarParameters,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             },
@@ -65,6 +76,8 @@ fun App(
             NavHost(
                 navController = navController,
                 startDestination = Destination.Home,
+                enterTransition = { fadeIn(tween(1000)) },
+                exitTransition = { fadeOut(tween(1000)) },
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable<Destination.Home> {
@@ -89,7 +102,20 @@ fun App(
                         navController = navController,
                     )
                 }
-                composable<Destination.Menu> {
+                composable<Destination.Menu>(
+                    enterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = spring(stiffness = StiffnessLow)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = spring(stiffness = StiffnessLow)
+                        )
+                    }
+                ) {
                     destination = Destination.Menu
                     OverviewScreen(navController = navController)
                 }

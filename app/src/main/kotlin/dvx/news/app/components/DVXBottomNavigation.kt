@@ -1,20 +1,24 @@
 package dvx.news.app.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,54 +54,58 @@ fun DVXBottomNavigation(
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
         modifier = modifier
+            .height(IntrinsicSize.Max)
     ) {
         for (destination in destinations) {
             val selected = destination == current
 
-            val iconColor = if (selected) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.tertiary
-            }
+            @Composable
+            fun defineSelectableColor(
+                selected: Boolean,
+                selectedColor: Color,
+                unselectedColor: Color
+            ) = animateColorAsState(
+                targetValue = if (selected) selectedColor else unselectedColor,
+                animationSpec = spring(stiffness = Spring.StiffnessVeryLow),
+                label = "AnimatedColor"
+            ).value
 
-            val textColor = if (selected) {
-                MaterialTheme.colorScheme.onSurface
-            } else {
-                MaterialTheme.colorScheme.tertiary
-            }
-
-            CompositionLocalProvider(LocalRippleConfiguration provides RippleConfiguration(
-                color = MaterialTheme.colorScheme.primary,
-            )) {
-                NavigationBarItem(
-                    selected = selected,
-                    onClick = {
-                        current = destination
-                        navController.navigate(current)
-                    },
-                    icon = {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Icon(
-                                painter = destination.localizedIcon,
-                                contentDescription = null,
-                                tint = iconColor,
-                                modifier = Modifier.size(28.dp)
-                            )
-                            Text(
-                                text = destination.localizedName,
-                                style = MaterialTheme.typography.bodySmall,
-                                textAlign = TextAlign.Center,
-                                color = textColor,
-                                modifier = Modifier.fillMaxWidth()
-                            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f)
+                    .selectable(
+                        selected = true,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(false),
+                        onClick = {
+                            navController.navigate(destination)
+                            current = destination
                         }
-                    },
-                    alwaysShowLabel = false,
-                    colors = NavigationBarItemDefaults.colors(
-                        indicatorColor = Color.Transparent
+                    )
+            ) {
+                Icon(
+                    painter = destination.localizedIcon,
+                    contentDescription = null,
+                    tint = defineSelectableColor(
+                        selected = selected,
+                        selectedColor = MaterialTheme.colorScheme.primary,
+                        unselectedColor = MaterialTheme.colorScheme.onSurface.copy(.5f)
+                    ),
+                    modifier = Modifier
+                        .size(32.dp)
+                        .padding(bottom = 8.dp)
+                )
+                Text(
+                    text = destination.localizedName,
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center,
+                    color = defineSelectableColor(
+                        selected = selected,
+                        selectedColor = MaterialTheme.colorScheme.onSurface,
+                        unselectedColor = MaterialTheme.colorScheme.onSurface.copy(.5f)
                     )
                 )
             }
@@ -105,7 +113,7 @@ fun DVXBottomNavigation(
     }
 }
 
-@Preview(widthDp = 360)
+@Preview
 @Composable
 private fun DVXBottomAppBarPreview() = DVXTheme {
     DVXBottomNavigation(

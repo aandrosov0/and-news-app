@@ -1,5 +1,6 @@
 package dvx.news.app.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -44,11 +46,12 @@ fun IncludesScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .verticalScroll(rememberScrollState())
             .padding(
                 start = 10.dp,
-                end = 10.dp,
+                end = 10.dp
             )
-            .verticalScroll(rememberScrollState()),
     ) {
         AudioPlayer(
             trackTitle = "Artikel anhören",

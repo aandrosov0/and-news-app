@@ -1,5 +1,6 @@
 package dvx.news.app.components
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerScope
@@ -31,7 +32,12 @@ fun HorizontalTabPager(
         currentTab = tabs[pagerState.currentPage],
         onTabSelect = { selectedTab ->
             val index = tabs.indexOf(selectedTab)
-            composableCoroutine.launch { pagerState.animateScrollToPage(index) }
+            composableCoroutine.launch {
+                pagerState.animateScrollToPage(
+                    index,
+                    animationSpec = tween(durationMillis = 350)
+                )
+            }
         }
     )
     HorizontalPager(

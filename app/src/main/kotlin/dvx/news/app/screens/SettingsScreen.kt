@@ -1,6 +1,8 @@
 package dvx.news.app.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,6 +27,7 @@ fun SettingsScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
+            .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         HorizontalTabPager(
             tabs = SettingsTab.entries,
