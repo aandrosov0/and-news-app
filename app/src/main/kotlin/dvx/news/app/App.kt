@@ -70,7 +70,12 @@ fun App(
                     )
                 }
             },
-            bottomBar = { DVXBottomNavigation(navController) },
+            bottomBar = {
+                DVXBottomNavigation(
+                    destination = destination,
+                    navController = navController
+                )
+            },
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ) { paddingValues ->
             NavHost(

@@ -39,6 +39,7 @@ import dvx.news.app.themes.DVXTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DVXBottomNavigation(
+    destination: Destination,
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
@@ -50,6 +51,9 @@ fun DVXBottomNavigation(
         Destination.Menu
     )
     var current by remember { mutableStateOf(destinations.first()) }
+    if (destination in destinations) {
+        current = destination
+    }
 
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
@@ -117,6 +121,7 @@ fun DVXBottomNavigation(
 @Composable
 private fun DVXBottomAppBarPreview() = DVXTheme {
     DVXBottomNavigation(
+        destination = Destination.Home,
         navController = rememberNavController()
     )
 }
