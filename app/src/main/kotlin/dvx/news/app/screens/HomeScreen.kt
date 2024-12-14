@@ -2,13 +2,14 @@ package dvx.news.app.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,6 +28,7 @@ import dvx.news.app.components.HomeArticleImage
 import dvx.news.data.dataOfflineModule
 import org.koin.compose.KoinApplication
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -38,24 +40,25 @@ fun HomeScreen(
     }
 
     val homeArticles by homeViewModel.uiState.collectAsState()
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (homeArticles.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        } else {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier
-                    .verticalScroll(rememberScrollState())
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .fillMaxSize()
-            ) {
-                for(article in homeArticles.articles) {
-                    HomeArticleImage(
-                        imageUrl = article.imageUrl,
-                        onClick = { TODO("navigate to article") }
-                    )
-                }
+    PullToRefreshBox(
+        isRefreshing = homeArticles.isLoading,
+        onRefresh = { homeViewModel.getArticles(refresh = true) },
+        modifier = modifier.fillMaxSize(),
+        state = rememberPullToRefreshState(),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .fillMaxSize()
+        ) {
+            for (article in homeArticles.articles) {
+                HomeArticleImage(
+                    imageUrl = article.imageUrl,
+                    onClick = { }
+                )
             }
         }
     }

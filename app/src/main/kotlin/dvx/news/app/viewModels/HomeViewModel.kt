@@ -20,11 +20,16 @@ class HomeViewModel(
 
     private var gettingArticlesJob: Job? = null
 
-    fun getArticles() {
+    fun getArticles(refresh: Boolean = false) {
         gettingArticlesJob?.cancel()
+
         gettingArticlesJob = viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = HomeArticles(isLoading = true)
-            val articles = articlesRepository.getRecent().map(Article::toHomeArticle)
+
+            val articles = articlesRepository
+                .getRecent(refresh)
+                .map(Article::toHomeArticle)
+
             _uiState.value = HomeArticles(articles = articles)
         }
     }
