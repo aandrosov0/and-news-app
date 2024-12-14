@@ -3,30 +3,33 @@ package com.dvxnews.api
 import com.dvxnews.api.exceptions.DVXNewsException
 import com.dvxnews.api.models.DVXResponse
 import com.dvxnews.api.models.DVXArticles
+import com.dvxnews.api.models.DVXCategory
 import com.dvxnews.api.models.isSuccessful
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.decodeFromStream
+import kotlinx.serialization.json.jsonObject
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
+@OptIn(ExperimentalSerializationApi::class)
 class DVXNewsClient(
     private val client: OkHttpClient = OkHttpClient(),
     private val serializer: Json = Json { ignoreUnknownKeys = true }
 ) {
     companion object {
         const val API_URL = "https://devapi.adlink.net"
-        const val ARTICLES_API = "$API_URL/websites/articles"
+        const val ARTICLES_URL = "$API_URL/websites/articles"
+        const val CATEGORIES_URL = "$API_URL/websites/domain"
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
     fun getArticles(
         domain: DVXNewsDomain = DVXNewsDomain.DVXNEWS,
         language: DVXNewsLanguage = DVXNewsLanguage.DE,
     ): DVXArticles {
-        val url = "$ARTICLES_API?domain_name=$domain&language_id=$language"
+        val url = "$ARTICLES_URL?domain_name=$domain&language_id=$language"
         val request = Request.Builder()
             .url(url)
             .build()
@@ -47,6 +50,39 @@ class DVXNewsClient(
             }
 
             return serializer.decodeFromJsonElement(result.body)
+        }
+    }
+
+    fun getCategories(
+        domain: DVXNewsDomain = DVXNewsDomain.DVXNEWS,
+        language: DVXNewsLanguage = DVXNewsLanguage.DE
+    ): List<DVXCategory> {
+        val url = "$CATEGORIES_URL?domain_name=$domain&language_id=$language"
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                throw DVXNewsException("Response code is invalid: ${response.code}")
+            }
+
+            if (response.body == null) {
+                throw DVXNewsException("Response body is empty")
+            }
+
+            val result = serializer.decodeFromStream<DVXResponse<JsonElement>>(response.body!!.byteStream())
+
+            if (!result.status.isSuccessful) {
+                throw DVXNewsException("Api error: ${result.body}")
+            }
+
+            val categoriesJson = result.body.jsonObject["categories"]
+            if (categoriesJson == null) {
+                throw DVXNewsException("Cannot fetch categories. Can't find json element")
+            }
+
+            return serializer.decodeFromJsonElement(categoriesJson)
         }
     }
 }
