@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "DVX News"
-include(":app", ":data")
+include(":app", ":data", "dvxnews-api")
