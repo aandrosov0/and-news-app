@@ -2,6 +2,7 @@ package dvx.news.data
 
 import com.dvxnews.api.DVXNewsClient
 import dvx.news.data.dataSources.ArticlesDataSource
+import dvx.news.data.dataSources.ArticlesOfflineDataSource
 import dvx.news.data.dataSources.ArticlesRemoteDataSource
 import dvx.news.data.repositories.ArticlesRepository
 import dvx.news.data.repositories.ArticlesRepositoryImpl
@@ -18,5 +19,16 @@ val dataModule = module {
 
     single { DVXNewsClient() }
     single<ArticlesDataSource> { ArticlesRemoteDataSource(get()) }
+    single<ArticlesRepository> { ArticlesRepositoryImpl(get()) }
+}
+
+val dataOfflineModule = module {
+    single<SettingsRepository> {
+        SettingsRepositoryImpl(
+            dataStore = get()
+        )
+    }
+
+    single<ArticlesDataSource> { ArticlesOfflineDataSource() }
     single<ArticlesRepository> { ArticlesRepositoryImpl(get()) }
 }
