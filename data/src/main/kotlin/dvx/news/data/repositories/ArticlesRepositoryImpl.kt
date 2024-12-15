@@ -6,24 +6,25 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
 class ArticlesRepositoryImpl(
-    private val newsSource: ArticlesDataSource,
+    private val articlesDataSource: ArticlesDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ArticlesRepository {
     private val recentArticlesMutex = Mutex()
     private var recentArticles = emptyList<Article>()
 
-    override suspend fun getRecent(refresh: Boolean) = with(dispatcher) {
+    override suspend fun getRecent(refresh: Boolean) = withContext(dispatcher) {
         if (refresh || recentArticles.isEmpty()) {
             recentArticlesMutex.withLock {
-                recentArticles = newsSource.getRecent()
+                recentArticles = articlesDataSource.getRecent()
             }
         }
         recentArticles
     }
 
-    override suspend fun getRandom(refresh: Boolean) = with(dispatcher) {
-        newsSource.getRandom()
+    override suspend fun getRandom(refresh: Boolean) = withContext(dispatcher) {
+        articlesDataSource.getRandom()
     }
 }

@@ -23,7 +23,7 @@ import dvx.news.app.viewModels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import dvx.news.app.androidModule
+import dvx.news.app.appModule
 import dvx.news.app.components.HomeArticleImage
 import dvx.news.data.dataOfflineModule
 import org.koin.compose.KoinApplication
@@ -68,7 +68,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() = DVXTheme {
     KoinApplication(
-        application = { modules(androidModule, dataOfflineModule) }
+        application = { modules(appModule, dataOfflineModule) }
     ) {
         HomeScreen(
             navController = rememberNavController()

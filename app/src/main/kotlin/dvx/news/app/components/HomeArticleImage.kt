@@ -9,9 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import coil3.compose.AsyncImage
-import dvx.news.app.R
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 
 @Composable
 fun HomeArticleImage(
@@ -20,7 +21,10 @@ fun HomeArticleImage(
     modifier: Modifier = Modifier,
 ) {
     AsyncImage(
-        model = imageUrl,
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(imageUrl)
+            .crossfade(true)
+            .build(),
         contentDescription = null,
         modifier = modifier
             .fillMaxSize()
@@ -29,8 +33,6 @@ fun HomeArticleImage(
                 indication = ripple(color = MaterialTheme.colorScheme.primary),
                 onClick = onClick
             ),
-        placeholder = painterResource(R.drawable.img_large_preview),
-        error = painterResource(R.drawable.img_large_preview),
         contentScale = ContentScale.FillWidth,
     )
 }

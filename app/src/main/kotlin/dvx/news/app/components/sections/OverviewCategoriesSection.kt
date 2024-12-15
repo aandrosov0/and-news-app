@@ -13,13 +13,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dvx.news.app.R
 import dvx.news.app.components.HorizontalButton
+import dvx.news.app.states.CategoryUiState
 import dvx.news.app.themes.DVXTheme
 
 @Composable
 fun OverviewCategoriesSection(
-    onSport: () -> Unit,
-    onLifestyle: () -> Unit,
-    onEntertainment: () -> Unit,
+    categories: List<CategoryUiState>,
+    onClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -34,27 +34,17 @@ fun OverviewCategoriesSection(
                 top = 18.dp
             )
         )
-        HorizontalDivider()
-        HorizontalButton(
-            onClick = onSport,
-            text = stringResource(R.string.sport),
-            prefixIconId = R.drawable.ic_sport,
-            postfixIconId = R.drawable.ic_down
-        )
-        HorizontalDivider()
-        HorizontalButton(
-            onClick = onLifestyle,
-            text = stringResource(R.string.lifestyle),
-            prefixIconId = R.drawable.ic_lifestyle,
-            postfixIconId = R.drawable.ic_down
-        )
-        HorizontalDivider()
-        HorizontalButton(
-            onClick = onEntertainment,
-            text = stringResource(R.string.entertainment),
-            prefixIconId = R.drawable.ic_unterhaltung,
-            postfixIconId = R.drawable.ic_down
-        )
+        Column {
+            categories.forEach { category ->
+                HorizontalDivider()
+                HorizontalButton(
+                    onClick = { onClick(category.id) },
+                    text = category.name,
+                    prefixIconId = R.drawable.ic_sport,
+                    postfixIconId = R.drawable.ic_down
+                )
+            }
+        }
         HorizontalDivider()
     }
 }
@@ -63,8 +53,11 @@ fun OverviewCategoriesSection(
 @Composable
 private fun HeadingsOverviewSectionPreview() = DVXTheme {
     OverviewCategoriesSection(
-        onEntertainment = {},
-        onSport = {},
-        onLifestyle = {}
+        categories = listOf(
+            CategoryUiState(name = "Sport"),
+            CategoryUiState(name = "Lifestyle"),
+            CategoryUiState(name = "Books")
+        ),
+        onClick = {}
     )
 }

@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KoinApplication({
                 androidContext(this@MainActivity)
-                modules(dataModule, androidModule)
+                modules(dataModule, appModule)
             }) {
                 App()
             }

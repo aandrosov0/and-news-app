@@ -6,5 +6,4 @@ import kotlinx.serialization.Serializable
 data class DVXArticles(
     val recent: List<DVXArticle> = emptyList(),
     val random: List<DVXArticle> = emptyList(),
-    val categories: List<DVXCategory> = emptyList(),
 )
