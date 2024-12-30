@@ -27,15 +27,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import dvx.news.app.components.DVXBottomNavigation
-import dvx.news.app.components.DVXTopAppBar
-import dvx.news.app.screens.ArticleScreen
-import dvx.news.app.screens.CategoryScreen
-import dvx.news.app.screens.HomeScreen
-import dvx.news.app.screens.IncludesScreen
-import dvx.news.app.screens.NewsScreen
-import dvx.news.app.screens.OverviewScreen
-import dvx.news.app.screens.SettingsScreen
+import dvx.news.app.ui.components.DVXBottomNavigation
+import dvx.news.app.ui.components.DVXTopAppBar
+import dvx.news.app.ui.screens.ArticleScreen
+import dvx.news.app.ui.screens.CategoryScreen
+import dvx.news.app.ui.screens.HomeScreen
+import dvx.news.app.ui.screens.IncludesScreen
+import dvx.news.app.ui.screens.NewsScreen
+import dvx.news.app.ui.screens.OverviewScreen
+import dvx.news.app.ui.screens.SettingsScreen
 import dvx.news.app.states.Destination
 import dvx.news.app.states.TopAppBarDefaults
 import dvx.news.app.states.topAppBarParameters
@@ -73,7 +73,7 @@ fun App(
             bottomBar = {
                 DVXBottomNavigation(
                     destination = destination,
-                    navController = navController
+                    navController = navController,
                 )
             },
             containerColor = MaterialTheme.colorScheme.surfaceVariant

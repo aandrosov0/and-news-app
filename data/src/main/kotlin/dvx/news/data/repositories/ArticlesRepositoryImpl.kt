@@ -15,6 +15,9 @@ class ArticlesRepositoryImpl(
     private val recentArticlesMutex = Mutex()
     private var recentArticles = emptyList<Article>()
 
+    private val randomArticlesMutex = Mutex()
+    private var randomArticles = emptyList<Article>()
+
     override suspend fun getRecent(refresh: Boolean) = withContext(dispatcher) {
         if (refresh || recentArticles.isEmpty()) {
             recentArticlesMutex.withLock {
@@ -25,6 +28,11 @@ class ArticlesRepositoryImpl(
     }
 
     override suspend fun getRandom(refresh: Boolean) = withContext(dispatcher) {
-        articlesDataSource.getRandom()
+        if (refresh || randomArticles.isEmpty()) {
+            randomArticlesMutex.withLock {
+                randomArticles = articlesDataSource.getRandom()
+            }
+        }
+        randomArticles
     }
 }

@@ -32,7 +32,6 @@ val darkColorScheme = darkColorScheme(
     onSurfaceVariant = onSurfaceVariantDarkColor,
 )
 
-
 @Composable
 fun DVXTheme(
     theme: Theme = Theme.SYSTEM,

@@ -2,28 +2,27 @@ package dvx.news.app.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dvx.news.app.states.HomeScreenUiState
+import dvx.news.app.states.OverviewScreenUiState
 import dvx.news.app.states.toUiState
-import dvx.news.data.repositories.ArticlesRepository
+import dvx.news.data.repositories.CategoriesRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
-    private val articlesRepository: ArticlesRepository
+class OverviewViewModel(
+    private val categoriesRepository: CategoriesRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(HomeScreenUiState())
+    private val _uiState = MutableStateFlow(OverviewScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     private var allJob: Job? = null
-
     fun getAll(refresh: Boolean = false) {
         allJob?.cancel()
         allJob = viewModelScope.launch {
-            _uiState.value = HomeScreenUiState(isLoading = true)
-            val articles = articlesRepository.getRecent(refresh).map { it.toUiState() }
-            _uiState.value = HomeScreenUiState(recentArticles = articles)
+            _uiState.value = OverviewScreenUiState(isLoading = true)
+            val categories = categoriesRepository.getAll(refresh).map { it.toUiState() }
+            _uiState.value = OverviewScreenUiState(categories = categories)
         }
     }
 }
