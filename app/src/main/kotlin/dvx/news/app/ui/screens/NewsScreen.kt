@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import coil3.compose.rememberAsyncImagePainter
 import dvx.news.app.R
 import dvx.news.app.states.ArticleUiState
+import dvx.news.app.states.CategoryUiState
 import dvx.news.app.states.Destination
 import dvx.news.app.states.NewsTab
 import dvx.news.app.themes.DVXTheme
@@ -73,14 +74,16 @@ fun NewsScreen(
                     AllNews(
                         onNews = { navController.navigate(Destination.Article) },
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        news = uiState.randomArticles
+                        news = uiState.randomArticles,
+                        categories = uiState.categories
                     )
                 }
                 NewsTab.HEADERS -> {
                     HeadlinesNews(
                         onNews = { navController.navigate(Destination.Article) },
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        news = uiState.recentArticles
+                        news = uiState.recentArticles,
+                        categories = uiState.categories
                     )
                 }
             }
@@ -92,6 +95,7 @@ fun NewsScreen(
 private fun AllNews(
     onNews: () -> Unit,
     news: List<ArticleUiState>,
+    categories: List<CategoryUiState>,
     modifier: Modifier = Modifier,
 ) {
     NewsItemsSection(
@@ -102,7 +106,7 @@ private fun AllNews(
         val painter = rememberAsyncImagePainter(it.imageUrl)
         NewsItem(
             time = it.time,
-            type = "TODO",
+            type = categories.find { category -> category.id == it.categoryId }!!.name,
             image = painter,
             onClick = onNews
         )
@@ -113,6 +117,7 @@ private fun AllNews(
 private fun HeadlinesNews(
     onNews: () -> Unit,
     news: List<ArticleUiState>,
+    categories: List<CategoryUiState>,
     modifier: Modifier = Modifier,
 ) {
     NewsItemsSection(
@@ -123,7 +128,7 @@ private fun HeadlinesNews(
         var painter = rememberAsyncImagePainter(it.imageUrl)
         NewsComprehensiveItem(
             time = it.time,
-            type = "TODO",
+            type = categories.find { category -> category.id == it.categoryId }!!.name,
             image = painter,
             title = it.headline,
             description = it.leadParagraph,

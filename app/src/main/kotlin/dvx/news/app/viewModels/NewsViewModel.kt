@@ -7,6 +7,7 @@ import dvx.news.app.states.ErrorUiState
 import dvx.news.app.states.NewsScreenUiState
 import dvx.news.app.states.toUiState
 import dvx.news.data.repositories.ArticlesRepository
+import dvx.news.data.repositories.CategoriesRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 import okio.IOException
 
 class NewsViewModel(
-    private val articlesRepository: ArticlesRepository
+    private val articlesRepository: ArticlesRepository,
+    private val categoriesRepository: CategoriesRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(NewsScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -29,9 +31,12 @@ class NewsViewModel(
             _uiState.value = try {
                 val recentArticles = articlesRepository.getRecent(refresh).map { it.toUiState() }
                 val randomArticles = articlesRepository.getRandom(refresh).map { it.toUiState() }
+                val categories = categoriesRepository.getAll(refresh).map { it.toUiState() }
+
                 NewsScreenUiState(
                     recentArticles = recentArticles,
-                    randomArticles = randomArticles
+                    randomArticles = randomArticles,
+                    categories = categories
                 )
             } catch (_: IOException) {
                 NewsScreenUiState(

@@ -106,6 +106,7 @@ private fun Footer(
         Text(
             text = title,
             fontSize = 16.sp,
+            lineHeight = 20.sp,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .fillMaxWidth()

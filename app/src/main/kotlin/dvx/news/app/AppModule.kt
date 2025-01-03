@@ -15,7 +15,7 @@ val appModule = module {
     single<DataStore<Preferences>>{ androidContext().dataStore }
     viewModel { AudioViewModel() }
     viewModel { SettingsViewModel(get()) }
-    viewModel { NewsViewModel(get()) }
+    viewModel { NewsViewModel(get(), get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { OverviewViewModel(get()) }
 }

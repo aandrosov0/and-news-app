@@ -18,27 +18,21 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import dvx.news.app.appModule
+import dvx.news.app.R
+import dvx.news.app.states.CategoryUiState
 import dvx.news.app.states.Destination
 import dvx.news.app.states.NewsTab
-import dvx.news.app.themes.DVXTheme
-import dvx.news.data.dataOfflineModule
-import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.KoinApplication
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.sp
-import dvx.news.app.R
-import dvx.news.app.ui.components.DVXCard
-import dvx.news.app.states.CategoryUiState
 import dvx.news.app.states.iconId
+import dvx.news.app.ui.components.DVXCard
 import dvx.news.app.ui.components.HorizontalButton
 import dvx.news.app.viewModels.OverviewViewModel
+import org.koin.androidx.compose.koinViewModel
 import kotlin.collections.forEach
 
 @Composable
@@ -184,16 +178,5 @@ fun OverviewScreen(
                 onClick = {}
             )
         }
-    }
-}
-
-
-@Preview
-@Composable
-private fun OverviewScreenPreview() = DVXTheme {
-    KoinApplication(application = { modules(dataOfflineModule, appModule) }) {
-        OverviewScreen(
-            navController = rememberNavController()
-        )
     }
 }
