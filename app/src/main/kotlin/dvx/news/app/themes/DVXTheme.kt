@@ -25,6 +25,7 @@ val lightColorScheme = lightColorScheme(
 
 val darkColorScheme = darkColorScheme(
     primary = primaryColor,
+    onPrimary = onPrimaryColor,
     tertiary = tertiaryColor,
     surface = surfaceDarkColor,
     onSurface = onSurfaceDarkColor,
@@ -92,6 +93,18 @@ fun DVXTheme(
             fontWeight = FontWeight.Bold,
             lineHeight = 24.sp,
             color = colorScheme.primary
+        ),
+        headlineSmall = MaterialTheme.typography.headlineSmall.copy(
+            fontFamily = openSansCondFontFamily,
+            fontWeight = FontWeight.Bold,
+        ),
+        headlineMedium = MaterialTheme.typography.headlineMedium.copy(
+            fontFamily = openSansCondFontFamily,
+            fontWeight = FontWeight.Bold,
+        ),
+        headlineLarge = MaterialTheme.typography.headlineLarge.copy(
+            fontFamily = openSansCondFontFamily,
+            fontWeight = FontWeight.Bold,
         )
     )
 

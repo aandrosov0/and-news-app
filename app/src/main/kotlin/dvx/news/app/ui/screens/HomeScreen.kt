@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -19,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -26,6 +29,7 @@ import coil3.compose.rememberAsyncImagePainter
 import dvx.news.app.R
 import dvx.news.app.states.ArticleUiState
 import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.components.ErrorBox
 import dvx.news.app.viewModels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -92,6 +96,19 @@ fun HomeScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surfaceVariant),
     ) {
+        uiState.error?.let {
+            ErrorBox(
+                icon = painterResource(uiState.error!!.iconId),
+                error = stringResource(uiState.error!!.messageId),
+                action = stringResource(uiState.error!!.actionId),
+                onActionClick = uiState.error!!.onAction,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            )
+            return@PullToRefreshBox
+        }
+
         ArticlesList(
             articles = uiState.recentArticles,
             onArticleClick = { }
