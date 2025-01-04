@@ -51,7 +51,6 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     debugImplementation(libs.ui.tooling)
 
-    implementation(libs.activity.ktx)
     implementation(libs.activity.compose)
 
     implementation(libs.lifecycle.viewmodel.compose)

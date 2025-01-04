@@ -1,6 +1,5 @@
 package dvx.news.app.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,11 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -31,8 +26,6 @@ import dvx.news.app.states.NewsTab
 import dvx.news.app.states.iconId
 import dvx.news.app.ui.components.DVXCard
 import dvx.news.app.ui.components.HorizontalButton
-import dvx.news.app.viewModels.OverviewViewModel
-import org.koin.androidx.compose.koinViewModel
 import kotlin.collections.forEach
 
 @Composable
@@ -142,41 +135,31 @@ private fun Categories(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OverviewScreen(
+    categories: List<CategoryUiState>,
     navController: NavController,
     modifier: Modifier = Modifier,
-    overviewViewModel: OverviewViewModel = koinViewModel()
 ) {
-    LaunchedEffect(Unit) { overviewViewModel.getAll() }
-    val uiState by overviewViewModel.uiState.collectAsState()
-
-    PullToRefreshBox(
-        isRefreshing = uiState.isLoading,
-        onRefresh = { overviewViewModel.getAll(refresh = true) },
+    Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.surfaceVariant)
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(
+                horizontal = 10.dp,
+                vertical = 20.dp
+            )
     ) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    horizontal = 10.dp,
-                    vertical = 20.dp
-                )
-        ) {
-            Actions(
-                onProfile = { },
-                onSettings = { navController.navigate(Destination.Settings) },
-            )
-            Topics(
-                onHeadlines = { navController.navigate(Destination.News(NewsTab.HEADERS)) },
-                onNews = { navController.navigate(Destination.News(NewsTab.ALL_NEWS)) },
-                onIncludes = { navController.navigate(Destination.Includes) }
-            )
-            Categories(
-                categories = uiState.categories,
-                onClick = {}
-            )
-        }
+        Actions(
+            onProfile = { },
+            onSettings = { navController.navigate(Destination.Settings) },
+        )
+        Topics(
+            onHeadlines = { navController.navigate(Destination.News(NewsTab.HEADERS)) },
+            onNews = { navController.navigate(Destination.News(NewsTab.ALL_NEWS)) },
+            onIncludes = { navController.navigate(Destination.Includes) }
+        )
+        Categories(
+            categories = categories,
+            onClick = {}
+        )
     }
 }

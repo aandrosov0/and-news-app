@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import dvx.news.app.viewModels.AudioViewModel
 import dvx.news.app.viewModels.HomeViewModel
+import dvx.news.app.viewModels.MainViewModel
 import dvx.news.app.viewModels.NewsViewModel
 import dvx.news.app.viewModels.OverviewViewModel
 import dvx.news.app.viewModels.SettingsViewModel
@@ -18,5 +19,6 @@ val appModule = module {
     viewModel { NewsViewModel(get(), get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { OverviewViewModel(get()) }
+    viewModel { MainViewModel(get(), get()) }
 }
 

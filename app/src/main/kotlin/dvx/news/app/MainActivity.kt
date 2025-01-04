@@ -10,7 +10,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
 
 class MainActivity : ComponentActivity() {
-
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
