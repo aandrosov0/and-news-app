@@ -31,4 +31,15 @@ class ArticlesRemoteDataSource(
             throw DataLayerException(exception)
         }
     }
+
+    override suspend fun getByCategory(categoryId: Long): List<Article> {
+        try {
+            return api
+                .getArticles(categoryId = categoryId)
+                .recent
+                .map(DVXArticle::toArticle)
+        } catch (exception: DVXNewsException) {
+            throw DataLayerException(exception)
+        }
+    }
 }

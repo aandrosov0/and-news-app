@@ -28,8 +28,11 @@ class DVXNewsClient(
     fun getArticles(
         domain: DVXNewsDomain = DVXNewsDomain.DVXNEWS,
         language: DVXNewsLanguage = DVXNewsLanguage.DE,
+        categoryId: Long? = null,
     ): DVXArticles {
-        val url = "$ARTICLES_URL?domain_name=$domain&language_id=$language"
+        var url = "$ARTICLES_URL?domain_name=$domain&language_id=$language"
+        categoryId?.let { url += "&category_id=$categoryId" }
+
         val request = Request.Builder()
             .url(url)
             .build()

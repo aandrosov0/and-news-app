@@ -35,4 +35,8 @@ class ArticlesRepositoryImpl(
         }
         randomArticles
     }
+
+    override suspend fun getByCategory(categoryId: Long): List<Article> {
+        return articlesDataSource.getByCategory(categoryId)
+    }
 }
