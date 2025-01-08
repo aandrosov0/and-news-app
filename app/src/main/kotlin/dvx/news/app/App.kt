@@ -94,8 +94,8 @@ private fun AppContent(
 @Composable
 private fun AppNavigation(
     mainUiState: MainUiState,
-    modifier: Modifier = Modifier,
     onDestinationChange: (Destination) -> Unit,
+    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
     NavHost(

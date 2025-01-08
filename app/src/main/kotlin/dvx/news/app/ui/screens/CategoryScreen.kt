@@ -29,6 +29,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +44,7 @@ import dvx.news.app.states.CategoryUiState
 import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.ui.components.BackButton
+import dvx.news.app.ui.components.ErrorBox
 import dvx.news.app.ui.components.VerticalPost
 import dvx.news.app.viewModels.CategoryViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -72,11 +75,22 @@ fun CategoryScreen(
             onRefresh = { categoryViewModel.get(category.id) },
             modifier = Modifier.fillMaxSize().padding(paddings)
         )  {
-            if (!uiState.isLoading) {
+            if (!uiState.isLoading && uiState.error == null) {
                 CategoryContent(
                     title = category.name,
                     articles = uiState.articles,
                     onArticleClick = { navController.navigate(Destination.Article) }
+                )
+            }
+
+            val error = uiState.error
+            if (error != null) {
+                ErrorBox(
+                    icon = painterResource(error.iconId),
+                    error = stringResource(error.messageId),
+                    action = stringResource(error.actionId),
+                    onActionClick = error.onAction,
+                    modifier = modifier.fillMaxSize()
                 )
             }
         }
