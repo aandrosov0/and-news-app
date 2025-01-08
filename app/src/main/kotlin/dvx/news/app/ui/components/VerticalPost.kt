@@ -25,11 +25,11 @@ import dvx.news.app.themes.DVXTheme
 
 @Composable
 fun VerticalPost(
-    title: String,
-    description: String,
-    imagePainter: Painter,
+    image: Painter,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    description: String? = null
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,29 +46,35 @@ fun VerticalPost(
             )
     ) {
         Image(
-            painter = imagePainter,
+            painter = image,
             contentDescription = null,
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .fillMaxWidth()
         )
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            fontSize = 15.sp,
-            modifier = Modifier
-                .padding(top = 6.dp)
-                .fillMaxWidth()
-        )
-        Text(
-            text = description,
-            fontSize = 20.sp,
-            style = MaterialTheme.typography.bodyLarge,
-            lineHeight = 20.sp,
-            letterSpacing = (-0.3).sp,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
+
+        if (title != null) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                fontSize = 15.sp,
+                modifier = Modifier
+                    .padding(top = 6.dp)
+                    .fillMaxWidth()
+            )
+        }
+
+        if (description != null) {
+            Text(
+                text = description,
+                fontSize = 20.sp,
+                style = MaterialTheme.typography.bodyLarge,
+                lineHeight = 20.sp,
+                letterSpacing = (-0.3).sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
     }
 }
 
@@ -78,7 +84,7 @@ private fun VerticalPostCardPreview() = DVXTheme {
     VerticalPost(
         title = "Hamburg weit abgeschlagen",
         description = "Deutsches Burger-Mekka ist...",
-        imagePainter = painterResource(R.drawable.img_preview),
+        image = painterResource(R.drawable.img_preview),
         onClick = {}
     )
 }

@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
-            KoinApplication({
+            KoinApplication(application = {
                 androidContext(this@MainActivity)
                 modules(dataModule, appModule)
             }) {

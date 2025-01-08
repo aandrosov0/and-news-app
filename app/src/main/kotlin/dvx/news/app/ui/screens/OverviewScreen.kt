@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,14 +21,70 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
 import dvx.news.app.states.CategoryUiState
 import dvx.news.app.states.Destination
 import dvx.news.app.states.NewsTab
 import dvx.news.app.states.iconId
+import dvx.news.app.ui.components.AppLogo
 import dvx.news.app.ui.components.DVXCard
 import dvx.news.app.ui.components.HorizontalButton
 import kotlin.collections.forEach
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OverviewScreen(
+    categories: List<CategoryUiState>,
+    modifier: Modifier = Modifier,
+    navController: NavController = rememberNavController()
+) {
+    Scaffold(
+        modifier = modifier,
+        topBar = { OverviewTopBar() },
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
+    ) { paddings ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(
+                    horizontal = 10.dp,
+                    vertical = 20.dp
+                )
+                .padding(paddings)
+        ) {
+            Actions(
+                onProfile = { },
+                onSettings = { navController.navigate(Destination.Settings) },
+            )
+            Topics(
+                onHeadlines = { navController.navigate(Destination.News(NewsTab.HEADERS)) },
+                onNews = { navController.navigate(Destination.News(NewsTab.ALL_NEWS)) },
+                onIncludes = { navController.navigate(Destination.Includes) }
+            )
+            Categories(
+                categories = categories,
+                onClick = { navController.navigate(Destination.Category(it.id, it.name)) }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun OverviewTopBar(modifier: Modifier = Modifier) {
+    CenterAlignedTopAppBar(
+        modifier = modifier,
+        title = {
+            Text(
+                text = "Mehr",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        navigationIcon = { AppLogo() }
+    )
+}
 
 @Composable
 private fun Actions(
@@ -102,7 +160,7 @@ private fun Topics(
 @Composable
 private fun Categories(
     categories: List<CategoryUiState>,
-    onClick: (Long) -> Unit,
+    onClick: (CategoryUiState) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -121,7 +179,7 @@ private fun Categories(
             categories.forEach { category ->
                 HorizontalDivider()
                 HorizontalButton(
-                    onClick = { onClick(category.id) },
+                    onClick = { onClick(category) },
                     text = category.name,
                     prefixIconId = category.iconId,
                     postfixIconId = R.drawable.ic_down
@@ -129,37 +187,5 @@ private fun Categories(
             }
         }
         HorizontalDivider()
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun OverviewScreen(
-    categories: List<CategoryUiState>,
-    navController: NavController,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(
-                horizontal = 10.dp,
-                vertical = 20.dp
-            )
-    ) {
-        Actions(
-            onProfile = { },
-            onSettings = { navController.navigate(Destination.Settings) },
-        )
-        Topics(
-            onHeadlines = { navController.navigate(Destination.News(NewsTab.HEADERS)) },
-            onNews = { navController.navigate(Destination.News(NewsTab.ALL_NEWS)) },
-            onIncludes = { navController.navigate(Destination.Includes) }
-        )
-        Categories(
-            categories = categories,
-            onClick = {}
-        )
     }
 }

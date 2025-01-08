@@ -1,14 +1,8 @@
 package dvx.news.app
 
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring.StiffnessLow
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkOut
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -19,18 +13,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dvx.news.app.states.CategoryUiState
+import dvx.news.app.states.Destination
+import dvx.news.app.states.MainUiState
+import dvx.news.app.themes.DVXTheme
 import dvx.news.app.ui.components.DVXBottomNavigation
-import dvx.news.app.ui.components.DVXTopAppBar
 import dvx.news.app.ui.screens.ArticleScreen
 import dvx.news.app.ui.screens.CategoryScreen
 import dvx.news.app.ui.screens.HomeScreen
@@ -38,99 +31,92 @@ import dvx.news.app.ui.screens.IncludesScreen
 import dvx.news.app.ui.screens.NewsScreen
 import dvx.news.app.ui.screens.OverviewScreen
 import dvx.news.app.ui.screens.SettingsScreen
-import dvx.news.app.states.Destination
-import dvx.news.app.states.TopAppBarDefaults
-import dvx.news.app.states.topAppBarParameters
-import dvx.news.app.themes.DVXTheme
 import dvx.news.app.ui.screens.SplashScreen
 import dvx.news.app.viewModels.MainViewModel
-import dvx.news.app.viewModels.SettingsViewModel
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 
 @Composable
-fun App() {
-    val mainViewModel: MainViewModel = koinInject()
+fun App(mainViewModel: MainViewModel = koinViewModel()) {
     LaunchedEffect(Unit) { mainViewModel.load() }
     val uiState by mainViewModel.uiState.collectAsState()
 
-    val settingsViewModel: SettingsViewModel = koinInject()
-    LaunchedEffect(Unit) { settingsViewModel.getSaved() }
-
-    val settings by settingsViewModel.state.collectAsState()
-
-    DVXTheme(theme = settings.theme) {
-        if (!uiState.isLoaded) {
-            SplashScreen()
-        } else {
-           AppContent(categories = uiState.categories, settingsViewModel = settingsViewModel)
+    DVXTheme(theme = uiState.settings.theme) {
+        when (uiState.isLoading) {
+            true -> SplashScreen()
+            false -> AppContent(mainUiState = uiState)
         }
     }
 }
 
 @Composable
 private fun AppContent(
-    categories: List<CategoryUiState>,
+    mainUiState: MainUiState,
     modifier: Modifier = Modifier,
-    settingsViewModel: SettingsViewModel = koinViewModel(),
     navController: NavHostController = rememberNavController()
 ) {
-    var destination: Destination by remember { mutableStateOf(Destination.Home) }
+    var destination by remember { mutableStateOf<Destination>(Destination.Home) }
+    val categories = mainUiState.categories
+    val destinations = buildList {
+        add(Destination.Home)
+        categories.getOrNull(0)?.let { add(Destination.Category(it.id, it.name)) }
+        categories.getOrNull(1)?.let { add(Destination.Category(it.id, it.name)) }
+        categories.getOrNull(2)?.let { add(Destination.Category(it.id, it.name)) }
+        add(Destination.Menu)
+    }
 
     Scaffold(
         modifier = modifier,
-        topBar = {
-            AnimatedVisibility(
-                destination.topAppBarParameters != null,
-                exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.Center),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                DVXTopAppBar(
-                    navController = navController,
-                    topAppBarParameters = destination.topAppBarParameters ?: TopAppBarDefaults.topAppBarParameters,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        },
         bottomBar = {
             DVXBottomNavigation(
                 destination = destination,
-                navController = navController,
+                destinations = destinations,
+                onDestinationChange = {
+                    if (destination != it) {
+                        navController.navigate(it) {
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true
+                        }
+                    }
+                }
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
-    ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = Destination.Home,
-            enterTransition = { fadeIn(tween(1000)) },
-            exitTransition = { fadeOut(tween(1000)) },
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            composable<Destination.Home> {
-                destination = Destination.Home
-                HomeScreen(navController = navController)
-            }
-            composable<Destination.Sport> {
-                destination = Destination.Sport
-                CategoryScreen(
-                    navController = navController,
-                )
-            }
-            composable<Destination.Lifestyle> {
-                destination = Destination.Lifestyle
-                CategoryScreen(
-                    navController = navController,
-                )
-            }
-            composable<Destination.Entertainment> {
-                destination = Destination.Entertainment
-                CategoryScreen(
-                    navController = navController,
-                )
-            }
-            composable<Destination.Menu>(
-                enterTransition = {
+    ) { paddings ->
+        AppNavigation(
+            mainUiState = mainUiState,
+            modifier = Modifier.padding(paddings),
+            onDestinationChange = { destination = it },
+            navController = navController
+        )
+    }
+}
+
+@Composable
+private fun AppNavigation(
+    mainUiState: MainUiState,
+    modifier: Modifier = Modifier,
+    onDestinationChange: (Destination) -> Unit,
+    navController: NavHostController = rememberNavController(),
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Destination.Home,
+        modifier = modifier,
+    ) {
+        composable<Destination.Home> {
+            onDestinationChange(Destination.Home)
+            HomeScreen(navController = navController)
+        }
+        composable<Destination.Category> { backStackEntry ->
+            val category = backStackEntry.toRoute<Destination.Category>()
+            onDestinationChange(category)
+            CategoryScreen(
+                category = CategoryUiState(category.id, category.name),
+                navController = navController
+            )
+        }
+        composable<Destination.Menu>(
+            enterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Left,
                         animationSpec = spring(stiffness = StiffnessLow)
@@ -142,37 +128,36 @@ private fun AppContent(
                         animationSpec = spring(stiffness = StiffnessLow)
                     )
                 }
-            ) {
-                destination = Destination.Menu
-                OverviewScreen(categories = categories, navController = navController)
-            }
-            composable<Destination.Article> {
-                destination = Destination.Article
-                ArticleScreen()
-            }
-            composable<Destination.News> {
-                destination = it.toRoute<Destination.News>()
-                NewsScreen(
-                    initialTab = it.toRoute<Destination.News>().initialTab,
-                    navController = navController
-                )
-            }
-            composable<Destination.Settings> {
-                destination = it.toRoute<Destination.Settings>()
-                SettingsScreen(
-                    settingsViewModel = settingsViewModel
-                )
-            }
-            composable<Destination.Includes> {
-                destination = Destination.Includes
-                IncludesScreen(navController = navController)
-            }
+        ) {
+            onDestinationChange(Destination.Menu)
+            OverviewScreen(
+                categories = mainUiState.categories,
+                navController = navController
+            )
+        }
+        composable<Destination.Article> {
+            onDestinationChange(Destination.Article)
+            ArticleScreen()
+        }
+        composable<Destination.News> { backStackEntry ->
+            val news = backStackEntry.toRoute<Destination.News>()
+            onDestinationChange(news)
+            NewsScreen(
+                navController = navController,
+                initialTab = news.initialTab
+            )
+        }
+        composable<Destination.Settings> {
+            onDestinationChange(Destination.Settings)
+            SettingsScreen(
+                settings = mainUiState.settings,
+                onUpdateSettings = mainUiState.onSettingsChange,
+                navController = navController
+            )
+        }
+        composable<Destination.Includes> {
+            onDestinationChange(Destination.Includes)
+            IncludesScreen(navController = navController)
         }
     }
-}
-
-@Preview
-@Composable
-private fun AppPreview() = DVXTheme {
-    App()
 }

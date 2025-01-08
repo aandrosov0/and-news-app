@@ -97,7 +97,7 @@ fun IncludesScreen(
                 VerticalPost(
                     title = "Hamburg weit abgeschlagen",
                     description = "Deutsches Burger-Mekka ist...",
-                    imagePainter = painterResource(R.drawable.img_preview),
+                    image = painterResource(R.drawable.img_preview),
                     onClick = { navController.navigate(Destination.Article) },
                     modifier = Modifier
                         .weight(1f),
@@ -107,7 +107,7 @@ fun IncludesScreen(
         VerticalPost(
             title = "Schutz vor tollen Sachen",
             description = "Ruckgang von HPV-Impfung bei Kindern",
-            imagePainter = painterResource(R.drawable.img_small_preview),
+            image = painterResource(R.drawable.img_small_preview),
             onClick = { navController.navigate(Destination.Article) },
             modifier = Modifier
                 .padding(top = 22.dp, bottom = 10.dp)

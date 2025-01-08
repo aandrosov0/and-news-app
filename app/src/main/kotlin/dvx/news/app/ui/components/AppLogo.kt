@@ -3,6 +3,7 @@ package dvx.news.app.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ fun AppLogo(modifier: Modifier = Modifier) {
         )
         Text(
             text = stringResource(R.string.news).uppercase(),
+            color = MaterialTheme.colorScheme.onPrimary,
             fontSize = 16.sp,
         )
     }

@@ -27,7 +27,7 @@ fun Theme.asModel() = when (this) {
     Theme.DARK -> ExposedTheme.DARK
 }
 
-fun ExposedTheme.asState() = when (this) {
+fun ExposedTheme.toUiState() = when (this) {
     ExposedTheme.SYSTEM -> Theme.SYSTEM
     ExposedTheme.BRIGHT -> Theme.BRIGHT
     ExposedTheme.DARK -> Theme.DARK

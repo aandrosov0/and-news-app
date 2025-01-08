@@ -16,10 +16,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,18 +25,40 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import dvx.news.app.R
 import dvx.news.app.states.Destination
 import dvx.news.app.states.localizedIcon
 import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
-import dvx.news.app.R
 
 data class DVXNavigationItemColors(
     val selected: Color,
     val unselected: Color
 )
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DVXBottomNavigation(
+    destination: Destination,
+    onDestinationChange: (Destination) -> Unit,
+    destinations: List<Destination>,
+    modifier: Modifier = Modifier,
+) {
+    NavigationBar(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.surface
+    ) {
+        destinations.forEach { route ->
+            DVXNavigationItem(
+                selected = destination == route,
+                icon = route.localizedIcon,
+                onClick = { onDestinationChange(route) },
+                modifier = Modifier.weight(1f),
+                label = route.localizedName
+            )
+        }
+    }
+}
 
 @Composable
 fun DVXNavigationItem(
@@ -108,47 +127,15 @@ private fun DVXNavigationItemPreview() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DVXBottomNavigation(
-    destination: Destination,
-    navController: NavController,
-    modifier: Modifier = Modifier,
-) {
-    val destinations = listOf(
-        Destination.Home,
-        Destination.Sport,
-        Destination.Lifestyle,
-        Destination.Entertainment,
-        Destination.Menu
-    )
-
-    var current by remember { mutableStateOf(destinations.first()) }
-    if (destination in destinations) {
-        current = destination
-    }
-
-    NavigationBar(
-        modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surface
-    ) {
-        destinations.forEach { destination ->
-            DVXNavigationItem(
-                selected = current == destination,
-                icon = destination.localizedIcon,
-                onClick = { navController.navigate(destination) },
-                modifier = Modifier.weight(1f),
-                label = destination.localizedName
-            )
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun DVXBottomAppBarPreview() = DVXTheme {
     DVXBottomNavigation(
         destination = Destination.Home,
-        navController = rememberNavController()
+        destinations = listOf<Destination>(
+            Destination.Home,
+            Destination.Menu,
+        ),
+        onDestinationChange = {},
     )
 }

@@ -3,12 +3,15 @@ package dvx.news.app.states
 import androidx.compose.runtime.Composable
 import dvx.news.data.models.Category
 import dvx.news.app.R
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CategoryUiState(
     val id: Long = 0,
     val name: String = "",
 )
 
+@Serializable
 val CategoryUiState.iconId: Int
     @Composable get() = when (id) {
         55L -> R.drawable.ic_car

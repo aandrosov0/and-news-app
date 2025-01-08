@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +30,7 @@ import dvx.news.app.states.CategoryUiState
 import dvx.news.app.states.Destination
 import dvx.news.app.states.NewsTab
 import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.components.BackButton
 import dvx.news.app.ui.components.ErrorBox
 import dvx.news.app.ui.components.HorizontalTabPager
 import dvx.news.app.ui.components.NewsComprehensiveItem
@@ -39,56 +43,87 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NewsScreen(
     initialTab: NewsTab,
-    navController: NavController,
     modifier: Modifier = Modifier,
-    newsViewModel: NewsViewModel = koinViewModel()
+    newsViewModel: NewsViewModel = koinViewModel(),
+    navController: NavController = rememberNavController()
 ) {
     LaunchedEffect(Unit) { newsViewModel.getAll() }
     val uiState by newsViewModel.uiState.collectAsState()
 
-    PullToRefreshBox(
-        isRefreshing = uiState.isLoading,
-        onRefresh = { newsViewModel.getAll(true) }
-    ) {
-        HorizontalTabPager(
-            tabs = NewsTab.entries,
-            initialTab = initialTab,
-            modifier = modifier
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxSize()
-        ) { tab ->
-            uiState.error?.let {
-                ErrorBox(
-                    icon = painterResource(uiState.error!!.iconId),
-                    error = stringResource(uiState.error!!.messageId),
-                    action = stringResource(uiState.error!!.actionId),
-                    onActionClick = uiState.error!!.onAction,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                )
-                return@HorizontalTabPager
-            }
-            when (tab) {
-                NewsTab.ALL_NEWS -> {
-                    AllNews(
-                        onNews = { navController.navigate(Destination.Article) },
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        news = uiState.randomArticles,
-                        categories = uiState.categories
+    Scaffold(
+        modifier = modifier,
+        topBar = { NewsTopBar(onBackClick = navController::navigateUp) },
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
+    ) { paddings ->
+        PullToRefreshBox(
+            isRefreshing = uiState.isLoading,
+            onRefresh = { newsViewModel.getAll(true) },
+            modifier = Modifier.padding(paddings)
+        ) {
+            HorizontalTabPager(
+                tabs = NewsTab.entries,
+                initialTab = initialTab,
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .fillMaxSize()
+            ) { tab ->
+                uiState.error?.let {
+                    ErrorBox(
+                        icon = painterResource(uiState.error!!.iconId),
+                        error = stringResource(uiState.error!!.messageId),
+                        action = stringResource(uiState.error!!.actionId),
+                        onActionClick = uiState.error!!.onAction,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
                     )
+                    return@HorizontalTabPager
                 }
-                NewsTab.HEADERS -> {
-                    HeadlinesNews(
-                        onNews = { navController.navigate(Destination.Article) },
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        news = uiState.recentArticles,
-                        categories = uiState.categories
-                    )
+                when (tab) {
+                    NewsTab.ALL_NEWS -> {
+                        AllNews(
+                            onNews = { navController.navigate(Destination.Article) },
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            news = uiState.randomArticles,
+                            categories = uiState.categories
+                        )
+                    }
+                    NewsTab.HEADERS -> {
+                        HeadlinesNews(
+                            onNews = { navController.navigate(Destination.Article) },
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            news = uiState.recentArticles,
+                            categories = uiState.categories
+                        )
+                    }
                 }
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun NewsTopBar(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit = {},
+) {
+    CenterAlignedTopAppBar(
+        modifier = modifier,
+        title = {
+            Text(
+                text = "News",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        navigationIcon = {
+            BackButton(
+                onClick = onBackClick,
+                icon = R.drawable.ic_arrow_left,
+                label = "Mehr"
+            )
+        }
+    )
 }
 
 @Composable
