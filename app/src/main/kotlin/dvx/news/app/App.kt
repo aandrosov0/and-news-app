@@ -137,7 +137,7 @@ private fun AppNavigation(
         }
         composable<Destination.Article> {
             onDestinationChange(Destination.Article)
-            ArticleScreen()
+            ArticleScreen(navController = navController)
         }
         composable<Destination.News> { backStackEntry ->
             val news = backStackEntry.toRoute<Destination.News>()
