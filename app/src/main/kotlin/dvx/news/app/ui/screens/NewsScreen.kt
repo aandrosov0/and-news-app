@@ -165,8 +165,8 @@ private fun HeadlinesNews(
             time = it.time,
             type = categories.find { category -> category.id == it.categoryId }!!.name,
             image = painter,
-            title = it.headline,
-            description = it.leadParagraph,
+            title = it.subheadline,
+            description = it.headline,
             onClick = { onNews() }
         )
     }

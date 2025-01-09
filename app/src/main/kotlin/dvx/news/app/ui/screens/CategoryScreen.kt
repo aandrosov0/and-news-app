@@ -210,8 +210,8 @@ private fun BodyItem(
 ) {
     val painter = rememberAsyncImagePainter(article.imageUrl)
     VerticalPost(
-        title = article.headline,
-        description = article.subheadline,
+        title = article.subheadline,
+        description = article.headline,
         image = painter,
         onClick = { onArticleClick(article) },
         modifier = modifier
