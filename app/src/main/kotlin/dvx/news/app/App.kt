@@ -31,20 +31,25 @@ import dvx.news.app.ui.screens.IncludesScreen
 import dvx.news.app.ui.screens.NewsScreen
 import dvx.news.app.ui.screens.OverviewScreen
 import dvx.news.app.ui.screens.SettingsScreen
-import dvx.news.app.ui.screens.SplashScreen
 import dvx.news.app.viewModels.MainViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun App(mainViewModel: MainViewModel = koinViewModel()) {
+fun App(
+    onCloseSplashScreen: () -> Unit,
+    mainViewModel: MainViewModel = koinViewModel()
+) {
     LaunchedEffect(Unit) { mainViewModel.load() }
     val uiState by mainViewModel.uiState.collectAsState()
 
-    DVXTheme(theme = uiState.settings.theme) {
-        when (uiState.isLoading) {
-            true -> SplashScreen()
-            false -> AppContent(mainUiState = uiState)
+    LaunchedEffect(uiState.isLoading) {
+        if (!uiState.isLoading) {
+            onCloseSplashScreen()
         }
+    }
+
+    DVXTheme(theme = uiState.settings.theme) {
+        AppContent(mainUiState = uiState)
     }
 }
 
