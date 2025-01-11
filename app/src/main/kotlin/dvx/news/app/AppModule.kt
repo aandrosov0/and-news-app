@@ -2,6 +2,7 @@ package dvx.news.app
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import dvx.news.app.viewModels.ArticleViewModel
 import dvx.news.app.viewModels.AudioViewModel
 import dvx.news.app.viewModels.CategoryViewModel
 import dvx.news.app.viewModels.HomeViewModel
@@ -20,5 +21,6 @@ val appModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::MainViewModel)
     viewModelOf(::CategoryViewModel)
+    viewModelOf(::ArticleViewModel)
 }
 

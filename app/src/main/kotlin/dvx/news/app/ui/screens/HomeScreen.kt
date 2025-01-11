@@ -62,7 +62,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxSize(),
                 error = uiState.error,
                 articles = uiState.recentArticles,
-                onArticleClick = { navController.navigate(Destination.Article) }
+                onArticleClick = { navController.navigate(Destination.Article(id = it.id)) }
             )
         }
     }

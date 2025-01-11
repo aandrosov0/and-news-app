@@ -29,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import dvx.news.app.R
 import dvx.news.app.states.ArticleUiState
 import dvx.news.app.states.CategoryUiState
@@ -79,7 +83,7 @@ fun CategoryScreen(
                 CategoryContent(
                     title = category.name,
                     articles = uiState.articles,
-                    onArticleClick = { navController.navigate(Destination.Article) }
+                    onArticleClick = { navController.navigate(Destination.Article(id = it.id)) }
                 )
             }
 
@@ -177,9 +181,19 @@ private fun Header(
         onArticleClick: (ArticleUiState) -> Unit,
         modifier: Modifier = Modifier
     ) {
-        val painter = rememberAsyncImagePainter(article.imageUrl)
+        val painter = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(article.imageUrl)
+                .crossfade(true)
+                .build()
+        )
+        val state by painter.state.collectAsState()
+
         VerticalPost(
-            image = painter,
+            image = when (state) {
+                is AsyncImagePainter.State.Success -> painter
+                else -> painterResource(R.drawable.img_small_preview)
+            },
             onClick = { onArticleClick(article) },
             modifier = modifier.fillMaxWidth()
         )
@@ -208,11 +222,21 @@ private fun BodyItem(
     onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val painter = rememberAsyncImagePainter(article.imageUrl)
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(article.imageUrl)
+            .crossfade(true)
+            .build()
+    )
+    val state by painter.state.collectAsState()
+
     VerticalPost(
         title = article.subheadline,
         description = article.headline,
-        image = painter,
+        image = when (state) {
+            is AsyncImagePainter.State.Success -> painter
+            else -> painterResource(R.drawable.img_small_preview)
+        },
         onClick = { onArticleClick(article) },
         modifier = modifier
     )

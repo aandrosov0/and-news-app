@@ -5,7 +5,9 @@ import com.dvxnews.api.exceptions.DVXNewsException
 import com.dvxnews.api.models.DVXArticle
 import dvx.news.data.exceptions.DataLayerException
 import dvx.news.data.models.Article
+import dvx.news.data.models.ArticleContent
 import dvx.news.data.models.toArticle
+import dvx.news.data.models.toArticleContent
 
 class ArticlesRemoteDataSource(
     private val api: DVXNewsClient
@@ -27,6 +29,16 @@ class ArticlesRemoteDataSource(
                 .getArticles()
                 .random
                 .map(DVXArticle::toArticle)
+        } catch (exception: DVXNewsException) {
+            throw DataLayerException(exception)
+        }
+    }
+
+    override suspend fun getArticle(id: Long): ArticleContent {
+        try {
+            return api
+                .getArticle(id)
+                .toArticleContent()
         } catch (exception: DVXNewsException) {
             throw DataLayerException(exception)
         }

@@ -82,17 +82,17 @@ fun NewsScreen(
                 when (tab) {
                     NewsTab.ALL_NEWS -> {
                         AllNews(
-                            onNews = { navController.navigate(Destination.Article) },
+                            onArticleClick = { navController.navigate(Destination.Article(id = it.id)) },
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            news = uiState.randomArticles,
+                            articles = uiState.randomArticles,
                             categories = uiState.categories
                         )
                     }
                     NewsTab.HEADERS -> {
                         HeadlinesNews(
-                            onNews = { navController.navigate(Destination.Article) },
+                            onArticleClick = { navController.navigate(Destination.Article(id = it.id)) },
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            news = uiState.recentArticles,
+                            articles = uiState.recentArticles,
                             categories = uiState.categories
                         )
                     }
@@ -128,14 +128,14 @@ private fun NewsTopBar(
 
 @Composable
 private fun AllNews(
-    onNews: () -> Unit,
-    news: List<ArticleUiState>,
+    articles: List<ArticleUiState>,
+    onArticleClick: (ArticleUiState) -> Unit,
     categories: List<CategoryUiState>,
     modifier: Modifier = Modifier,
 ) {
     NewsItemsSection(
         title = stringResource(R.string.haders_tab_title),
-        items = news,
+        items = articles,
         modifier = modifier
     ) {
         val painter = rememberAsyncImagePainter(it.imageUrl)
@@ -143,21 +143,21 @@ private fun AllNews(
             time = it.time,
             type = categories.find { category -> category.id == it.categoryId }!!.name,
             image = painter,
-            onClick = onNews
+            onClick = { onArticleClick(it) }
         )
     }
 }
 
 @Composable
 private fun HeadlinesNews(
-    onNews: () -> Unit,
-    news: List<ArticleUiState>,
+    articles: List<ArticleUiState>,
+    onArticleClick: (ArticleUiState) -> Unit,
     categories: List<CategoryUiState>,
     modifier: Modifier = Modifier,
 ) {
     NewsItemsSection(
         title = stringResource(R.string.news_tab_title),
-        items = news,
+        items = articles,
         modifier = modifier
     ) {
         var painter = rememberAsyncImagePainter(it.imageUrl)
@@ -167,7 +167,7 @@ private fun HeadlinesNews(
             image = painter,
             title = it.subheadline,
             description = it.headline,
-            onClick = { onNews() }
+            onClick = { onArticleClick(it) }
         )
     }
 }

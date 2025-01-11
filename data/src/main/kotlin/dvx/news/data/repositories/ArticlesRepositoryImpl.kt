@@ -36,6 +36,10 @@ class ArticlesRepositoryImpl(
         randomArticles
     }
 
+    override suspend fun getArticle(articleId: Long) = withContext(dispatcher) {
+        articlesDataSource.getArticle(articleId)
+    }
+
     override suspend fun getByCategory(categoryId: Long) = withContext(dispatcher) {
         articlesDataSource.getByCategory(categoryId)
     }

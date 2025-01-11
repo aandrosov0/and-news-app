@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Destination {
     @Serializable
-    data object Article : Destination()
+    data class Article(val id: Long) : Destination()
     @Serializable
     data object Home : Destination()
     @Serializable
@@ -34,7 +34,7 @@ val Destination.localizedName
     get() = when (this) {
         Destination.Home -> stringResource(R.string.home)
         is Destination.Menu -> stringResource(R.string.menu)
-        Destination.Article -> stringResource(R.string.article)
+        is Destination.Article -> stringResource(R.string.article)
         is Destination.Category -> name
         is Destination.News -> stringResource(R.string.news)
         Destination.Overview -> stringResource(R.string.overview)
