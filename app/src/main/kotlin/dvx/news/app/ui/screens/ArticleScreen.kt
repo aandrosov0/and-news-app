@@ -1,27 +1,29 @@
 package dvx.news.app.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,15 +33,21 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
+import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dvx.news.app.R
 import dvx.news.app.states.ArticleContentUiState
 import dvx.news.app.states.ArticleTextTypeUiState
+import dvx.news.app.states.ArticleUiState
+import dvx.news.app.states.Destination
+import dvx.news.app.states.RefreshableScreenState
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.themes.openSansCondFontFamily
 import dvx.news.app.ui.components.BackButton
-import dvx.news.app.ui.components.ErrorBox
+import dvx.news.app.ui.components.HorizontalPost
+import dvx.news.app.ui.components.Screen
+import dvx.news.app.ui.components.VerticalPost
 import dvx.news.app.viewModels.ArticleViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -54,41 +62,30 @@ fun ArticleScreen(
     LaunchedEffect(Unit) { articleViewModel.getArticle(id) }
     val uiState by articleViewModel.uiState.collectAsState()
 
-    Scaffold(
+    Screen(
         modifier = modifier,
-        topBar = { ArticleTopBar(onBackClick = { navController.navigateUp() }) },
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
-    ) { paddings ->
-        PullToRefreshBox(
+        state = RefreshableScreenState(
+            error = uiState.error,
             isRefreshing = uiState.isLoading,
             onRefresh = { articleViewModel.getArticle(id) }
-        ) {
-            val error = uiState.error
-            if (error != null) {
-                ErrorBox(
-                    icon = painterResource(error.iconId),
-                    error = stringResource(error.messageId),
-                    action = stringResource(error.actionId),
-                    onActionClick = error.onAction,
-                    modifier = modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                )
-                return@PullToRefreshBox
-            }
-
-            ArticleContent(
-                article = uiState.article,
-                contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp),
-                modifier = Modifier.padding(paddings)
-            )
-        }
+        ),
+        topBar = { ArticleTopBar(onBackClick = { navController.navigateUp() }) },
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
+    ) {
+        ArticleContent(
+            article = uiState.article,
+            recommended = uiState.random,
+            onArticleClick = { navController.navigate(Destination.Article(id = it.id)) },
+            contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp),
+        )
     }
 }
 
 @Composable
 private fun ArticleContent(
     article: ArticleContentUiState,
+    recommended: List<ArticleUiState>,
+    onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues()
 ) {
@@ -112,9 +109,9 @@ private fun ArticleContent(
         modifier = modifier
             .fillMaxSize()
     ) {
-        items(items = content) { content ->
-            val text = content.first
-            val image = content.second
+        itemsIndexed(items = content) { index, element ->
+            val text = element.first
+            val image = element.second
             when (text.type) {
                 ArticleTextTypeUiState.SUBHEADLINE -> Subheadline(text = text.value)
                 ArticleTextTypeUiState.HEADLINE -> Headline(text = text.value)
@@ -128,6 +125,25 @@ private fun ArticleContent(
                     caption = image.caption
                 )
             }
+
+            if (index == (content.size / 2).toInt()) {
+                SmallRecommended(
+                    articles = listOf(
+                        recommended.getOrNull(0),
+                        recommended.getOrNull(1),
+                    ).filterNotNull(),
+                    onArticleClick = onArticleClick,
+                )
+            }
+        }
+        item {
+            LargeRecommended(
+                articles = listOf(
+                    recommended.getOrNull(1),
+                    recommended.getOrNull(2),
+                ).filterNotNull(),
+                onArticleClick = onArticleClick,
+            )
         }
     }
 }
@@ -222,8 +238,9 @@ fun Image(
             .crossfade(true)
             .build(),
         contentDescription = null,
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         placeholder = painterResource(R.drawable.img_small_preview),
+        contentScale = ContentScale.FillWidth
     )
 
     if (caption != null) {
@@ -313,6 +330,81 @@ private fun Paragraph(
     )
 }
 
+@Composable
+fun SmallRecommended(
+    articles: List<ArticleUiState>,
+    onArticleClick: (ArticleUiState) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = Modifier.padding(vertical = 25.dp),
+        verticalArrangement = Arrangement.spacedBy(9.dp)
+    ) {
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+        )
+        Column(
+            modifier = Modifier.padding(horizontal = 40.dp),
+            verticalArrangement = Arrangement.spacedBy(14.22.dp)
+        ) {
+            articles.forEach { article ->
+                val painter = if (LocalInspectionMode.current) {
+                    painterResource(R.drawable.img_preview)
+                } else {
+                    rememberAsyncImagePainter(article.imageUrl)
+                }
+                HorizontalPost(
+                    title = article.subheadline,
+                    description = article.headline,
+                    imagePainter = painter,
+                    onClick = { onArticleClick(article) },
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+        }
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+        )
+    }
+}
+
+@Composable
+private fun LargeRecommended(
+    articles: List<ArticleUiState>,
+    onArticleClick: (ArticleUiState) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Subheading(
+            text = "MEHR AUS DEM NETZ",
+            modifier = Modifier.width(IntrinsicSize.Max)
+        )
+        articles.forEach { article ->
+            val painter = if (LocalInspectionMode.current) {
+                painterResource(R.drawable.post_img_preview)
+            } else {
+                rememberAsyncImagePainter(article.imageUrl)
+            }
+            VerticalPost(
+                image = painter,
+                title = article.subheadline,
+                description = article.headline,
+                onClick = { onArticleClick(article) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun SubheadlinePreview() {
@@ -376,5 +468,45 @@ private fun LeadParagraphPreview() {
 private fun ParagraphPreview() {
     DVXTheme {
         Paragraph(text = "700 Meter vor dem Hafen lag die Bayesian\" im Tyrrhenischen Meer vor Anker, eine 35- Millionen-Euro Segeljacht, die dem britischen Tech-Milliardär Mike Lynch (59) und seiner Frau Angela Bacares (57) gehört. Die Menschen an Bord, zwölf Passagiere und die zehnköpfige Besatzung, hatten etwas zu feiern.")
+    }
+}
+
+@Preview
+@Composable
+private fun SmallRecommendedPreview() {
+    DVXTheme {
+        SmallRecommended(
+            articles = listOf(
+                ArticleUiState(
+                    headline = "Headline",
+                    subheadline = "Subheadline"
+                ),
+                ArticleUiState(
+                    headline = "Headline",
+                    subheadline = "Subheadline"
+                ),
+            ),
+            onArticleClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun LargeRecommendedPreview() {
+    DVXTheme {
+        LargeRecommended(
+            articles = listOf(
+                ArticleUiState(
+                    headline = "Headline",
+                    subheadline = "Subheadline"
+                ),
+                ArticleUiState(
+                    headline = "Headline",
+                    subheadline = "Subheadline"
+                ),
+            ),
+            onArticleClick = {}
+        )
     }
 }

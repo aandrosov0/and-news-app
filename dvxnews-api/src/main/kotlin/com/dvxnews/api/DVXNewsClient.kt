@@ -1,25 +1,28 @@
 package com.dvxnews.api
 
-import com.dvxnews.api.exceptions.DVXNewsException
+import com.dvxnews.api.core.ExceptionInterceptor
+import com.dvxnews.api.core.ExceptionInterceptorImpl
+import com.dvxnews.api.core.ResponseInterceptor
+import com.dvxnews.api.core.ResponseInterceptorImpl
 import com.dvxnews.api.models.DVXArticleContent
-import com.dvxnews.api.models.DVXResponse
 import com.dvxnews.api.models.DVXArticles
 import com.dvxnews.api.models.DVXCategory
-import com.dvxnews.api.models.isSuccessful
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.jsonObject
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okio.IOException
 
 @OptIn(ExperimentalSerializationApi::class)
 class DVXNewsClient(
     private val client: OkHttpClient = OkHttpClient(),
     private val serializer: Json = Json { ignoreUnknownKeys = true }
 ) {
+    private val responseInterceptor: ResponseInterceptor = ResponseInterceptorImpl
+    private val exceptionInterceptor: ExceptionInterceptor = ExceptionInterceptorImpl
+
     companion object {
         const val API_URL = "https://devapi.adlink.net"
         const val ARTICLE_URL = "$API_URL/websites/article"
@@ -39,22 +42,13 @@ class DVXNewsClient(
             .url(url)
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw DVXNewsException("Response code is invalid: ${response.code}")
+        try {
+            client.newCall(request).execute().use { response ->
+                val result = responseInterceptor.intercept(response, serializer)
+                return serializer.decodeFromJsonElement(result.body)
             }
-
-            if (response.body == null) {
-                throw DVXNewsException("Response body is empty")
-            }
-
-            val result = serializer.decodeFromStream<DVXResponse<JsonElement>>(response.body!!.byteStream())
-
-            if (!result.status.isSuccessful) {
-                throw DVXNewsException("Api error: ${result.body}")
-            }
-
-            return serializer.decodeFromJsonElement(result.body)
+        } catch (exception: IOException) {
+            throw exceptionInterceptor.intercept(exception)
         }
     }
 
@@ -67,27 +61,14 @@ class DVXNewsClient(
             .url(url)
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw DVXNewsException("Response code is invalid: ${response.code}")
+        try {
+            client.newCall(request).execute().use { response ->
+                val result = responseInterceptor.intercept(response, serializer)
+                val categoriesJson = result.body.jsonObject["categories"]!!
+                return serializer.decodeFromJsonElement(categoriesJson)
             }
-
-            if (response.body == null) {
-                throw DVXNewsException("Response body is empty")
-            }
-
-            val result = serializer.decodeFromStream<DVXResponse<JsonElement>>(response.body!!.byteStream())
-
-            if (!result.status.isSuccessful) {
-                throw DVXNewsException("Api error: ${result.body}")
-            }
-
-            val categoriesJson = result.body.jsonObject["categories"]
-            if (categoriesJson == null) {
-                throw DVXNewsException("Cannot fetch categories. Can't find json element")
-            }
-
-            return serializer.decodeFromJsonElement(categoriesJson)
+        } catch (exception: IOException) {
+            throw exceptionInterceptor.intercept(exception)
         }
     }
 
@@ -101,22 +82,13 @@ class DVXNewsClient(
             .url(url)
             .build()
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw DVXNewsException("Response code is invalid: ${response.code}")
+        try {
+            client.newCall(request).execute().use { response ->
+                val result = responseInterceptor.intercept(response, serializer)
+                return serializer.decodeFromJsonElement(result.body)
             }
-
-            if (response.body == null) {
-                throw DVXNewsException("Response body is empty")
-            }
-
-            val result = serializer.decodeFromStream<DVXResponse<JsonElement>>(response.body!!.byteStream())
-
-            if (!result.status.isSuccessful) {
-                throw DVXNewsException("Api error: ${result.body}")
-            }
-
-            return serializer.decodeFromJsonElement(result.body)
+        } catch (exception: IOException) {
+            throw exceptionInterceptor.intercept(exception)
         }
     }
 }

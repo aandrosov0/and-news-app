@@ -2,7 +2,8 @@ package dvx.news.app.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dvx.news.app.R
+import dvx.news.app.core.ExceptionConverter
+import dvx.news.app.core.ViewModelExceptionConverter
 import dvx.news.app.states.ErrorUiState
 import dvx.news.app.states.MainUiState
 import dvx.news.app.states.SettingsUiState
@@ -15,12 +16,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import okio.IOException
 
 class MainViewModel(
     private val categoriesRepository: CategoriesRepository,
     private val articlesRepository: ArticlesRepository,
     private val settingsRepository: SettingsRepository,
+    private val exceptionConverter: ExceptionConverter<ErrorUiState> = ViewModelExceptionConverter
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MainUiState(isLoading = true))
     val uiState = _uiState.asStateFlow()
@@ -44,15 +45,8 @@ class MainViewModel(
                     settings = settings,
                     onSettingsChange = { updateSettings(it) }
                 )
-            } catch (_: IOException) {
-                MainUiState(
-                    error = ErrorUiState(
-                        messageId = R.string.no_network_error,
-                        iconId = R.drawable.ic_signal_disconnected,
-                        actionId = R.string.refresh_action,
-                        onAction = { load() }
-                    )
-                )
+            } catch (exception: Exception) {
+                MainUiState(error = exceptionConverter.convert(exception))
             }
         }
     }

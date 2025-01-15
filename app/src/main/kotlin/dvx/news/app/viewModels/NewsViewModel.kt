@@ -2,7 +2,8 @@ package dvx.news.app.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dvx.news.app.R
+import dvx.news.app.core.ExceptionConverter
+import dvx.news.app.core.ViewModelExceptionConverter
 import dvx.news.app.states.ErrorUiState
 import dvx.news.app.states.NewsScreenUiState
 import dvx.news.app.states.toUiState
@@ -12,11 +13,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import okio.IOException
 
 class NewsViewModel(
     private val articlesRepository: ArticlesRepository,
-    private val categoriesRepository: CategoriesRepository
+    private val categoriesRepository: CategoriesRepository,
+    private val exceptionConverter: ExceptionConverter<ErrorUiState> = ViewModelExceptionConverter
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(NewsScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -26,7 +27,7 @@ class NewsViewModel(
     fun getAll(refresh: Boolean = false) {
         allJob?.cancel()
         allJob = viewModelScope.launch {
-            _uiState.value = NewsScreenUiState(isLoading = true)
+            _uiState.value = _uiState.value.copy(isLoading = true)
 
             _uiState.value = try {
                 val recentArticles = articlesRepository.getRecent(refresh).map { it.toUiState() }
@@ -38,15 +39,8 @@ class NewsViewModel(
                     randomArticles = randomArticles,
                     categories = categories
                 )
-            } catch (_: IOException) {
-                NewsScreenUiState(
-                    error = ErrorUiState(
-                        messageId = R.string.no_network_error,
-                        iconId = R.drawable.ic_signal_disconnected,
-                        actionId = R.string.refresh_action,
-                        onAction = { getAll(true) }
-                    )
-                )
+            } catch (exception: Exception) {
+                NewsScreenUiState(error = exceptionConverter.convert(exception))
             }
         }
     }

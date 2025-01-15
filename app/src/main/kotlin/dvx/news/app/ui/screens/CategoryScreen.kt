@@ -20,9 +20,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -31,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,9 +43,10 @@ import dvx.news.app.R
 import dvx.news.app.states.ArticleUiState
 import dvx.news.app.states.CategoryUiState
 import dvx.news.app.states.Destination
+import dvx.news.app.states.RefreshableScreenState
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.ui.components.BackButton
-import dvx.news.app.ui.components.ErrorBox
+import dvx.news.app.ui.components.Screen
 import dvx.news.app.ui.components.VerticalPost
 import dvx.news.app.viewModels.CategoryViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -64,8 +62,13 @@ fun CategoryScreen(
     LaunchedEffect(Unit) { categoryViewModel.get(category.id) }
     val uiState by categoryViewModel.uiState.collectAsState()
 
-    Scaffold(
+    Screen(
         modifier = modifier,
+        state = RefreshableScreenState(
+            error = uiState.error,
+            isRefreshing = uiState.isLoading,
+            onRefresh = { categoryViewModel.get(category.id) }
+        ),
         topBar = {
             CategoryTopBar(
                 title = category.name,
@@ -73,30 +76,13 @@ fun CategoryScreen(
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
-    ) { paddings ->
-        PullToRefreshBox(
-            isRefreshing = uiState.isLoading,
-            onRefresh = { categoryViewModel.get(category.id) },
-            modifier = Modifier.fillMaxSize().padding(paddings)
-        )  {
-            if (!uiState.isLoading && uiState.error == null) {
-                CategoryContent(
-                    title = category.name,
-                    articles = uiState.articles,
-                    onArticleClick = { navController.navigate(Destination.Article(id = it.id)) }
-                )
-            }
-
-            val error = uiState.error
-            if (error != null) {
-                ErrorBox(
-                    icon = painterResource(error.iconId),
-                    error = stringResource(error.messageId),
-                    action = stringResource(error.actionId),
-                    onActionClick = error.onAction,
-                    modifier = modifier.fillMaxSize()
-                )
-            }
+    ) {
+        if (!uiState.isLoading) {
+            CategoryContent(
+                title = category.name,
+                articles = uiState.articles,
+                onArticleClick = { navController.navigate(Destination.Article(id = it.id)) }
+            )
         }
     }
 }
