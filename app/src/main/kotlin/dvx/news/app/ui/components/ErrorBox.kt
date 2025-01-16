@@ -38,13 +38,13 @@ fun ErrorBox(
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimary,
+            tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.size(64.dp)
         )
         Spacer(modifier = Modifier.height(64.dp))
         Text(
             text = error,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
             lineHeight = 32.sp,
             style = MaterialTheme.typography.headlineMedium,

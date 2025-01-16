@@ -1,5 +1,7 @@
 package dvx.news.data.repositories
 
+import dvx.news.data.core.LayerExceptionConverter
+import dvx.news.data.core.LayerExceptionConverterImpl
 import dvx.news.data.dataSources.ArticlesDataSource
 import dvx.news.data.models.Article
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,29 +20,47 @@ class ArticlesRepositoryImpl(
     private val randomArticlesMutex = Mutex()
     private var randomArticles = emptyList<Article>()
 
+    private val layerExceptionConverter: LayerExceptionConverter = LayerExceptionConverterImpl
+
     override suspend fun getRecent(refresh: Boolean) = withContext(dispatcher) {
-        if (refresh || recentArticles.isEmpty()) {
-            recentArticlesMutex.withLock {
-                recentArticles = articlesDataSource.getRecent()
+        try {
+            if (refresh || recentArticles.isEmpty()) {
+                recentArticlesMutex.withLock {
+                    recentArticles = articlesDataSource.getRecent()
+                }
             }
+            recentArticles
+        } catch (exception: Exception) {
+            throw layerExceptionConverter.convert(exception)
         }
-        recentArticles
     }
 
     override suspend fun getRandom(refresh: Boolean) = withContext(dispatcher) {
-        if (refresh || randomArticles.isEmpty()) {
-            randomArticlesMutex.withLock {
-                randomArticles = articlesDataSource.getRandom()
+        try {
+            if (refresh || randomArticles.isEmpty()) {
+                randomArticlesMutex.withLock {
+                    randomArticles = articlesDataSource.getRandom()
+                }
             }
+            randomArticles
+        } catch (exception: Exception) {
+            throw layerExceptionConverter.convert(exception)
         }
-        randomArticles
     }
 
     override suspend fun getArticle(articleId: Long) = withContext(dispatcher) {
-        articlesDataSource.getArticle(articleId)
+        try {
+            articlesDataSource.getArticle(articleId)
+        } catch (exception: Exception) {
+            throw layerExceptionConverter.convert(exception)
+        }
     }
 
     override suspend fun getByCategory(categoryId: Long) = withContext(dispatcher) {
-        articlesDataSource.getByCategory(categoryId)
+        try {
+            articlesDataSource.getByCategory(categoryId)
+        } catch (exception: Exception) {
+            throw layerExceptionConverter.convert(exception)
+        }
     }
 }

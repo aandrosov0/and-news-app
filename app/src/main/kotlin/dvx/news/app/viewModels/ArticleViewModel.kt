@@ -31,7 +31,8 @@ class ArticleViewModel(
                 val article = articlesRepository.getArticle(id).toUiState()
                 ArticleScreenUiState(
                     article = article,
-                    random = random
+                    recommendedMiddleBlock = random.take(2),
+                    recommendedEndBlock = random.takeLast(4)
                 )
             } catch (exception: Exception) {
                 ArticleScreenUiState(error = exceptionConverter.convert(exception))

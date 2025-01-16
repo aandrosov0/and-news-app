@@ -2,14 +2,14 @@ package dvx.news.data.models
 
 import com.dvxnews.api.models.DVXImage
 
-data class ArticleImage(
+data class ArticleContentImage(
     val id: Long,
     val type: Int,
     val url: String,
-    val caption: String
-)
+    val caption: String,
+) : ArticleContentElement()
 
-fun DVXImage.toArticleImage() = ArticleImage(
+fun DVXImage.toArticleContentImage() = ArticleContentImage(
     id = id,
     type = type,
     url = url,

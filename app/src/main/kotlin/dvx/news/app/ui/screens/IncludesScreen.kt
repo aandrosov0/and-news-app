@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
+import dvx.news.app.states.ArticleScreen
 import dvx.news.app.ui.components.AudioPlayer
 import dvx.news.app.ui.components.HorizontalPost
 import dvx.news.app.ui.components.VerticalPost
-import dvx.news.app.states.Destination
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.viewModels.AudioViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -80,7 +80,7 @@ fun IncludesScreen(
             title = "Sei sind die Beeeesten’’",
             description = "Uefa verandert beruhmte Champions-League-Hymne!",
             imagePainter = painterResource(R.drawable.img_preview),
-            onClick = { navController.navigate(Destination.Article) },
+            onClick = { navController.navigate(ArticleScreen) },
             modifier = Modifier
                 .padding(vertical = 10.dp)
         )
@@ -98,7 +98,7 @@ fun IncludesScreen(
                     title = "Hamburg weit abgeschlagen",
                     description = "Deutsches Burger-Mekka ist...",
                     image = painterResource(R.drawable.img_preview),
-                    onClick = { navController.navigate(Destination.Article) },
+                    onClick = { navController.navigate(ArticleScreen) },
                     modifier = Modifier
                         .weight(1f),
                 )
@@ -108,7 +108,7 @@ fun IncludesScreen(
             title = "Schutz vor tollen Sachen",
             description = "Ruckgang von HPV-Impfung bei Kindern",
             image = painterResource(R.drawable.img_small_preview),
-            onClick = { navController.navigate(Destination.Article) },
+            onClick = { navController.navigate(ArticleScreen) },
             modifier = Modifier
                 .padding(top = 22.dp, bottom = 10.dp)
                 .fillMaxWidth()

@@ -27,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dvx.news.app.R
 import dvx.news.app.states.Destination
+import dvx.news.app.states.HomeScreen
+import dvx.news.app.states.MenuScreen
 import dvx.news.app.states.localizedIcon
 import dvx.news.app.states.localizedName
 import dvx.news.app.themes.DVXTheme
@@ -131,10 +133,10 @@ private fun DVXNavigationItemPreview() {
 @Composable
 private fun DVXBottomAppBarPreview() = DVXTheme {
     DVXBottomNavigation(
-        destination = Destination.Home,
+        destination = HomeScreen,
         destinations = listOf<Destination>(
-            Destination.Home,
-            Destination.Menu,
+            HomeScreen,
+            MenuScreen,
         ),
         onDestinationChange = {},
     )

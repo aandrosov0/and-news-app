@@ -37,10 +37,13 @@ import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dvx.news.app.R
+import dvx.news.app.states.ArticleContentElementUiState
+import dvx.news.app.states.ArticleContentImageUiState
+import dvx.news.app.states.ArticleContentTextUiState
 import dvx.news.app.states.ArticleContentUiState
+import dvx.news.app.states.ArticleScreen
 import dvx.news.app.states.ArticleTextTypeUiState
 import dvx.news.app.states.ArticleUiState
-import dvx.news.app.states.Destination
 import dvx.news.app.states.RefreshableScreenState
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.themes.openSansCondFontFamily
@@ -72,78 +75,86 @@ fun ArticleScreen(
         topBar = { ArticleTopBar(onBackClick = { navController.navigateUp() }) },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        ArticleContent(
-            article = uiState.article,
-            recommended = uiState.random,
-            onArticleClick = { navController.navigate(Destination.Article(id = it.id)) },
-            contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp),
-        )
+        if (!uiState.isLoading) {
+            ArticleContent(
+                article = uiState.article,
+                onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
+                recommendedEndBlock = uiState.recommendedEndBlock,
+                recommendedMiddleBlock = uiState.recommendedMiddleBlock,
+                contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp),
+            )
+        }
     }
 }
 
 @Composable
 private fun ArticleContent(
     article: ArticleContentUiState,
-    recommended: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
+    recommendedMiddleBlock: List<ArticleUiState>,
+    recommendedEndBlock: List<ArticleUiState>,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues()
 ) {
-    val text = article.text
-    val images = article.images
-    val content = buildList {
-        var currentImageIndex = 0
-        text.forEach {
-            val pair = when (it.type) {
-                ArticleTextTypeUiState.HEADLINE, ArticleTextTypeUiState.SUBHEADING -> {
-                    currentImageIndex++
-                    it to images.getOrNull(currentImageIndex-1)
-                }
-                else -> it to null
-            }
-            add(pair)
-        }
-    }
     LazyColumn(
         contentPadding = contentPadding,
         modifier = modifier
             .fillMaxSize()
     ) {
-        itemsIndexed(items = content) { index, element ->
-            val text = element.first
-            val image = element.second
-            when (text.type) {
-                ArticleTextTypeUiState.SUBHEADLINE -> Subheadline(text = text.value)
-                ArticleTextTypeUiState.HEADLINE -> Headline(text = text.value)
-                ArticleTextTypeUiState.LEAD_PARAGRAPH -> LeadParagraph(text = text.value)
-                ArticleTextTypeUiState.SUBHEADING -> Subheading(text = text.value)
-                ArticleTextTypeUiState.PARAGRAPH -> Paragraph(text = text.value)
-            }
-            if (image != null) {
-                Image(
-                    model = image.url,
-                    caption = image.caption
-                )
-            }
+        itemsIndexed(items = article.elements) { index, element ->
+            ArticleElement(element)
 
-            if (index == (content.size / 2).toInt()) {
-                SmallRecommended(
-                    articles = listOf(
-                        recommended.getOrNull(0),
-                        recommended.getOrNull(1),
-                    ).filterNotNull(),
+            if (index == (article.elements.size / 2).toInt()) {
+                MiddleRecommendations(
+                    articles = recommendedMiddleBlock,
                     onArticleClick = onArticleClick,
                 )
             }
         }
         item {
-            LargeRecommended(
-                articles = listOf(
-                    recommended.getOrNull(1),
-                    recommended.getOrNull(2),
-                ).filterNotNull(),
+            EndRecommendations(
+                articles = recommendedEndBlock,
                 onArticleClick = onArticleClick,
             )
+        }
+    }
+}
+
+@Composable
+fun ArticleElement(
+    element: ArticleContentElementUiState,
+    modifier: Modifier = Modifier
+) {
+    when (element) {
+        is ArticleContentImageUiState -> Image(
+            model = element.url,
+            caption = element.caption,
+            modifier = modifier,
+        )
+        is ArticleContentTextUiState -> {
+            val modifier = modifier.padding(horizontal = 10.dp)
+            when (element.type) {
+                ArticleTextTypeUiState.SUBHEADLINE -> Subheadline(
+                    text = element.value,
+                    modifier = modifier
+                )
+                ArticleTextTypeUiState.HEADLINE -> Headline(
+                    text = element.value,
+                    modifier = modifier
+                )
+                ArticleTextTypeUiState.LEAD_PARAGRAPH -> LeadParagraph(
+                    text = element.value,
+                    modifier = modifier
+                )
+                ArticleTextTypeUiState.SUBHEADING -> Subheading(
+                    text = element.value,
+                    modifier = modifier
+                )
+                ArticleTextTypeUiState.PARAGRAPH -> Paragraph(
+                    text = element.value,
+                    modifier = modifier
+                )
+            }
         }
     }
 }
@@ -203,7 +214,6 @@ private fun Headline(
         fontWeight = FontWeight.ExtraBold,
         style = MaterialTheme.typography.bodyLarge,
         modifier = modifier
-            .padding(horizontal = 10.dp)
     )
 }
 
@@ -222,7 +232,7 @@ private fun Subheading(
         style = MaterialTheme.typography.bodyLarge,
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 10.dp, end = 10.dp, top = 37.dp)
+            .padding(top = 37.dp)
     )
 }
 
@@ -244,8 +254,8 @@ fun Image(
     )
 
     if (caption != null) {
-        Caption(text = caption)
-        EPA(text = "Foto: EPA")
+        Caption(text = caption, modifier = Modifier.padding(horizontal = 10.dp))
+        EPA(text = "Foto: EPA", modifier = Modifier.padding(horizontal = 10.dp))
     }
 }
 
@@ -262,8 +272,6 @@ private fun Caption(
         modifier = modifier
             .padding(
                 top = 3.dp,
-                start = 20.dp,
-                end = 20.dp
             )
     )
 }
@@ -281,8 +289,6 @@ private fun EPA(
         modifier = modifier
             .padding(
                 top = 3.dp,
-                start = 20.dp,
-                end = 20.dp
             )
             .fillMaxWidth()
             .alpha(0.64f)
@@ -300,11 +306,7 @@ private fun LeadParagraph(
         lineHeight = 28.sp,
         style = MaterialTheme.typography.bodyMedium,
         modifier = modifier
-            .padding(
-                top = 22.dp,
-                start = 20.dp,
-                end = 20.dp
-            )
+            .padding(top = 22.dp)
             .fillMaxWidth()
     )
 }
@@ -321,17 +323,13 @@ private fun Paragraph(
         fontSize = 20.sp,
         style = MaterialTheme.typography.bodyMedium,
         modifier = modifier
-            .padding(
-                top = 14.dp,
-                start = 20.dp,
-                end = 20.dp
-            )
+            .padding(top = 14.dp)
             .fillMaxWidth()
     )
 }
 
 @Composable
-fun SmallRecommended(
+fun MiddleRecommendations(
     articles: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier,
@@ -373,7 +371,7 @@ fun SmallRecommended(
 }
 
 @Composable
-private fun LargeRecommended(
+private fun EndRecommendations(
     articles: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier
@@ -384,7 +382,9 @@ private fun LargeRecommended(
     ) {
         Subheading(
             text = "MEHR AUS DEM NETZ",
-            modifier = Modifier.width(IntrinsicSize.Max)
+            modifier = Modifier
+                .width(IntrinsicSize.Max)
+                .padding(horizontal = 10.dp)
         )
         articles.forEach { article ->
             val painter = if (LocalInspectionMode.current) {
@@ -473,9 +473,9 @@ private fun ParagraphPreview() {
 
 @Preview
 @Composable
-private fun SmallRecommendedPreview() {
+private fun MiddleRecommendationsPreview() {
     DVXTheme {
-        SmallRecommended(
+        MiddleRecommendations(
             articles = listOf(
                 ArticleUiState(
                     headline = "Headline",
@@ -493,9 +493,9 @@ private fun SmallRecommendedPreview() {
 
 @Preview
 @Composable
-private fun LargeRecommendedPreview() {
+private fun EndRecommendationsPreview() {
     DVXTheme {
-        LargeRecommended(
+        EndRecommendations(
             articles = listOf(
                 ArticleUiState(
                     headline = "Headline",

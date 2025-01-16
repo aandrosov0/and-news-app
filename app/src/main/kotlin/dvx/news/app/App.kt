@@ -19,9 +19,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import dvx.news.app.states.ArticleScreen
+import dvx.news.app.states.CategoryScreen
 import dvx.news.app.states.CategoryUiState
 import dvx.news.app.states.Destination
+import dvx.news.app.states.HomeScreen
+import dvx.news.app.states.IncludesScreen
 import dvx.news.app.states.MainUiState
+import dvx.news.app.states.MenuScreen
+import dvx.news.app.states.NewsScreen
+import dvx.news.app.states.SettingsScreen
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.ui.components.DVXBottomNavigation
 import dvx.news.app.ui.screens.ArticleScreen
@@ -59,14 +66,14 @@ private fun AppContent(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
-    var destination by remember { mutableStateOf<Destination>(Destination.Home) }
+    var destination by remember { mutableStateOf<Destination>(HomeScreen) }
     val categories = mainUiState.categories
     val destinations = buildList {
-        add(Destination.Home)
-        categories.getOrNull(0)?.let { add(Destination.Category(it.id, it.name)) }
-        categories.getOrNull(1)?.let { add(Destination.Category(it.id, it.name)) }
-        categories.getOrNull(2)?.let { add(Destination.Category(it.id, it.name)) }
-        add(Destination.Menu)
+        add(HomeScreen)
+        categories.getOrNull(0)?.let { add(CategoryScreen(it.id, it.name)) }
+        categories.getOrNull(1)?.let { add(CategoryScreen(it.id, it.name)) }
+        categories.getOrNull(2)?.let { add(CategoryScreen(it.id, it.name)) }
+        add(MenuScreen)
     }
 
     Scaffold(
@@ -105,22 +112,22 @@ private fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Destination.Home,
+        startDestination = HomeScreen,
         modifier = modifier,
     ) {
-        composable<Destination.Home> {
-            onDestinationChange(Destination.Home)
+        composable<HomeScreen> {
+            onDestinationChange(HomeScreen)
             HomeScreen(navController = navController)
         }
-        composable<Destination.Category> { backStackEntry ->
-            val category = backStackEntry.toRoute<Destination.Category>()
+        composable<CategoryScreen> { backStackEntry ->
+            val category = backStackEntry.toRoute<CategoryScreen>()
             onDestinationChange(category)
             CategoryScreen(
                 category = CategoryUiState(category.id, category.name),
                 navController = navController
             )
         }
-        composable<Destination.Menu>(
+        composable<MenuScreen>(
             enterTransition = {
                     slideIntoContainer(
                         towards = AnimatedContentTransitionScope.SlideDirection.Left,
@@ -134,38 +141,38 @@ private fun AppNavigation(
                     )
                 }
         ) {
-            onDestinationChange(Destination.Menu)
+            onDestinationChange(MenuScreen)
             OverviewScreen(
                 categories = mainUiState.categories,
                 navController = navController
             )
         }
-        composable<Destination.Article> { backStackEntry ->
-            val article = backStackEntry.toRoute<Destination.Article>()
+        composable<ArticleScreen> { backStackEntry ->
+            val article = backStackEntry.toRoute<ArticleScreen>()
             onDestinationChange(article)
             ArticleScreen(
                 id = article.id,
                 navController = navController
             )
         }
-        composable<Destination.News> { backStackEntry ->
-            val news = backStackEntry.toRoute<Destination.News>()
+        composable<NewsScreen> { backStackEntry ->
+            val news = backStackEntry.toRoute<NewsScreen>()
             onDestinationChange(news)
             NewsScreen(
                 navController = navController,
                 initialTab = news.initialTab
             )
         }
-        composable<Destination.Settings> {
-            onDestinationChange(Destination.Settings)
+        composable<SettingsScreen> {
+            onDestinationChange(SettingsScreen)
             SettingsScreen(
                 settings = mainUiState.settings,
                 onUpdateSettings = mainUiState.onSettingsChange,
                 navController = navController
             )
         }
-        composable<Destination.Includes> {
-            onDestinationChange(Destination.Includes)
+        composable<IncludesScreen> {
+            onDestinationChange(IncludesScreen)
             IncludesScreen(navController = navController)
         }
     }

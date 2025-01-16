@@ -40,9 +40,9 @@ import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dvx.news.app.R
+import dvx.news.app.states.ArticleScreen
 import dvx.news.app.states.ArticleUiState
 import dvx.news.app.states.CategoryUiState
-import dvx.news.app.states.Destination
 import dvx.news.app.states.RefreshableScreenState
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.ui.components.BackButton
@@ -81,7 +81,7 @@ fun CategoryScreen(
             CategoryContent(
                 title = category.name,
                 articles = uiState.articles,
-                onArticleClick = { navController.navigate(Destination.Article(id = it.id)) }
+                onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) }
             )
         }
     }

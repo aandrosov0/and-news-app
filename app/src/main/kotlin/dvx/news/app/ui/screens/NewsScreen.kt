@@ -20,9 +20,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil3.compose.rememberAsyncImagePainter
 import dvx.news.app.R
+import dvx.news.app.states.ArticleScreen
 import dvx.news.app.states.ArticleUiState
 import dvx.news.app.states.CategoryUiState
-import dvx.news.app.states.Destination
 import dvx.news.app.states.NewsTab
 import dvx.news.app.states.RefreshableScreenState
 import dvx.news.app.themes.DVXTheme
@@ -66,7 +66,7 @@ fun NewsScreen(
             when (tab) {
                 NewsTab.ALL_NEWS -> {
                     AllNews(
-                        onArticleClick = { navController.navigate(Destination.Article(id = it.id)) },
+                        onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
                         modifier = Modifier.padding(horizontal = 16.dp),
                         articles = uiState.randomArticles,
                         categories = uiState.categories
@@ -74,7 +74,7 @@ fun NewsScreen(
                 }
                 NewsTab.HEADERS -> {
                     HeadlinesNews(
-                        onArticleClick = { navController.navigate(Destination.Article(id = it.id)) },
+                        onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
                         modifier = Modifier.padding(horizontal = 16.dp),
                         articles = uiState.recentArticles,
                         categories = uiState.categories

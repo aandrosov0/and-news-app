@@ -1,11 +1,11 @@
 package dvx.news.app.ui.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -22,12 +22,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil3.compose.rememberAsyncImagePainter
 import dvx.news.app.R
+import dvx.news.app.states.ArticleScreen
 import dvx.news.app.states.ArticleUiState
-import dvx.news.app.states.Destination
 import dvx.news.app.states.RefreshableScreenState
 import dvx.news.app.themes.DVXTheme
 import dvx.news.app.ui.components.DVXTopLogoAppBar
 import dvx.news.app.ui.components.Screen
+import dvx.news.app.ui.components.VerticalPost
 import dvx.news.app.viewModels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -51,25 +52,31 @@ fun HomeScreen(
         topBar = { DVXTopLogoAppBar() },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        ArticlesList(
+        HomeContent(
             articles = uiState.recentArticles,
-            onArticleClick = { navController.navigate(Destination.Article(id = it.id)) },
+            onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
             modifier = modifier
         )
     }
 }
 
 @Composable
-private fun ArticlesList(
+private fun HomeContent(
     articles: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        items(articles) { article ->
+        itemsIndexed(
+            items = articles,
+            span = { index, item ->
+                GridItemSpan(2)
+            }
+        ) { index, article ->
             val painter = if (LocalInspectionMode.current) {
                 painterResource(R.drawable.img_preview)
             } else {
@@ -78,13 +85,11 @@ private fun ArticlesList(
                     contentScale = ContentScale.FillWidth,
                 )
             }
-            Image(
-                painter = painter,
-                contentDescription = null,
+            VerticalPost(
+                image = painter,
+                onClick = { onArticleClick(article) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(onClick = { onArticleClick(article) }),
-                contentScale = ContentScale.FillWidth,
             )
         }
     }
@@ -92,9 +97,9 @@ private fun ArticlesList(
 
 @Preview
 @Composable
-private fun ArticlesListPreview() {
+private fun HomeContentPreview() {
     DVXTheme {
-        ArticlesList(
+        HomeContent(
             articles = listOf(
                 ArticleUiState(),
                 ArticleUiState(),

@@ -23,9 +23,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
+import dvx.news.app.states.CategoryScreen
 import dvx.news.app.states.CategoryUiState
-import dvx.news.app.states.Destination
+import dvx.news.app.states.IncludesScreen
+import dvx.news.app.states.NewsScreen
 import dvx.news.app.states.NewsTab
+import dvx.news.app.states.SettingsScreen
 import dvx.news.app.states.iconId
 import dvx.news.app.ui.components.AppLogo
 import dvx.news.app.ui.components.DVXCard
@@ -56,16 +59,16 @@ fun OverviewScreen(
         ) {
             Actions(
                 onProfile = { },
-                onSettings = { navController.navigate(Destination.Settings) },
+                onSettings = { navController.navigate(SettingsScreen) },
             )
             Topics(
-                onHeadlines = { navController.navigate(Destination.News(NewsTab.HEADERS)) },
-                onNews = { navController.navigate(Destination.News(NewsTab.ALL_NEWS)) },
-                onIncludes = { navController.navigate(Destination.Includes) }
+                onHeadlines = { navController.navigate(NewsScreen(NewsTab.HEADERS)) },
+                onNews = { navController.navigate(NewsScreen(NewsTab.ALL_NEWS)) },
+                onIncludes = { navController.navigate(IncludesScreen) }
             )
             Categories(
                 categories = categories,
-                onClick = { navController.navigate(Destination.Category(it.id, it.name)) }
+                onClick = { navController.navigate(CategoryScreen(it.id, it.name)) }
             )
         }
     }
