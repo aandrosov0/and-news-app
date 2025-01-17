@@ -2,15 +2,13 @@ package dvx.news.app.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,10 +25,10 @@ import dvx.news.app.themes.DVXTheme
 fun DVXTopLogoAppBar(
     modifier: Modifier = Modifier,
     title: String = "",
+    scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
-        windowInsets = WindowInsets.statusBars.only(WindowInsetsSides.Top),
         title = {
             Text(
                 text = title,
@@ -50,10 +48,15 @@ fun DVXTopLogoAppBar(
                     fontSize = 16.sp,
                 )
             }
-        }
+        },
+        scrollBehavior = scrollBehavior,
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            scrolledContainerColor = MaterialTheme.colorScheme.surface
+        )
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun DVXTopLogoAppBarPreview() = DVXTheme {

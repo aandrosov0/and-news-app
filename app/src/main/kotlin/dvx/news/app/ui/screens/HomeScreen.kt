@@ -8,11 +8,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -41,21 +43,22 @@ fun HomeScreen(
 ) {
     LaunchedEffect(Unit) { homeViewModel.getAll() }
     val uiState by homeViewModel.uiState.collectAsState()
+    var scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Screen(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         state = RefreshableScreenState(
             error = uiState.error,
             isRefreshing = uiState.isLoading,
             onRefresh = { homeViewModel.getAll(refresh = true) }
         ),
-        topBar = { DVXTopLogoAppBar() },
+        topBar = { DVXTopLogoAppBar(scrollBehavior = scrollBehavior) },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         HomeContent(
             articles = uiState.recentArticles,
             onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
@@ -69,7 +72,7 @@ private fun HomeContent(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(14.dp)
+        verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         itemsIndexed(
             items = articles,
