@@ -15,12 +15,8 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition { isSplashScreenActive }
-
-        actionBar?.hide()
+        installSplashScreen().setKeepOnScreenCondition { isSplashScreenActive }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
         super.onCreate(savedInstanceState)
 
         setContent {

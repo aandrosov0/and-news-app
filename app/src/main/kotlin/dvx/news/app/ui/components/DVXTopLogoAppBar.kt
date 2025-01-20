@@ -2,7 +2,10 @@ package dvx.news.app.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +53,7 @@ fun DVXTopLogoAppBar(
             }
         },
         scrollBehavior = scrollBehavior,
+        windowInsets = TopAppBarDefaults.windowInsets.exclude(WindowInsets.statusBars),
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             scrolledContainerColor = MaterialTheme.colorScheme.surface
         )

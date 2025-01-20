@@ -5,11 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -21,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -51,7 +55,6 @@ import dvx.news.app.ui.components.VerticalPost
 import dvx.news.app.viewModels.CategoryViewModel
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryScreen(
     category: CategoryUiState,
@@ -109,6 +112,7 @@ private fun CategoryTopBar(
                 label = "Mehr"
             )
         },
+        windowInsets = TopAppBarDefaults.windowInsets.exclude(WindowInsets.statusBars)
     )
 }
 
@@ -120,7 +124,7 @@ private fun CategoryContent(
     modifier: Modifier = Modifier,
 ) {
     val headerArticles = listOf(articles.elementAtOrNull(0), articles.elementAtOrNull(1))
-    val bodyArticles = articles.subtract(headerArticles).filterNotNull()
+    val bodyArticles = articles.subtract(headerArticles.toSet()).filterNotNull()
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),

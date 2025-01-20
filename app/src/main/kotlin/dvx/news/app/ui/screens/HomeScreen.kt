@@ -43,7 +43,7 @@ fun HomeScreen(
 ) {
     LaunchedEffect(Unit) { homeViewModel.getAll() }
     val uiState by homeViewModel.uiState.collectAsState()
-    var scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Screen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -76,10 +76,10 @@ private fun HomeContent(
     ) {
         itemsIndexed(
             items = articles,
-            span = { index, item ->
+            span = { _, _ ->
                 GridItemSpan(2)
             }
-        ) { index, article ->
+        ) { _, article ->
             val painter = if (LocalInspectionMode.current) {
                 painterResource(R.drawable.img_preview)
             } else {

@@ -54,7 +54,6 @@ import dvx.news.app.ui.components.VerticalPost
 import dvx.news.app.viewModels.ArticleViewModel
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticleScreen(
     id: Long,
@@ -104,7 +103,7 @@ private fun ArticleContent(
         itemsIndexed(items = article.elements) { index, element ->
             ArticleElement(element)
 
-            if (index == (article.elements.size / 2).toInt()) {
+            if (index == article.elements.size / 2) {
                 MiddleRecommendations(
                     articles = recommendedMiddleBlock,
                     onArticleClick = onArticleClick,
@@ -132,27 +131,27 @@ fun ArticleElement(
             modifier = modifier,
         )
         is ArticleContentTextUiState -> {
-            val modifier = modifier.padding(horizontal = 10.dp)
+            val modifierPaddings = modifier.padding(horizontal = 10.dp)
             when (element.type) {
                 ArticleTextTypeUiState.SUBHEADLINE -> Subheadline(
                     text = element.value,
-                    modifier = modifier
+                    modifier = modifierPaddings
                 )
                 ArticleTextTypeUiState.HEADLINE -> Headline(
                     text = element.value,
-                    modifier = modifier
+                    modifier = modifierPaddings
                 )
                 ArticleTextTypeUiState.LEAD_PARAGRAPH -> LeadParagraph(
                     text = element.value,
-                    modifier = modifier
+                    modifier = modifierPaddings
                 )
                 ArticleTextTypeUiState.SUBHEADING -> Subheading(
                     text = element.value,
-                    modifier = modifier
+                    modifier = modifierPaddings
                 )
                 ArticleTextTypeUiState.PARAGRAPH -> Paragraph(
                     text = element.value,
-                    modifier = modifier
+                    modifier = modifierPaddings
                 )
             }
         }

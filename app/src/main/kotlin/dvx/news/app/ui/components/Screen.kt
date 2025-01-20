@@ -90,7 +90,7 @@ fun Screen(
                 }
 
             is RefreshableScreenState -> {
-                var pullToRefreshState = rememberPullToRefreshState()
+                val pullToRefreshState = rememberPullToRefreshState()
 
                 Column(
                     modifier = wrapperModifier.pullToRefresh(
@@ -168,7 +168,7 @@ private fun ScreenProgressIndicator(modifier: Modifier = Modifier) {
         )
         Text(
             text = stringResource(R.string.news),
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 44.sp,
             style = MaterialTheme.typography.titleLarge
         )

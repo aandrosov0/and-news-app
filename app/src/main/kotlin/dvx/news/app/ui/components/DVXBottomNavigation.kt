@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -38,7 +37,6 @@ data class DVXNavigationItemColors(
     val unselected: Color
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DVXBottomNavigation(
     destination: Destination,
@@ -134,7 +132,7 @@ private fun DVXNavigationItemPreview() {
 private fun DVXBottomAppBarPreview() = DVXTheme {
     DVXBottomNavigation(
         destination = HomeScreen,
-        destinations = listOf<Destination>(
+        destinations = listOf(
             HomeScreen,
             MenuScreen,
         ),
