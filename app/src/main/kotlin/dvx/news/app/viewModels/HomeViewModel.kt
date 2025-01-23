@@ -25,7 +25,7 @@ class HomeViewModel(
     fun getAll(refresh: Boolean = false) {
         allJob?.cancel()
         allJob = viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }
             _uiState.value = try {
                 val articles = articlesRepository.getRecent(refresh).map { it.toUiState() }
                 HomeScreenUiState(recentArticles = articles)

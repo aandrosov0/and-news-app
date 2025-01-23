@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -15,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -69,20 +73,18 @@ fun ArticleScreen(
         state = RefreshableScreenState(
             error = uiState.error,
             isRefreshing = uiState.isLoading,
-            onRefresh = { articleViewModel.getArticle(id) }
+            onRefresh = { articleViewModel.getArticle(id, refresh = true) }
         ),
         topBar = { ArticleTopBar(onBackClick = { navController.navigateUp() }) },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        if (!uiState.isLoading) {
-            ArticleContent(
-                article = uiState.article,
-                onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
-                recommendedEndBlock = uiState.recommendedEndBlock,
-                recommendedMiddleBlock = uiState.recommendedMiddleBlock,
-                contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp),
-            )
-        }
+        ArticleContent(
+            article = uiState.article,
+            onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
+            recommendedEndBlock = uiState.recommendedEndBlock,
+            recommendedMiddleBlock = uiState.recommendedMiddleBlock,
+            contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp)
+        )
     }
 }
 
@@ -111,10 +113,12 @@ private fun ArticleContent(
             }
         }
         item {
-            EndRecommendations(
-                articles = recommendedEndBlock,
-                onArticleClick = onArticleClick,
-            )
+            if (recommendedEndBlock.isNotEmpty()) {
+                EndRecommendations(
+                    articles = recommendedEndBlock,
+                    onArticleClick = onArticleClick,
+                )
+            }
         }
     }
 }
@@ -178,7 +182,8 @@ private fun ArticleTopBar(
                 icon = R.drawable.ic_arrow_left,
                 label = "Mehr",
             )
-        }
+        },
+        windowInsets = TopAppBarDefaults.windowInsets.exclude(WindowInsets.statusBars)
     )
 }
 

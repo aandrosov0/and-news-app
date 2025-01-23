@@ -70,7 +70,7 @@ fun CategoryScreen(
         state = RefreshableScreenState(
             error = uiState.error,
             isRefreshing = uiState.isLoading,
-            onRefresh = { categoryViewModel.get(category.id) }
+            onRefresh = { categoryViewModel.get(categoryId = category.id, refresh = true) }
         ),
         topBar = {
             CategoryTopBar(
@@ -80,13 +80,11 @@ fun CategoryScreen(
         },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        if (!uiState.isLoading) {
-            CategoryContent(
-                title = category.name,
-                articles = uiState.articles,
-                onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) }
-            )
-        }
+        CategoryContent(
+            title = category.name,
+            articles = uiState.articles,
+            onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) }
+        )
     }
 }
 
@@ -133,12 +131,14 @@ private fun CategoryContent(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
-            Header(
-                title = title,
-                overTitleArticle = headerArticles[0],
-                subTitleArticle = headerArticles[1],
-                onArticleClick = onArticleClick
-            )
+            if (headerArticles[0] != null) {
+                Header(
+                    title = title,
+                    overTitleArticle = headerArticles[0],
+                    subTitleArticle = headerArticles[1],
+                    onArticleClick = onArticleClick
+                )
+            }
         }
         itemsIndexed(items = bodyArticles) { index, article ->
             val paddings = if ((index+1) % 2 == 0) {

@@ -17,15 +17,15 @@ class CategoryViewModel(
     private val articlesRepository: ArticlesRepository,
     private val exceptionConverter: ExceptionConverter<ErrorUiState> = ViewModelExceptionConverter
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(CategoryScreenUiState(isLoading = true))
+    private val _uiState = MutableStateFlow(CategoryScreenUiState())
     val uiState = _uiState.asStateFlow()
 
     private var getJob: Job? = null
 
-    fun get(categoryId: Long) {
+    fun get(categoryId: Long, refresh: Boolean = false) {
         getJob?.cancel()
         getJob = viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }
             _uiState.value = try {
                 val articles = articlesRepository.getByCategory(categoryId).map { it.toUiState() }
                 CategoryScreenUiState(articles = articles)

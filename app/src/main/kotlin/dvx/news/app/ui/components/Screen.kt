@@ -1,13 +1,8 @@
 package dvx.news.app.ui.components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring.StiffnessHigh
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,7 +27,6 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.pulltorefresh.pullToRefresh
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -100,6 +94,7 @@ fun Screen(
                     )
                 ) {
                     ScreenProgressIndicator(
+                        rotation = pullToRefreshState.distanceFraction.coerceAtMost(1f) * 360,
                         modifier = Modifier
                             .animateContentSize(spring(stiffness = StiffnessHigh))
                             .height(80.dp * pullToRefreshState.distanceFraction)
@@ -137,19 +132,10 @@ private fun ScreenContent(
 }
 
 @Composable
-private fun ScreenProgressIndicator(modifier: Modifier = Modifier) {
-    val infiniteTransition = rememberInfiniteTransition()
-    val rotation by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1000,
-                easing = FastOutSlowInEasing
-            )
-        )
-    )
-
+private fun ScreenProgressIndicator(
+    rotation: Float,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -179,6 +165,9 @@ private fun ScreenProgressIndicator(modifier: Modifier = Modifier) {
 @Composable
 private fun ScreenProgressIndicatorPreview() {
     DVXTheme {
-        ScreenProgressIndicator(modifier = Modifier.fillMaxSize())
+        ScreenProgressIndicator(
+            rotation = 0f,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }

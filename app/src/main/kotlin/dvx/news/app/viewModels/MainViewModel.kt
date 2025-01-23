@@ -33,7 +33,6 @@ class MainViewModel(
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
             _uiState.value = MainUiState(isLoading = true)
-
             _uiState.value = try {
                 articlesRepository.getRecent(refresh = true)
                 articlesRepository.getRandom(refresh = true)

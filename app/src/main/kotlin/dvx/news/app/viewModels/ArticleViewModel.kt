@@ -22,12 +22,12 @@ class ArticleViewModel(
 
     private var getArticleJob: Job? = null
 
-    fun getArticle(id: Long) {
+    fun getArticle(id: Long, refresh: Boolean = false) {
         getArticleJob?.cancel()
         getArticleJob = viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }
             _uiState.value = try {
-                val random = articlesRepository.getRandom().map { it.toUiState() }
+                val random = articlesRepository.getRandom(refresh).map { it.toUiState() }
                 val article = articlesRepository.getArticle(id).toUiState()
                 ArticleScreenUiState(
                     article = article,
