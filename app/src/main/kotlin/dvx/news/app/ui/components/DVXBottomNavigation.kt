@@ -15,7 +15,10 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,13 +27,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import dvx.news.app.R
-import dvx.news.app.states.Destination
-import dvx.news.app.states.HomeScreen
-import dvx.news.app.states.MenuScreen
-import dvx.news.app.states.localizedIcon
-import dvx.news.app.states.localizedName
-import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.themes.DVXTheme
+import dvx.news.app.ui.TopLevelRoute
+import dvx.news.app.ui.screens.navigation.Category
 
 data class DVXNavigationItemColors(
     val selected: Color,
@@ -39,22 +41,35 @@ data class DVXNavigationItemColors(
 
 @Composable
 fun DVXBottomNavigation(
-    destination: Destination,
-    onDestinationChange: (Destination) -> Unit,
-    destinations: List<Destination>,
+    currentDestination: NavDestination?,
+    onDestinationChange: (Any) -> Unit,
+    destinations: List<TopLevelRoute>,
     modifier: Modifier = Modifier,
 ) {
+    var categoryId by remember { mutableLongStateOf(0) }
     NavigationBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surface
     ) {
-        destinations.forEach { route ->
+        destinations.forEach { topLevelRoute ->
+            var selected = currentDestination?.hasRoute(topLevelRoute.route::class) == true
+            if (topLevelRoute.route is Category && selected) {
+                selected = categoryId == topLevelRoute.route.id
+            }
+
             DVXNavigationItem(
-                selected = destination == route,
-                icon = route.localizedIcon,
-                onClick = { onDestinationChange(route) },
+                selected = selected,
+                icon = topLevelRoute.icon,
+                onClick = {
+                    onDestinationChange(topLevelRoute.route)
+                    categoryId = if (topLevelRoute.route is Category) {
+                        topLevelRoute.route.id
+                    } else {
+                        0
+                    }
+                },
                 modifier = Modifier.weight(1f),
-                label = route.localizedName
+                label = topLevelRoute.name
             )
         }
     }
@@ -130,12 +145,12 @@ private fun DVXNavigationItemPreview() {
 @Preview
 @Composable
 private fun DVXBottomAppBarPreview() = DVXTheme {
-    DVXBottomNavigation(
-        destination = HomeScreen,
-        destinations = listOf(
-            HomeScreen,
-            MenuScreen,
-        ),
-        onDestinationChange = {},
-    )
+//    DVXBottomNavigation(
+//        destination = HomeScreen,
+//        destinations = listOf(
+//            HomeScreen,
+//            MenuScreen,
+//        ),
+//        onDestinationChange = {},
+//    )
 }

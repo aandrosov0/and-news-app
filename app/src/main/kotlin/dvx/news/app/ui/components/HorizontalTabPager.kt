@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dvx.news.app.states.Tab
+import dvx.news.app.ui.states.Tab
 import kotlinx.coroutines.launch
 
 @Composable

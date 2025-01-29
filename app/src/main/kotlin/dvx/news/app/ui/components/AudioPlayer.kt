@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dvx.news.app.R
-import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.themes.DVXTheme
 import kotlin.math.roundToInt
 
 

@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dvx.news.app.R
-import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.themes.DVXTheme
 
 @Composable
 private fun Header(
@@ -127,10 +127,11 @@ fun PostCard(
     time: String,
     type: String,
     image: Painter,
+    headline: String,
+    subheadline: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    title: String? = null,
-    description: String? = null
+    footer: Boolean = true,
 ) {
     Column(
         modifier = modifier
@@ -150,16 +151,23 @@ fun PostCard(
             time = time,
             type = type,
         )
-        Image(
-            painter = image,
-            contentDescription = null,
-            contentScale = ContentScale.FillWidth,
-        )
 
-        if (title != null || description != null) {
+        if (footer) {
+            Image(
+                painter = image,
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth,
+            )
             Footer(
-                title = title ?: "",
-                description = description ?: ""
+                title = subheadline,
+                description = headline
+            )
+        } else {
+            Thumbnail(
+                image = image,
+                headline = headline,
+                subheadline = subheadline,
+                onClick = {}
             )
         }
     }
@@ -190,8 +198,8 @@ private fun PostCardPreview() = DVXTheme {
         time = "12:38 Uhr",
         type = "Regional",
         image = painterResource(R.drawable.post_img_preview),
-        title = "Polizei-Grobeinsatz in Radeberg",
-        description = "Polizei schiebt Messer-Angreifer (54) ins",
+        subheadline = "Polizei-Grobeinsatz in Radeberg",
+        headline = "Polizei schiebt Messer-Angreifer (54) ins",
         onClick = {}
     )
 }

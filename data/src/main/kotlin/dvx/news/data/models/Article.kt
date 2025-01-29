@@ -4,7 +4,7 @@ import com.dvxnews.api.models.DVXArticle
 
 data class Article(
     val id: Long,
-    val categoryId: Long,
+    val categoryId: Long?,
     val subheadline: String,
     val headline: String,
     val slug: String?,

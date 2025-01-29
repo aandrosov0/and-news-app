@@ -4,10 +4,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring.StiffnessHigh
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.pulltorefresh.pullToRefresh
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -35,13 +32,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dvx.news.app.R
-import dvx.news.app.states.DefaultScreenState
-import dvx.news.app.states.ErrorUiState
-import dvx.news.app.states.RefreshableScreenState
-import dvx.news.app.states.ScreenState
-import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.states.DefaultScreenState
+import dvx.news.app.ui.states.ErrorUiState
+import dvx.news.app.ui.states.RefreshableScreenState
+import dvx.news.app.ui.states.ScreenState
+import dvx.news.app.ui.themes.DVXTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,7 +67,7 @@ fun Screen(
     ) { paddingValues ->
         val wrapperModifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues)
+            .padding(top = paddingValues.calculateTopPadding())
 
         when (state) {
             is DefaultScreenState ->
@@ -94,7 +90,7 @@ fun Screen(
                     )
                 ) {
                     ScreenProgressIndicator(
-                        rotation = pullToRefreshState.distanceFraction.coerceAtMost(1f) * 360,
+                        rotation = pullToRefreshState.distanceFraction * 360,
                         modifier = Modifier
                             .animateContentSize(spring(stiffness = StiffnessHigh))
                             .height(80.dp * pullToRefreshState.distanceFraction)
@@ -136,27 +132,20 @@ private fun ScreenProgressIndicator(
     rotation: Float,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier
+    Box(
+        modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface.copy(alpha = .5f))
             .padding(10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_logo),
             contentDescription = null,
             modifier = Modifier
-                .size(94.dp)
-                .rotate(rotation),
+                .size(44.dp)
+                .rotate(rotation.coerceAtMost(360f)),
             tint = Color.Unspecified,
-        )
-        Text(
-            text = stringResource(R.string.news),
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 44.sp,
-            style = MaterialTheme.typography.titleLarge
         )
     }
 }

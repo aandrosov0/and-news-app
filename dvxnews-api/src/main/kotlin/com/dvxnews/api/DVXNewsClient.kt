@@ -7,7 +7,6 @@ import com.dvxnews.api.core.ResponseInterceptorImpl
 import com.dvxnews.api.models.DVXArticleContent
 import com.dvxnews.api.models.DVXArticles
 import com.dvxnews.api.models.DVXCategory
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
@@ -15,7 +14,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
 
-@OptIn(ExperimentalSerializationApi::class)
 class DVXNewsClient(
     private val client: OkHttpClient = OkHttpClient(),
     private val serializer: Json = Json { ignoreUnknownKeys = true }
@@ -24,7 +22,7 @@ class DVXNewsClient(
     private val exceptionInterceptor: ExceptionInterceptor = ExceptionInterceptorImpl
 
     companion object {
-        const val API_URL = "https://devapi.adlink.net"
+        private const val API_URL = "https://devapi.adlink.net"
         const val ARTICLE_URL = "$API_URL/websites/article"
         const val ARTICLES_URL = "$API_URL/websites/articles"
         const val CATEGORIES_URL = "$API_URL/websites/domain"
@@ -33,11 +31,12 @@ class DVXNewsClient(
     fun getArticles(
         domain: DVXNewsDomain = DVXNewsDomain.DVXNEWS,
         language: DVXNewsLanguage = DVXNewsLanguage.DE,
+        skipDomainCheck: Boolean = false,
         categoryId: Long? = null,
     ): DVXArticles {
-        var url = "$ARTICLES_URL?domain_name=$domain&language_id=$language"
+        var url = "$ARTICLES_URL?domain_name=$domain&language_id=$language&skip_domain_check=$skipDomainCheck"
         categoryId?.let { url += "&category_id=$categoryId" }
-
+        println(url)
         val request = Request.Builder()
             .url(url)
             .build()
@@ -54,9 +53,10 @@ class DVXNewsClient(
 
     fun getCategories(
         domain: DVXNewsDomain = DVXNewsDomain.DVXNEWS,
-        language: DVXNewsLanguage = DVXNewsLanguage.DE
+        language: DVXNewsLanguage = DVXNewsLanguage.DE,
+        skipDomainCheck: Boolean = false,
     ): List<DVXCategory> {
-        val url = "$CATEGORIES_URL?domain_name=$domain&language_id=$language"
+        val url = "$CATEGORIES_URL?domain_name=$domain&language_id=$language&skip_domain_check=$skipDomainCheck"
         val request = Request.Builder()
             .url(url)
             .build()
@@ -75,9 +75,10 @@ class DVXNewsClient(
     fun getArticle(
         id: Long,
         domain: DVXNewsDomain = DVXNewsDomain.DVXNEWS,
-        language: DVXNewsLanguage = DVXNewsLanguage.DE
+        language: DVXNewsLanguage = DVXNewsLanguage.DE,
+        skipDomainCheck: Boolean = false,
     ): DVXArticleContent {
-        val url = "$ARTICLE_URL?domain_name=$domain&language_id=$language&article_id=$id"
+        val url = "$ARTICLE_URL?domain_name=$domain&language_id=$language&article_id=$id&skip_domain_check=$skipDomainCheck"
         val request = Request.Builder()
             .url(url)
             .build()

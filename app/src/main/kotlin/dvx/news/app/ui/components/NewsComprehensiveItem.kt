@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dvx.news.app.R
-import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.themes.DVXTheme
 
 @Composable
 fun NewsComprehensiveItem(
@@ -39,8 +39,8 @@ fun NewsComprehensiveItem(
             time = time,
             type = type,
             image = image,
-            title = title,
-            description = description,
+            subheadline = title,
+            headline = description,
             onClick = onClick,
             modifier = Modifier
                 .padding(bottom = 10.dp)

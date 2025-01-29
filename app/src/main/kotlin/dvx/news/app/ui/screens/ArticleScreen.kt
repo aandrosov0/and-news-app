@@ -4,21 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,42 +22,43 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dvx.news.app.R
-import dvx.news.app.states.ArticleContentElementUiState
-import dvx.news.app.states.ArticleContentImageUiState
-import dvx.news.app.states.ArticleContentTextUiState
-import dvx.news.app.states.ArticleContentUiState
-import dvx.news.app.states.ArticleScreen
-import dvx.news.app.states.ArticleTextTypeUiState
-import dvx.news.app.states.ArticleUiState
-import dvx.news.app.states.RefreshableScreenState
-import dvx.news.app.themes.DVXTheme
-import dvx.news.app.themes.openSansCondFontFamily
-import dvx.news.app.ui.components.BackButton
+import dvx.news.app.ui.components.DVXTopAppBar
 import dvx.news.app.ui.components.HorizontalPost
 import dvx.news.app.ui.components.Screen
 import dvx.news.app.ui.components.VerticalPost
-import dvx.news.app.viewModels.ArticleViewModel
+import dvx.news.app.ui.screens.navigation.Article
+import dvx.news.app.ui.states.ArticleContentElementUiState
+import dvx.news.app.ui.states.ArticleContentImageUiState
+import dvx.news.app.ui.states.ArticleContentTextUiState
+import dvx.news.app.ui.states.ArticleContentUiState
+import dvx.news.app.ui.states.ArticleTextTypeUiState
+import dvx.news.app.ui.states.ArticleUiState
+import dvx.news.app.ui.states.RefreshableScreenState
+import dvx.news.app.ui.themes.DVXTheme
+import dvx.news.app.ui.themes.openSansCondFontFamily
+import dvx.news.app.ui.viewModels.ArticleViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ArticleScreen(
+internal fun ArticleScreen(
     id: Long,
+    navController: NavController,
     modifier: Modifier = Modifier,
     articleViewModel: ArticleViewModel = koinViewModel(),
-    navController: NavController = rememberNavController(),
 ) {
     LaunchedEffect(Unit) { articleViewModel.getArticle(id) }
     val uiState by articleViewModel.uiState.collectAsState()
@@ -75,12 +70,12 @@ fun ArticleScreen(
             isRefreshing = uiState.isLoading,
             onRefresh = { articleViewModel.getArticle(id, refresh = true) }
         ),
-        topBar = { ArticleTopBar(onBackClick = { navController.navigateUp() }) },
+        topBar = { DVXTopAppBar(onBackClick = navController::navigateUp) },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         ArticleContent(
             article = uiState.article,
-            onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
+            onArticleClick = { navController.navigate(Article(id = it.id)) },
             recommendedEndBlock = uiState.recommendedEndBlock,
             recommendedMiddleBlock = uiState.recommendedMiddleBlock,
             contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp)
@@ -162,31 +157,6 @@ fun ArticleElement(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ArticleTopBar(
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    CenterAlignedTopAppBar(
-        modifier = modifier,
-        title = {
-            Text(
-                text = "Article",
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        },
-        navigationIcon = {
-            BackButton(
-                onClick = onBackClick,
-                icon = R.drawable.ic_arrow_left,
-                label = "Mehr",
-            )
-        },
-        windowInsets = TopAppBarDefaults.windowInsets.exclude(WindowInsets.statusBars)
-    )
-}
-
 @Composable
 private fun Subheadline(
     text: String,
@@ -198,6 +168,7 @@ private fun Subheadline(
         fontWeight = FontWeight.ExtraBold,
         fontSize = 19.sp,
         lineHeight = 28.sp,
+        letterSpacing = (-0.5).sp,
         style = MaterialTheme.typography.titleLarge,
         modifier = modifier
             .fillMaxWidth()
@@ -213,10 +184,15 @@ private fun Headline(
         text = text,
         textAlign = TextAlign.Center,
         fontFamily = openSansCondFontFamily,
-        lineHeight = 44.sp,
+        lineHeight = 1.em,
         fontSize = 42.sp,
+        letterSpacing = (-2).sp,
         fontWeight = FontWeight.ExtraBold,
-        style = MaterialTheme.typography.bodyLarge,
+        style = MaterialTheme.typography.bodyLarge.copy(
+            platformStyle = PlatformTextStyle(
+                includeFontPadding = false
+            )
+        ),
         modifier = modifier
     )
 }

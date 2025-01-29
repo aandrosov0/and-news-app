@@ -2,20 +2,15 @@ package dvx.news.app.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,16 +23,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
-import dvx.news.app.states.SettingsTab
-import dvx.news.app.states.SettingsUiState
-import dvx.news.app.states.Theme
-import dvx.news.app.states.localizedName
-import dvx.news.app.ui.components.BackButton
+import dvx.news.app.ui.components.DVXTopAppBar
 import dvx.news.app.ui.components.HorizontalTabPager
 import dvx.news.app.ui.components.NotificationAlertDialog
 import dvx.news.app.ui.components.SelectableRowItem
+import dvx.news.app.ui.states.SettingsTab
+import dvx.news.app.ui.states.Theme
+import dvx.news.app.ui.states.localizedName
+import dvx.news.app.ui.viewModels.MainViewModel
+import org.koin.compose.koinInject
 
 @Composable
 private fun Themes(
@@ -84,31 +79,6 @@ private fun Themes(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SettingsTopBar(
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {},
-) {
-    CenterAlignedTopAppBar(
-        modifier = modifier,
-        title = {
-            Text(
-                text = "Einstellungen",
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        },
-        navigationIcon = {
-            BackButton(
-                onClick = onBackClick,
-                icon = R.drawable.ic_arrow_left,
-                label = "Mehr"
-            )
-        },
-        windowInsets = TopAppBarDefaults.windowInsets.exclude(WindowInsets.statusBars)
-    )
-}
-
 @Composable
 private fun Messages() {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -125,15 +95,20 @@ private fun Messages() {
 }
 
 @Composable
-fun SettingsScreen(
-    settings: SettingsUiState,
-    onUpdateSettings: (SettingsUiState) -> Unit,
+internal fun SettingsScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
-    navController: NavController = rememberNavController()
+    mainViewModel: MainViewModel = koinInject(),
 ) {
+    val uiState by mainViewModel.uiState.collectAsState()
     Scaffold(
         modifier = modifier,
-        topBar = { SettingsTopBar(onBackClick = navController::navigateUp) },
+        topBar = {
+            DVXTopAppBar(
+                title = stringResource(R.string.settings),
+                onBackClick = navController::navigateUp
+            )
+        },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) { paddings ->
         Column(
@@ -148,8 +123,8 @@ fun SettingsScreen(
             ) { tab ->
                 when (tab) {
                     SettingsTab.REPRESENTATION -> Themes(
-                        currentTheme = settings.theme,
-                        onThemeChange = { onUpdateSettings(settings.copy(theme = it)) }
+                        currentTheme = uiState.settings.theme,
+                        onThemeChange = { uiState.onSettingsChange(uiState.settings.copy(theme = it)) }
                     )
                     SettingsTab.MESSAGES -> Messages()
                 }

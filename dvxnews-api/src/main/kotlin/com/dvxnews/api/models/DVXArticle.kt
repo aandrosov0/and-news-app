@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DVXArticle(
     @SerialName("global_id") val id: Long,
-    @SerialName("category_id") val categoryId: Long,
+    @SerialName("category_id") val categoryId: Long?,
     val subheadline: String,
     val headline: String,
     val slug: String?,

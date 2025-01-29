@@ -1,0 +1,18 @@
+package dvx.news.app.ui.screens.navigation
+
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import dvx.news.app.ui.screens.ArticleScreen
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Article(val id: Long)
+
+internal fun NavGraphBuilder.articleDestination(navController: NavController) {
+    composable<Article> { backStackEntry ->
+        val route = backStackEntry.toRoute<Article>()
+        ArticleScreen(id = route.id, navController = navController)
+    }
+}

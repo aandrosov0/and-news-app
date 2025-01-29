@@ -16,9 +16,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import dvx.news.app.states.SettingsTab
-import dvx.news.app.states.Tab
-import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.states.SettingsTab
+import dvx.news.app.ui.states.Tab
+import dvx.news.app.ui.themes.DVXTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -20,8 +20,10 @@ fun NewsItem(
     time: String,
     type: String,
     image: Painter,
+    headline: String,
+    subheadline: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -37,9 +39,12 @@ fun NewsItem(
             time = time,
             type = type,
             image = image,
+            headline = headline,
+            subheadline = subheadline,
             onClick = onClick,
             modifier = Modifier
-                .padding(bottom = 10.dp)
+                .padding(bottom = 10.dp),
+            footer = false
         )
     }
 }
@@ -51,6 +56,8 @@ private fun NewsItemPreview() {
         time = "12:31 Uhr",
         type = "Leben & Wissen",
         image = painterResource(R.drawable.post_img_preview),
+        headline = "Headline",
+        subheadline = "Subheadline",
         onClick = {}
     )
 }

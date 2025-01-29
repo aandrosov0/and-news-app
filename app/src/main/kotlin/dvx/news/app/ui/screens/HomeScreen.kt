@@ -16,30 +16,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import dvx.news.app.R
-import dvx.news.app.states.ArticleScreen
-import dvx.news.app.states.ArticleUiState
-import dvx.news.app.states.RefreshableScreenState
-import dvx.news.app.themes.DVXTheme
+import dvx.news.app.ui.states.ArticleUiState
+import dvx.news.app.ui.states.RefreshableScreenState
+import dvx.news.app.ui.themes.DVXTheme
 import dvx.news.app.ui.components.DVXTopLogoAppBar
 import dvx.news.app.ui.components.Screen
+import dvx.news.app.ui.components.Thumbnail
 import dvx.news.app.ui.components.VerticalPost
-import dvx.news.app.viewModels.HomeViewModel
+import dvx.news.app.ui.screens.navigation.Article
+import dvx.news.app.ui.viewModels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = koinViewModel(),
-    navController: NavController = rememberNavController()
 ) {
     LaunchedEffect(Unit) { homeViewModel.getAll() }
     val uiState by homeViewModel.uiState.collectAsState()
@@ -57,7 +57,7 @@ fun HomeScreen(
     ) {
         HomeContent(
             articles = uiState.recentArticles,
-            onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) },
+            onArticleClick = { navController.navigate(Article(id = it.id)) },
             modifier = modifier,
         )
     }
@@ -69,31 +69,51 @@ private fun HomeContent(
     onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val thumbnailStep = 3
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(14.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         itemsIndexed(
             items = articles,
-            span = { _, _ ->
-                GridItemSpan(2)
+            span = { index, _ ->
+                if (index % thumbnailStep == 0) {
+                    GridItemSpan(maxLineSpan)
+                } else {
+                    GridItemSpan(1)
+                }
             }
-        ) { _, article ->
-            val painter = if (LocalInspectionMode.current) {
-                painterResource(R.drawable.img_preview)
+        ) { index, article ->
+            val painter = rememberAsyncImagePainter(
+                model = article.imageUrl,
+                contentScale = ContentScale.FillWidth
+            )
+            val state by painter.state.collectAsState()
+            val image = when (state) {
+                is AsyncImagePainter.State.Success -> painter
+                else -> painterResource(R.drawable.img_small_preview)
+            }
+
+            if (index % thumbnailStep == 0) {
+                Thumbnail(
+                    image = image,
+                    onClick = { onArticleClick(article) },
+                    headline = article.headline,
+                    subheadline = article.subheadline,
+                    modifier = Modifier.fillMaxWidth()
+                )
             } else {
-                rememberAsyncImagePainter(
-                    model = article.imageUrl,
-                    contentScale = ContentScale.FillWidth,
+                VerticalPost(
+                    image = image,
+                    onClick = { onArticleClick(article) },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    title = article.subheadline,
+                    description = article.headline
                 )
             }
-            VerticalPost(
-                image = painter,
-                onClick = { onArticleClick(article) },
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
         }
     }
 }
@@ -103,11 +123,11 @@ private fun HomeContent(
 private fun HomeContentPreview() {
     DVXTheme {
         HomeContent(
-            articles = listOf(
-                ArticleUiState(),
-                ArticleUiState(),
-                ArticleUiState(),
-            ),
+            articles = buildList {
+                repeat(10) {
+                    add(ArticleUiState())
+                }
+            },
             onArticleClick = {}
         )
     }

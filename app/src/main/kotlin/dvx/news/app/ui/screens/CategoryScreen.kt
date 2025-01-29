@@ -5,26 +5,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,29 +32,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dvx.news.app.R
-import dvx.news.app.states.ArticleScreen
-import dvx.news.app.states.ArticleUiState
-import dvx.news.app.states.CategoryUiState
-import dvx.news.app.states.RefreshableScreenState
-import dvx.news.app.themes.DVXTheme
-import dvx.news.app.ui.components.BackButton
+import dvx.news.app.ui.components.DVXTopAppBar
 import dvx.news.app.ui.components.Screen
+import dvx.news.app.ui.components.Thumbnail
 import dvx.news.app.ui.components.VerticalPost
-import dvx.news.app.viewModels.CategoryViewModel
+import dvx.news.app.ui.screens.navigation.Article
+import dvx.news.app.ui.states.ArticleUiState
+import dvx.news.app.ui.states.CategoryUiState
+import dvx.news.app.ui.states.RefreshableScreenState
+import dvx.news.app.ui.themes.DVXTheme
+import dvx.news.app.ui.viewModels.CategoryViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CategoryScreen(
+internal fun CategoryScreen(
     category: CategoryUiState,
+    navController: NavController,
     modifier: Modifier = Modifier,
     categoryViewModel: CategoryViewModel = koinViewModel(),
-    navController: NavController = rememberNavController()
 ) {
     LaunchedEffect(Unit) { categoryViewModel.get(category.id) }
     val uiState by categoryViewModel.uiState.collectAsState()
@@ -73,9 +67,9 @@ fun CategoryScreen(
             onRefresh = { categoryViewModel.get(categoryId = category.id, refresh = true) }
         ),
         topBar = {
-            CategoryTopBar(
+            DVXTopAppBar(
                 title = category.name,
-                onBackClick = { navController.navigateUp() }
+                onBackClick = navController::navigateUp
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -83,35 +77,9 @@ fun CategoryScreen(
         CategoryContent(
             title = category.name,
             articles = uiState.articles,
-            onArticleClick = { navController.navigate(ArticleScreen(id = it.id)) }
+            onArticleClick = { navController.navigate(Article(id = it.id)) }
         )
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun CategoryTopBar(
-    title: String,
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {}
-) {
-    CenterAlignedTopAppBar(
-        modifier = modifier,
-        title = {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        },
-        navigationIcon = {
-            BackButton(
-                onClick = onBackClick,
-                icon = R.drawable.ic_arrow_left,
-                label = "Mehr"
-            )
-        },
-        windowInsets = TopAppBarDefaults.windowInsets.exclude(WindowInsets.statusBars)
-    )
 }
 
 @Composable
@@ -121,9 +89,9 @@ private fun CategoryContent(
     onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val step = 3
     val headerArticles = listOf(articles.elementAtOrNull(0), articles.elementAtOrNull(1))
     val bodyArticles = articles.subtract(headerArticles.toSet()).filterNotNull()
-
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize(),
@@ -140,17 +108,30 @@ private fun CategoryContent(
                 )
             }
         }
-        itemsIndexed(items = bodyArticles) { index, article ->
-            val paddings = if ((index+1) % 2 == 0) {
-                PaddingValues(end = 10.dp)
+        itemsIndexed(items = bodyArticles, span = { index, _ ->
+            if (index % step == 0) {
+                GridItemSpan(maxLineSpan)
             } else {
-                PaddingValues(start = 10.dp)
+                GridItemSpan(1)
             }
+        }) { index, article ->
+            val thumbnail = index % step == 0
+            val paddings =
+                if (thumbnail) {
+                    PaddingValues()
+                } else if ((index+1) % 2 == 0) {
+                    PaddingValues(end = 10.dp)
+                } else {
+                    PaddingValues(start = 10.dp)
+                }
 
             BodyItem(
+                thumbnail = thumbnail,
                 article = article,
                 onArticleClick = onArticleClick,
-                modifier = Modifier.padding(paddings)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(paddings)
             )
         }
         item(span = { GridItemSpan(maxLineSpan) }) { Footer() }
@@ -208,6 +189,7 @@ private fun Header(
 
 @Composable
 private fun BodyItem(
+    thumbnail: Boolean,
     article: ArticleUiState,
     onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier,
@@ -219,17 +201,27 @@ private fun BodyItem(
             .build()
     )
     val state by painter.state.collectAsState()
+    val image = when (state) {
+        is AsyncImagePainter.State.Success -> painter
+        else -> painterResource(R.drawable.img_small_preview)
+    }
 
-    VerticalPost(
-        title = article.subheadline,
-        description = article.headline,
-        image = when (state) {
-            is AsyncImagePainter.State.Success -> painter
-            else -> painterResource(R.drawable.img_small_preview)
-        },
-        onClick = { onArticleClick(article) },
-        modifier = modifier
-    )
+    if (thumbnail) {
+        Thumbnail(
+            image = image,
+            headline = article.headline,
+            subheadline = article.subheadline,
+            onClick = { onArticleClick(article) }
+        )
+    } else {
+        VerticalPost(
+            title = article.subheadline,
+            description = article.headline,
+            image = image,
+            onClick = { onArticleClick(article) },
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
