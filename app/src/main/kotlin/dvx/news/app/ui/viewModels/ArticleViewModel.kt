@@ -7,6 +7,7 @@ import dvx.news.app.ui.core.ViewModelExceptionConverter
 import dvx.news.app.ui.states.ArticleScreenUiState
 import dvx.news.app.ui.states.ErrorUiState
 import dvx.news.app.ui.states.toUiState
+import dvx.news.data.exceptions.DataLayerException
 import dvx.news.data.repositories.ArticlesRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +35,7 @@ class ArticleViewModel(
                     recommendedMiddleBlock = random.take(2),
                     recommendedEndBlock = random.takeLast(4)
                 )
-            } catch (exception: Exception) {
+            } catch (exception: DataLayerException) {
                 ArticleScreenUiState(error = exceptionConverter.convert(exception))
             }
         }

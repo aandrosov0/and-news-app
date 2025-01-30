@@ -5,8 +5,10 @@ import dvx.news.data.dataSources.ArticlesDataSource
 import dvx.news.data.dataSources.ArticlesRemoteDataSource
 import dvx.news.data.dataSources.CategoriesDataSource
 import dvx.news.data.dataSources.CategoriesRemoteDataSource
+import dvx.news.data.repositories.ArticlesFakeRepository
 import dvx.news.data.repositories.ArticlesRepository
 import dvx.news.data.repositories.ArticlesRepositoryImpl
+import dvx.news.data.repositories.CategoriesFakeRepository
 import dvx.news.data.repositories.CategoriesRepository
 import dvx.news.data.repositories.CategoriesRepositoryImpl
 import dvx.news.data.repositories.SettingsRepository
@@ -25,4 +27,11 @@ val dataModule = module {
     single<CategoriesDataSource> { CategoriesRemoteDataSource(get()) }
     single<ArticlesRepository> { ArticlesRepositoryImpl(get()) }
     single<CategoriesRepository> { CategoriesRepositoryImpl(get()) }
+}
+
+val fakeDataModule = module {
+    single<SettingsRepository> { SettingsRepositoryImpl(get()) }
+
+    single<ArticlesRepository> { ArticlesFakeRepository() }
+    single<CategoriesRepository> { CategoriesFakeRepository() }
 }
