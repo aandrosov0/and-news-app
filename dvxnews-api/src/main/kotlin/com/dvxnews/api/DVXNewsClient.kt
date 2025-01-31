@@ -36,7 +36,6 @@ class DVXNewsClient(
     ): DVXArticles {
         var url = "$ARTICLES_URL?domain_name=$domain&language_id=$language&skip_domain_check=$skipDomainCheck"
         categoryId?.let { url += "&category_id=$categoryId" }
-        println(url)
         val request = Request.Builder()
             .url(url)
             .build()

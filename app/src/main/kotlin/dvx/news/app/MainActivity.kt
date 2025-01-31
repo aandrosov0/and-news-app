@@ -13,7 +13,7 @@ import androidx.core.view.WindowCompat
 import androidx.datastore.preferences.preferencesDataStore
 import dvx.news.app.ui.App
 import dvx.news.app.ui.uiModule
-import dvx.news.data.fakeDataModule
+import dvx.news.data.dataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
 
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             KoinApplication(application = {
                 androidContext(this@MainActivity)
-                modules(fakeDataModule, uiModule)
+                modules(dataModule, uiModule)
             }) {
                 App()
             }

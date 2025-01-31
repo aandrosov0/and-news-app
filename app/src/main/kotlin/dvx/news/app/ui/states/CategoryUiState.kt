@@ -20,7 +20,7 @@ val CategoryUiState.iconId: Int
         30L -> R.drawable.ic_news
         196L -> R.drawable.ic_games
         41L -> R.drawable.ic_sport
-        158L -> R.drawable.ic_unterhaltung
+        33L -> R.drawable.ic_unterhaltung
         106L -> R.drawable.ic_erotic
         31L -> R.drawable.ic_politic
         8L -> R.drawable.ic_advisor

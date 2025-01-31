@@ -7,7 +7,7 @@ enum class DVXNewsDomain {
 
     override fun toString() = when (this) {
         BABYSCOUT -> "babyscout.com"
-        DVXNEWS -> "dvxnews.com"
+        DVXNEWS -> "dvxnews.app"
         HARMONIE -> "harmonie.de"
     }
 }
