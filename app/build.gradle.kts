@@ -12,7 +12,7 @@ kotlin {
 android {
     namespace = "dvx.news.app"
 
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "dvx.news.app"

@@ -2,7 +2,6 @@ package dvx.news.app.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -90,7 +89,7 @@ private fun CategoryContent(
     modifier: Modifier = Modifier,
 ) {
     val step = 3
-    val headerArticles = listOf(articles.elementAtOrNull(0), articles.elementAtOrNull(1))
+    val headerArticles = listOf(articles.elementAtOrNull(0))
     val bodyArticles = articles.subtract(headerArticles.toSet()).filterNotNull()
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -103,7 +102,6 @@ private fun CategoryContent(
                 Header(
                     title = title,
                     overTitleArticle = headerArticles[0],
-                    subTitleArticle = headerArticles[1],
                     onArticleClick = onArticleClick
                 )
             }
@@ -115,23 +113,12 @@ private fun CategoryContent(
                 GridItemSpan(1)
             }
         }) { index, article ->
-            val thumbnail = index % step == 0
-            val paddings =
-                if (thumbnail) {
-                    PaddingValues()
-                } else if ((index+1) % 2 == 0) {
-                    PaddingValues(end = 10.dp)
-                } else {
-                    PaddingValues(start = 10.dp)
-                }
-
             BodyItem(
-                thumbnail = thumbnail,
+                thumbnail = index % step == 0,
                 article = article,
                 onArticleClick = onArticleClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(paddings)
             )
         }
         item(span = { GridItemSpan(maxLineSpan) }) { Footer() }
