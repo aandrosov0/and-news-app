@@ -6,10 +6,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DVXArticleContent(
     @SerialName("article_id") val id: Long,
-    val captions: List<DVXCaption>,
-    val faq: List<DVXFaq>,
-    val meta: List<DVXMeta>,
-    val promo: List<DVXPromo>,
+    val captions: List<DVXCaption> = listOf(),
+    val faq: List<DVXFaq> = listOf(),
+    val meta: List<DVXMeta> = listOf(),
+    val promo: List<DVXPromo> = listOf(),
     val text: List<DVXText>,
     val images: List<DVXImage>,
 )

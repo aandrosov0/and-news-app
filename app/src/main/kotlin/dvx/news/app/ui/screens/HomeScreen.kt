@@ -2,6 +2,7 @@ package dvx.news.app.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,14 +24,14 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import dvx.news.app.R
-import dvx.news.app.ui.states.ArticleUiState
-import dvx.news.app.ui.states.RefreshableScreenState
-import dvx.news.app.ui.themes.DVXTheme
 import dvx.news.app.ui.components.DVXTopLogoAppBar
 import dvx.news.app.ui.components.Screen
 import dvx.news.app.ui.components.Thumbnail
 import dvx.news.app.ui.components.VerticalPost
 import dvx.news.app.ui.screens.navigation.Article
+import dvx.news.app.ui.states.ArticleUiState
+import dvx.news.app.ui.states.RefreshableScreenState
+import dvx.news.app.ui.themes.DVXTheme
 import dvx.news.app.ui.viewModels.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -74,7 +75,7 @@ private fun HomeContent(
         columns = GridCells.Fixed(2),
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(14.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy((-8).dp),
     ) {
         itemsIndexed(
             items = articles,
@@ -109,7 +110,8 @@ private fun HomeContent(
                     image = image,
                     onClick = { onArticleClick(article) },
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
                     title = article.subheadline,
                     description = article.headline
                 )

@@ -49,7 +49,7 @@ fun DVXBottomNavigation(
     var categoryId by remember { mutableLongStateOf(0) }
     NavigationBar(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         destinations.forEach { topLevelRoute ->
             var selected = currentDestination?.hasRoute(topLevelRoute.route::class) == true
