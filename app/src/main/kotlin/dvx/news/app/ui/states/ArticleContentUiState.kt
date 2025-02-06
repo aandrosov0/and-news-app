@@ -7,8 +7,8 @@ data class ArticleContentUiState(
     val elements: List<ArticleContentElementUiState> = emptyList()
 )
 
-fun ArticleContent.toUiState() = ArticleContentUiState(
+fun ArticleContent.asState() = ArticleContentUiState(
     id = id,
-    elements = elements.map { it.toUiState() }
+    elements = elements.map { it.asState() }
 )
 

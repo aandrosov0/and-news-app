@@ -1,15 +1,15 @@
 package dvx.news.app.ui.states
 
-import dvx.news.data.models.ExposedSettings
+import dvx.news.data.models.Settings
 
 data class SettingsUiState(
-    val theme: Theme = Theme.SYSTEM
+    val theme: ThemeUiState = ThemeUiState.SYSTEM
 )
 
-fun SettingsUiState.asModel() = ExposedSettings(
-    exposedTheme = theme.asModel()
+fun SettingsUiState.asModel() = Settings(
+    theme = theme.asModel()
 )
 
-fun ExposedSettings.toUiState() = SettingsUiState(
-    theme = exposedTheme.toUiState()
+fun Settings.asState() = SettingsUiState(
+    theme = theme.asState()
 )

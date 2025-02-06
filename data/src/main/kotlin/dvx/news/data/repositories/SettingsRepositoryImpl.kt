@@ -4,8 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import dvx.news.data.models.ExposedSettings
-import dvx.news.data.models.ExposedTheme
+import dvx.news.data.models.Settings
+import dvx.news.data.models.Theme
 import kotlinx.coroutines.flow.first
 
 class SettingsRepositoryImpl(
@@ -14,17 +14,17 @@ class SettingsRepositoryImpl(
     private val themePreferencesKey
         get() = stringPreferencesKey("theme")
 
-    override suspend fun getSavedSettings(): ExposedSettings {
+    override suspend fun getSettings(): Settings {
         val preferences = dataStore.data.first()
         val theme = preferences[themePreferencesKey]
-        return ExposedSettings(
-            exposedTheme = if (theme.isNullOrBlank()) ExposedTheme.SYSTEM else ExposedTheme.valueOf(theme)
+        return Settings(
+            theme = if (theme.isNullOrBlank()) Theme.SYSTEM else Theme.valueOf(theme)
         )
     }
 
-    override suspend fun update(exposedSettings: ExposedSettings) {
+    override suspend fun update(settings: Settings) {
         dataStore.edit {
-            it[themePreferencesKey] = exposedSettings.exposedTheme.name
+            it[themePreferencesKey] = settings.theme.name
         }
     }
 }

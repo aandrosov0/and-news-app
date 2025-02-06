@@ -13,7 +13,7 @@ data class ArticleUiState(
     val imageUrl: String = "",
 )
 
-fun Article.toUiState() = ArticleUiState(
+fun Article.asState() = ArticleUiState(
     id = id,
     categoryId = categoryId,
     subheadline = subheadline,

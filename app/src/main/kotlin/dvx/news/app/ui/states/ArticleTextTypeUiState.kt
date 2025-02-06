@@ -10,7 +10,7 @@ enum class ArticleTextTypeUiState {
     PARAGRAPH,
 }
 
-fun ArticleContentTextType.toUiState() = when (this) {
+fun ArticleContentTextType.asState() = when (this) {
     ArticleContentTextType.SUBHEADLINE -> ArticleTextTypeUiState.SUBHEADLINE
     ArticleContentTextType.HEADLINE -> ArticleTextTypeUiState.HEADLINE
     ArticleContentTextType.LEAD_PARAGRAPH -> ArticleTextTypeUiState.LEAD_PARAGRAPH

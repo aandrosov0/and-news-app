@@ -7,7 +7,7 @@ import dvx.news.app.ui.core.ViewModelExceptionConverter
 import dvx.news.app.ui.states.ErrorUiState
 import dvx.news.app.ui.states.SettingsUiState
 import dvx.news.app.ui.states.asModel
-import dvx.news.app.ui.states.toUiState
+import dvx.news.app.ui.states.asState
 import dvx.news.app.ui.states.MainUiState
 import dvx.news.data.repositories.ArticlesRepository
 import dvx.news.data.repositories.CategoriesRepository
@@ -36,8 +36,8 @@ class MainViewModel(
             _uiState.value = try {
                 articlesRepository.getRecent(refresh = true)
                 articlesRepository.getRandom(refresh = true)
-                val categories = categoriesRepository.getAll(refresh = true).map { it.toUiState() }
-                val settings = settingsRepository.getSavedSettings().toUiState()
+                val categories = categoriesRepository.getAll(refresh = true).map { it.asState() }
+                val settings = settingsRepository.getSettings().asState()
                 MainUiState(
                     categories = categories,
                     settings = settings,

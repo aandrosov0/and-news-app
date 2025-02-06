@@ -6,7 +6,7 @@ import dvx.news.data.models.ArticleContentText
 
 sealed class ArticleContentElementUiState
 
-fun ArticleContentElement.toUiState() = when (this) {
-    is ArticleContentImage -> this.toUiState()
-    is ArticleContentText -> this.toUiState()
+fun ArticleContentElement.asState() = when (this) {
+    is ArticleContentImage -> this.asState()
+    is ArticleContentText -> this.asState()
 }

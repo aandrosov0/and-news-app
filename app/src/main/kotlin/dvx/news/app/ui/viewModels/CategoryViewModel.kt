@@ -6,7 +6,7 @@ import dvx.news.app.ui.core.ExceptionConverter
 import dvx.news.app.ui.core.ViewModelExceptionConverter
 import dvx.news.app.ui.states.CategoryScreenUiState
 import dvx.news.app.ui.states.ErrorUiState
-import dvx.news.app.ui.states.toUiState
+import dvx.news.app.ui.states.asState
 import dvx.news.data.repositories.ArticlesRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +27,7 @@ class CategoryViewModel(
         getJob = viewModelScope.launch {
             if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }
             _uiState.value = try {
-                val articles = articlesRepository.getByCategory(categoryId).map { it.toUiState() }
+                val articles = articlesRepository.getByCategory(categoryId).map { it.asState() }
                 CategoryScreenUiState(articles = articles)
             } catch (exception: Exception) {
                 CategoryScreenUiState(error = exceptionConverter.convert(exception))

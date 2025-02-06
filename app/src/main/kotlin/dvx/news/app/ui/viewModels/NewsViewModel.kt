@@ -6,7 +6,7 @@ import dvx.news.app.ui.core.ExceptionConverter
 import dvx.news.app.ui.core.ViewModelExceptionConverter
 import dvx.news.app.ui.states.ErrorUiState
 import dvx.news.app.ui.states.NewsScreenUiState
-import dvx.news.app.ui.states.toUiState
+import dvx.news.app.ui.states.asState
 import dvx.news.data.repositories.ArticlesRepository
 import dvx.news.data.repositories.CategoriesRepository
 import kotlinx.coroutines.Job
@@ -30,9 +30,9 @@ class NewsViewModel(
             if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }
 
             _uiState.value = try {
-                val recentArticles = articlesRepository.getRecent(refresh).map { it.toUiState() }
-                val randomArticles = articlesRepository.getRandom(refresh).map { it.toUiState() }
-                val categories = categoriesRepository.getAll(refresh).map { it.toUiState() }
+                val recentArticles = articlesRepository.getRecent(refresh).map { it.asState() }
+                val randomArticles = articlesRepository.getRandom(refresh).map { it.asState() }
+                val categories = categoriesRepository.getAll(refresh).map { it.asState() }
 
                 NewsScreenUiState(
                     recentArticles = recentArticles,

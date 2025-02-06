@@ -6,7 +6,7 @@ import dvx.news.app.ui.core.ExceptionConverter
 import dvx.news.app.ui.core.ViewModelExceptionConverter
 import dvx.news.app.ui.states.ArticleScreenUiState
 import dvx.news.app.ui.states.ErrorUiState
-import dvx.news.app.ui.states.toUiState
+import dvx.news.app.ui.states.asState
 import dvx.news.data.exceptions.DataLayerException
 import dvx.news.data.repositories.ArticlesRepository
 import kotlinx.coroutines.Job
@@ -28,8 +28,8 @@ class ArticleViewModel(
         getArticleJob = viewModelScope.launch {
             if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }
             _uiState.value = try {
-                val random = articlesRepository.getRandom(refresh).map { it.toUiState() }
-                val article = articlesRepository.getArticle(id).toUiState()
+                val random = articlesRepository.getRandom(refresh).map { it.asState() }
+                val article = articlesRepository.getArticle(id).asState()
                 ArticleScreenUiState(
                     article = article,
                     recommendedMiddleBlock = random.take(2),

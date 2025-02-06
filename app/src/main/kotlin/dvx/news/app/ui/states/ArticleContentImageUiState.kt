@@ -9,7 +9,7 @@ data class ArticleContentImageUiState(
     val caption: String
 ) : ArticleContentElementUiState()
 
-fun ArticleContentImage.toUiState() = ArticleContentImageUiState(
+fun ArticleContentImage.asState() = ArticleContentImageUiState(
     id = id,
     type = type,
     url = url,

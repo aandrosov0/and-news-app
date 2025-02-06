@@ -6,7 +6,7 @@ import dvx.news.app.ui.core.ExceptionConverter
 import dvx.news.app.ui.core.ViewModelExceptionConverter
 import dvx.news.app.ui.states.ErrorUiState
 import dvx.news.app.ui.states.HomeScreenUiState
-import dvx.news.app.ui.states.toUiState
+import dvx.news.app.ui.states.asState
 import dvx.news.data.repositories.ArticlesRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +27,7 @@ class HomeViewModel(
         allJob = viewModelScope.launch {
             if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }
             _uiState.value = try {
-                val articles = articlesRepository.getRecent(refresh).map { it.toUiState() }
+                val articles = articlesRepository.getRecent(refresh).map { it.asState() }
                 HomeScreenUiState(recentArticles = articles)
             } catch (exception: Exception) {
                 HomeScreenUiState(error = exceptionConverter.convert(exception))

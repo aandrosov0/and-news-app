@@ -20,16 +20,16 @@ val CategoryUiState.iconId: Int
         30L -> R.drawable.ic_news
         196L -> R.drawable.ic_games
         41L -> R.drawable.ic_sport
-        33L -> R.drawable.ic_unterhaltung
+        158L -> R.drawable.ic_entertainment
         106L -> R.drawable.ic_erotic
         31L -> R.drawable.ic_politic
         8L -> R.drawable.ic_advisor
         104L -> R.drawable.ic_health
         105L -> R.drawable.ic_deal
-        else -> R.drawable.img_preview
+        else -> R.drawable.ic_void
     }
 
-fun Category.toUiState() = CategoryUiState(
+fun Category.asState() = CategoryUiState(
     id = id,
     name = name
 )

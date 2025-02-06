@@ -40,7 +40,8 @@ fun <T : Tab> Tabs(
                 shape = RectangleShape
             )
         },
-        modifier = modifier
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         tabs.forEach { tab ->
             Tab(

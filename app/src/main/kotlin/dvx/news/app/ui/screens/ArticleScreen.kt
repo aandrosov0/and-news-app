@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -53,6 +54,7 @@ import dvx.news.app.ui.themes.openSansCondFontFamily
 import dvx.news.app.ui.viewModels.ArticleViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ArticleScreen(
     id: Long,
@@ -73,7 +75,7 @@ internal fun ArticleScreen(
         topBar = { DVXTopAppBar(onBackClick = navController::navigateUp) },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        ArticleContent(
+        Content(
             article = uiState.article,
             onArticleClick = { navController.navigate(Article(id = it.id)) },
             recommendedEndBlock = uiState.recommendedEndBlock,
@@ -84,7 +86,7 @@ internal fun ArticleScreen(
 }
 
 @Composable
-private fun ArticleContent(
+private fun Content(
     article: ArticleContentUiState,
     onArticleClick: (ArticleUiState) -> Unit,
     recommendedMiddleBlock: List<ArticleUiState>,
@@ -217,7 +219,7 @@ private fun Subheading(
 }
 
 @Composable
-fun Image(
+private fun Image(
     model: String,
     modifier: Modifier = Modifier,
     caption: String? = null
@@ -229,7 +231,7 @@ fun Image(
             .build(),
         contentDescription = null,
         modifier = modifier.fillMaxWidth(),
-        placeholder = painterResource(R.drawable.img_small_preview),
+        placeholder = painterResource(R.drawable.img_rectangle_preview),
         contentScale = ContentScale.FillWidth
     )
 
@@ -309,7 +311,7 @@ private fun Paragraph(
 }
 
 @Composable
-fun MiddleRecommendations(
+private fun MiddleRecommendations(
     articles: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
     modifier: Modifier = Modifier,
@@ -329,14 +331,14 @@ fun MiddleRecommendations(
         ) {
             articles.forEach { article ->
                 val painter = if (LocalInspectionMode.current) {
-                    painterResource(R.drawable.img_preview)
+                    painterResource(R.drawable.ic_void)
                 } else {
                     rememberAsyncImagePainter(article.imageUrl)
                 }
                 HorizontalPost(
-                    title = article.subheadline,
-                    description = article.headline,
-                    imagePainter = painter,
+                    image = painter,
+                    headline = article.headline,
+                    subheadline = article.subheadline,
                     onClick = { onArticleClick(article) },
                     modifier = modifier.fillMaxWidth()
                 )
@@ -368,14 +370,14 @@ private fun EndRecommendations(
         )
         articles.forEach { article ->
             val painter = if (LocalInspectionMode.current) {
-                painterResource(R.drawable.post_img_preview)
+                painterResource(R.drawable.img_rectangle_preview)
             } else {
                 rememberAsyncImagePainter(article.imageUrl)
             }
             VerticalPost(
                 image = painter,
-                title = article.subheadline,
-                description = article.headline,
+                subheadline = article.subheadline,
+                headline = article.headline,
                 onClick = { onArticleClick(article) },
                 modifier = Modifier
                     .fillMaxWidth()

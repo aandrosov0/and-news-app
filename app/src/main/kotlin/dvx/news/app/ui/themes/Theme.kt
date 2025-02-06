@@ -11,7 +11,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dvx.news.app.adaptCurrentTheme
-import dvx.news.app.ui.states.Theme
+import dvx.news.app.ui.states.ThemeUiState
 
 val lightColorScheme = lightColorScheme(
     primary = primaryColor,
@@ -35,13 +35,13 @@ val darkColorScheme = darkColorScheme(
 
 @Composable
 fun DVXTheme(
-    theme: Theme = Theme.SYSTEM,
+    theme: ThemeUiState = ThemeUiState.SYSTEM,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when (theme) {
-        Theme.SYSTEM -> if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
-        Theme.BRIGHT -> lightColorScheme
-        Theme.DARK -> darkColorScheme
+        ThemeUiState.SYSTEM -> if (isSystemInDarkTheme()) darkColorScheme else lightColorScheme
+        ThemeUiState.BRIGHT -> lightColorScheme
+        ThemeUiState.DARK -> darkColorScheme
     }
 
     val typography = MaterialTheme.typography.copy(

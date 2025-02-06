@@ -1,5 +1,8 @@
 package dvx.news.app.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,23 +13,31 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import dvx.news.app.R
-import dvx.news.app.ui.components.DVXCard
 import dvx.news.app.ui.components.DVXTopLogoAppBar
 import dvx.news.app.ui.screens.navigation.Category
 import dvx.news.app.ui.screens.navigation.Includes
@@ -55,24 +65,28 @@ internal fun OverviewScreen(
     mainViewModel: MainViewModel = koinInject(),
 ) {
     val uiState by mainViewModel.uiState.collectAsState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
-        modifier = modifier,
-        topBar = { DVXTopLogoAppBar(title = stringResource(R.string.menu)) },
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            DVXTopLogoAppBar(
+                title = stringResource(R.string.menu),
+                scrollBehavior = scrollBehavior
+            )
+        },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) { paddings ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(
-                    horizontal = 10.dp,
-                    vertical = 20.dp
-                )
+                .padding(horizontal = 10.dp, vertical = 20.dp)
                 .padding(paddings)
         ) {
             Actions(
-                onProfile = { },
-                onSettings = { navController.navigate(Settings) },
+                onProfileClick = { },
+                onSettingsClick = { navController.navigate(Settings) },
             )
             Topics(
                 onHeadlines = { navController.navigate(News(NewsTab.HEADERS)) },
@@ -81,7 +95,7 @@ internal fun OverviewScreen(
             )
             Categories(
                 categories = uiState.categories,
-                onClick = { navController.navigate(Category(it.id, it.name)) }
+                onCategoryClick = { navController.navigate(Category(it.id, it.name)) }
             )
         }
     }
@@ -89,8 +103,8 @@ internal fun OverviewScreen(
 
 @Composable
 private fun Actions(
-    onProfile: () -> Unit,
-    onSettings: () -> Unit,
+    onProfileClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -99,19 +113,17 @@ private fun Actions(
             .height(86.dp)
             .fillMaxWidth()
     ) {
-        DVXCard(
-            iconId = R.drawable.ic_profile,
-            text = stringResource(R.string.my_account),
-            onClick = onProfile,
-            modifier = Modifier
-                .weight(0.5f)
+        ActionButton(
+            icon = painterResource(R.drawable.ic_profile),
+            label = stringResource(R.string.my_account),
+            onClick = onProfileClick,
+            modifier = Modifier.weight(.5f)
         )
-        DVXCard(
-            iconId = R.drawable.ic_settings,
-            text = stringResource(R.string.settings),
-            onClick = onSettings,
-            modifier = Modifier
-                .weight(0.5f)
+        ActionButton(
+            icon = painterResource(R.drawable.ic_settings),
+            label = stringResource(R.string.settings),
+            onClick = onSettingsClick,
+            modifier = Modifier.weight(.5f)
         )
     }
 }
@@ -123,37 +135,28 @@ private fun Topics(
     onIncludes: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .padding(top = 28.dp)
-    ) {
-        Text(
-            text = "TOP-THEMEN",
-            fontSize = 26.sp,
-            modifier = Modifier.padding(
-                start = 10.dp,
-                end = 10.dp,
-                bottom = 8.dp
+    val topics = listOf(
+        R.string.headlines,
+        R.string.news_ticker,
+        R.string.includes
+    )
+    Column(modifier = modifier.padding(top = 28.dp)) {
+        Title(text = stringResource(R.string.top_topics))
+        topics.forEach { topic ->
+            HorizontalDivider()
+            DropdownButton(
+                icon = painterResource(R.drawable.ic_news),
+                label = stringResource(topic),
+                onClick = {
+                    when (topic) {
+                        R.string.headlines -> onHeadlines()
+                        R.string.news_ticker -> onNews()
+                        R.string.includes -> onIncludes()
+                    }
+                },
+                expandable = false
             )
-        )
-        HorizontalDivider()
-        HorizontalButton(
-            onClick = onHeadlines,
-            text = "Schlagzeilen",
-            prefixIconId = R.drawable.ic_schlagzeilen,
-        )
-        HorizontalDivider()
-        HorizontalButton(
-            onClick = onNews,
-            text = "Newsticker",
-            prefixIconId = R.drawable.ic_schlagzeilen,
-        )
-        HorizontalDivider()
-        HorizontalButton(
-            onClick = onIncludes,
-            text = "Includes",
-            prefixIconId = R.drawable.ic_schlagzeilen,
-        )
+        }
         HorizontalDivider()
     }
 }
@@ -161,85 +164,116 @@ private fun Topics(
 @Composable
 private fun Categories(
     categories: List<CategoryUiState>,
-    onClick: (CategoryUiState) -> Unit,
+    onCategoryClick: (CategoryUiState) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
-        Text(
-            text = stringResource(R.string.topics),
-            fontSize = 26.sp,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(
-                start = 10.dp,
-                end = 10.dp,
-                bottom = 8.dp,
-                top = 18.dp
+    Column(modifier = modifier.padding(top = 18.dp)) {
+        Title(text = stringResource(R.string.topics))
+        categories.forEach { category ->
+            HorizontalDivider()
+            DropdownButton(
+                icon = painterResource(category.iconId),
+                label = category.name,
+                onClick = { onCategoryClick(category) }
             )
-        )
-        Column {
-            categories.forEach { category ->
-                HorizontalDivider()
-                HorizontalButton(
-                    onClick = { onClick(category) },
-                    text = category.name,
-                    prefixIconId = category.iconId,
-                    postfixIconId = R.drawable.ic_down
-                )
-            }
         }
         HorizontalDivider()
     }
 }
 
 @Composable
-private fun HorizontalButton(
-    onClick: () -> Unit,
+private fun Title(
     text: String,
-    modifier: Modifier = Modifier,
-    prefixIconId: Int? = null,
-    postfixIconId: Int? = null,
+    modifier: Modifier = Modifier
 ) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.primary
+    Text(
+        text = text,
+        modifier = modifier.padding(
+            start = 10.dp, end = 10.dp,
+            bottom = 8.dp
         ),
-        shape = RectangleShape,
-        contentPadding = PaddingValues(
-            horizontal = 20.dp,
-            vertical = 16.dp
-        ),
-        modifier = Modifier
+        fontSize = 26.sp,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+}
+
+@Composable
+private fun DropdownButton(
+    icon: Painter,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    expanded: Boolean = false,
+    expandable: Boolean = true,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 16.dp)
+) {
+    Row(
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .padding(contentPadding),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        if (prefixIconId != null) {
+        CompositionLocalProvider(LocalContentColor provides contentColor) {
             Icon(
-                painter = painterResource(prefixIconId),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .size(32.dp)
+                painter = icon,
+                contentDescription = label,
+                modifier = Modifier.size(32.dp)
             )
+            Spacer(modifier = Modifier.width(20.dp))
+            Text(
+                text = label,
+                fontSize = 18.sp,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.alpha(.64f)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            if (expandable) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_down),
+                    contentDescription = stringResource(R.string.dropdown),
+                    modifier = Modifier
+                        .size(16.dp)
+                        .rotate(if (expanded) 180f else 0f)
+                )
+            }
         }
-        Text(
-            text = text,
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .alpha(.64f)
-        )
-        Spacer(
-            modifier
-                .weight(1f)
-        )
-        if (postfixIconId != null) {
+    }
+}
+
+@Composable
+private fun ActionButton(
+    icon: Painter,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = contentColorFor(containerColor)
+) {
+    val containerShape = RoundedCornerShape(12.dp)
+    Column(
+        modifier = modifier
+            .size(width = 271.dp, height = 104.dp)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.onSurface.copy(.16f),
+                shape = containerShape
+            )
+            .clip(containerShape)
+            .background(containerColor)
+            .clickable(onClick = onClick),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CompositionLocalProvider(LocalContentColor provides contentColor) {
             Icon(
-                painter = painterResource(postfixIconId),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .size(16.dp)
+                painter = icon,
+                contentDescription = label,
+                modifier = Modifier.size(32.dp)
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
@@ -247,11 +281,26 @@ private fun HorizontalButton(
 
 @Preview
 @Composable
-private fun HorizontalButtonPreview() = DVXTheme {
-    HorizontalButton(
-        onClick = {},
-        text = "Sport",
-        prefixIconId = R.drawable.ic_sport,
-        postfixIconId = R.drawable.ic_down,
+private fun TitlePreview() = DVXTheme {
+    Title(text = "TOP-THEMEN")
+}
+
+@Preview
+@Composable
+private fun ActionButtonPreview() = DVXTheme {
+    ActionButton(
+        icon = painterResource(R.drawable.ic_profile),
+        label = "Mein Konto",
+        onClick = {}
+    )
+}
+
+@Preview
+@Composable
+private fun DropdownButtonPreview() = DVXTheme {
+    DropdownButton(
+        icon = painterResource(R.drawable.ic_sport),
+        label = stringResource(R.string.sport),
+        onClick = {}
     )
 }

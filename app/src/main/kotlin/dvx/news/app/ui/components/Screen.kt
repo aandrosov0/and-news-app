@@ -113,7 +113,7 @@ private fun ScreenContent(
     content: @Composable () -> Unit = {},
 ) {
     if (error != null) {
-        ErrorBox(
+        ErrorContainer(
             icon = painterResource(error.iconId),
             error = stringResource(error.messageId),
             action = stringResource(error.actionId),

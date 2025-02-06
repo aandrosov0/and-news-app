@@ -44,7 +44,8 @@ fun DVXTopLogoAppBar(
         navigationIcon = { AppLogo(modifier = Modifier.padding(start = 10.dp)) },
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            scrolledContainerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     )
 }
@@ -55,6 +56,7 @@ fun DVXTopAppBar(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
+    scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
@@ -66,7 +68,12 @@ fun DVXTopAppBar(
                 )
             }
         },
+        scrollBehavior = scrollBehavior,
         navigationIcon = { BackButton(onClick = onBackClick) },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     )
 }
 
@@ -113,6 +120,7 @@ private fun DVXTopLogoAppBarPreview() = DVXTheme {
     DVXTopLogoAppBar()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun DVXTopAppBarPreview() = DVXTheme {

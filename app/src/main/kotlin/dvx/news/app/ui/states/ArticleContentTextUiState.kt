@@ -8,8 +8,8 @@ data class ArticleContentTextUiState(
     val value: String
 ) : ArticleContentElementUiState()
 
-fun ArticleContentText.toUiState() = ArticleContentTextUiState(
+fun ArticleContentText.asState() = ArticleContentTextUiState(
     id = id,
-    type = type.toUiState(),
+    type = type.asState(),
     value = value
 )

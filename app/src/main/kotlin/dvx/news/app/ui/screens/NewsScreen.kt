@@ -1,30 +1,44 @@
 package dvx.news.app.ui.screens
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import dvx.news.app.R
 import dvx.news.app.ui.components.DVXTopAppBar
 import dvx.news.app.ui.components.HorizontalTabPager
-import dvx.news.app.ui.components.NewsComprehensiveItem
-import dvx.news.app.ui.components.NewsItem
-import dvx.news.app.ui.components.NewsItemsSection
 import dvx.news.app.ui.components.Screen
+import dvx.news.app.ui.components.VerticalPostCard
 import dvx.news.app.ui.screens.navigation.Article
 import dvx.news.app.ui.states.ArticleUiState
 import dvx.news.app.ui.states.CategoryUiState
@@ -34,6 +48,7 @@ import dvx.news.app.ui.themes.DVXTheme
 import dvx.news.app.ui.viewModels.NewsViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NewsScreen(
     initialTab: NewsTab,
@@ -95,25 +110,22 @@ private fun AllNews(
     categories: List<CategoryUiState>,
     modifier: Modifier = Modifier,
 ) {
-    NewsItemsSection(
-        title = stringResource(R.string.haders_tab_title),
-        items = articles,
-        modifier = modifier
+    LazyColumn(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxWidth()
     ) {
-        val painter = rememberAsyncImagePainter(it.imageUrl)
-        val state by painter.state.collectAsState()
-
-        NewsItem(
-            time = it.time,
-            type = categories.find { category -> category.id == it.categoryId }?.name ?: "",
-            image = when (state) {
-                is AsyncImagePainter.State.Success -> painter
-                else -> painterResource(R.drawable.img_small_preview)
-            },
-            headline = it.headline,
-            subheadline = it.subheadline,
-            onClick = { onArticleClick(it) }
-        )
+        item { Title(text = stringResource(R.string.news_tab_title)) }
+        items(items = articles) { article ->
+            Item(
+                imageUrl = article.imageUrl,
+                headline = article.headline,
+                subheadline = article.subheadline,
+                createdAt = article.time,
+                category = categories.find { it.id == article.categoryId }?.name ?: "",
+                onClick = { onArticleClick(article) },
+                thumbnail = true
+            )
+        }
     }
 }
 
@@ -124,35 +136,95 @@ private fun HeadlinesNews(
     categories: List<CategoryUiState>,
     modifier: Modifier = Modifier,
 ) {
-    NewsItemsSection(
-        title = stringResource(R.string.news_tab_title),
-        items = articles,
-        modifier = modifier
+    LazyColumn(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxWidth()
     ) {
-        val painter = rememberAsyncImagePainter(it.imageUrl)
-        val state by painter.state.collectAsState()
-        val image = when (state) {
-            is AsyncImagePainter.State.Success -> painter
-            else -> painterResource(R.drawable.img_small_preview)
+        item { Title(text = stringResource(R.string.haders_tab_title)) }
+        items(items = articles) { article ->
+            Item(
+                imageUrl = article.imageUrl,
+                headline = article.headline,
+                subheadline = article.subheadline,
+                createdAt = article.time,
+                category = categories.find { it.id == article.categoryId }?.name ?: "",
+                onClick = { onArticleClick(article) }
+            )
         }
+    }
+}
 
-        NewsComprehensiveItem(
-            time = it.time,
-            type = categories.find { category -> category.id == it.categoryId }?.name ?: "",
-            image = image,
-            title = it.subheadline,
-            description = it.headline,
-            onClick = { onArticleClick(it) }
+@Composable
+private fun Title(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        textAlign = TextAlign.Center,
+        fontSize = 16.sp,
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = modifier.alpha(.64f)
+            .padding(vertical = 20.dp)
+    )
+}
+
+@Composable
+private fun Item(
+    imageUrl: String,
+    headline: String,
+    subheadline: String,
+    createdAt: String,
+    category: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    thumbnail: Boolean = false,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(space = 12.dp),
+        modifier = modifier.height(intrinsicSize = IntrinsicSize.Min)
+    ) {
+        VerticalDirectionLine(
+            modifier = Modifier
+                .offset(y = 23.dp)
+                .fillMaxHeight()
+        )
+        VerticalPostCard(
+            image = rememberAsyncImagePainter(
+                model = imageUrl,
+                placeholder = painterResource(R.drawable.img_rectangle_preview)
+            ),
+            headline = headline,
+            subheadline = subheadline,
+            createdAt = createdAt,
+            category = category,
+            onClick = onClick,
+            modifier = Modifier
+                .padding(bottom = 10.dp)
+                .fillMaxWidth(),
+            thumbnail = thumbnail
         )
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-private fun NewsScreenPreview() = DVXTheme {
-    NewsScreen(
-        initialTab = NewsTab.ALL_NEWS,
-        navController = rememberNavController(),
-        modifier = Modifier.fillMaxWidth()
-    )
+fun VerticalDirectionLine(modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(width = 12.dp, height = 100.dp)) {
+        drawLine(
+            color = Color(0xffdadada),
+            start = Offset(x = center.x, y = size.minDimension / 2.0f),
+            end = Offset(x = center.x, y = size.maxDimension),
+            strokeWidth = size.width * .1f
+        )
+        drawCircle(
+            color = Color.Red,
+            center = Offset(x = center.x, y = size.minDimension / 2.0f)
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun VerticalDirectionLinePreview() = DVXTheme {
+    VerticalDirectionLine()
 }

@@ -10,7 +10,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dvx.news.app.R
 import dvx.news.app.ui.components.DVXBottomNavigation
+import dvx.news.app.ui.components.TopLevelRoute
 import dvx.news.app.ui.screens.SplashScreen
 import dvx.news.app.ui.screens.navigation.AppNavigation
 import dvx.news.app.ui.screens.navigation.Category
@@ -29,8 +29,6 @@ import dvx.news.app.ui.states.iconId
 import dvx.news.app.ui.themes.DVXTheme
 import dvx.news.app.ui.viewModels.MainViewModel
 import org.koin.compose.koinInject
-
-data class TopLevelRoute(val name: String, val icon: Painter, val route: Any)
 
 @Composable
 fun App(mainViewModel: MainViewModel = koinInject()) {

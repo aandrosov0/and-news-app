@@ -30,9 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import dvx.news.app.R
-import dvx.news.app.ui.themes.DVXTheme
-import dvx.news.app.ui.TopLevelRoute
 import dvx.news.app.ui.screens.navigation.Category
+import dvx.news.app.ui.themes.DVXTheme
+
+data class TopLevelRoute(val name: String, val icon: Painter, val route: Any)
 
 data class DVXNavigationItemColors(
     val selected: Color,
@@ -145,12 +146,12 @@ private fun DVXNavigationItemPreview() {
 @Preview
 @Composable
 private fun DVXBottomAppBarPreview() = DVXTheme {
-//    DVXBottomNavigation(
-//        destination = HomeScreen,
-//        destinations = listOf(
-//            HomeScreen,
-//            MenuScreen,
-//        ),
-//        onDestinationChange = {},
-//    )
+    DVXBottomNavigation(
+        currentDestination = NavDestination(""),
+        destinations = listOf(
+            TopLevelRoute(name = "Home", icon = painterResource(R.drawable.ic_startseite), route = Unit),
+            TopLevelRoute(name = "Home", icon = painterResource(R.drawable.ic_mehr), route = Unit),
+        ),
+        onDestinationChange = {},
+    )
 }

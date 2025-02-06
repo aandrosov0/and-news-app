@@ -1,8 +1,8 @@
 package dvx.news.data.repositories
 
-import dvx.news.data.models.ExposedSettings
+import dvx.news.data.models.Settings
 
 interface SettingsRepository {
-    suspend fun getSavedSettings(): ExposedSettings
-    suspend fun update(exposedSettings: ExposedSettings)
+    suspend fun getSettings(): Settings
+    suspend fun update(settings: Settings)
 }

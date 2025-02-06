@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -94,7 +95,9 @@ private fun Headline(
         fontWeight = FontWeight.W700,
         lineHeight = 16.sp,
         fontFamily = openSansCondFontFamily,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1
     )
 }
 
@@ -133,7 +136,7 @@ private fun SubheadlinePreview() = DVXTheme {
 @Composable
 private fun ThumbnailPreview() = DVXTheme {
     Thumbnail(
-        image = painterResource(R.drawable.img_small_preview),
+        image = painterResource(R.drawable.img_rectangle_preview),
         headline = "Handball-Star überrascht",
         subheadline = "Dieses Interview ist jetzt schon legendär",
         onClick = {}
