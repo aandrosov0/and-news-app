@@ -1,7 +1,6 @@
 package dvx.news.app.ui.screens
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -14,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -36,16 +38,18 @@ import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
 import dvx.news.app.R
 import dvx.news.app.ui.components.DVXTopAppBar
-import dvx.news.app.ui.components.HorizontalTabPager
 import dvx.news.app.ui.components.Screen
+import dvx.news.app.ui.components.Tab
 import dvx.news.app.ui.components.VerticalPostCard
 import dvx.news.app.ui.screens.navigation.Article
 import dvx.news.app.ui.states.ArticleUiState
 import dvx.news.app.ui.states.CategoryUiState
 import dvx.news.app.ui.states.NewsTab
 import dvx.news.app.ui.states.RefreshableScreenState
+import dvx.news.app.ui.states.localizedName
 import dvx.news.app.ui.themes.DVXTheme
 import dvx.news.app.ui.viewModels.NewsViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,6 +63,13 @@ internal fun NewsScreen(
     LaunchedEffect(Unit) { newsViewModel.getAll() }
     val uiState by newsViewModel.uiState.collectAsState()
 
+    val pages = NewsTab.entries
+    val pagerState = rememberPagerState(
+        initialPage = pages.indexOf(initialTab),
+        pageCount = pages::size
+    )
+
+    val coroutineScope = rememberCoroutineScope()
     Screen(
         modifier = modifier,
         state = RefreshableScreenState(
@@ -69,42 +80,44 @@ internal fun NewsScreen(
         topBar = {
             DVXTopAppBar(
                 title = stringResource(R.string.news),
-                onBackClick = navController::navigateUp
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                onBackClick = navController::navigateUp,
+                selectedTabIndex = pagerState.currentPage,
+            ) {
+                pages.forEachIndexed { index, page ->
+                    Tab(
+                        text = page.localizedName,
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        }
+                    )
+                }
+            }
+        }
     ) {
-        HorizontalTabPager(
-            tabs = NewsTab.entries,
-            initialTab = initialTab,
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxSize()
-        ) { tab ->
-            when (tab) {
-                NewsTab.ALL_NEWS -> {
-                    AllNews(
-                        onArticleClick = { navController.navigate(Article(id = it.id)) },
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        articles = uiState.randomArticles,
-                        categories = uiState.categories
-                    )
-                }
-                NewsTab.HEADERS -> {
-                    HeadlinesNews(
-                        onArticleClick = { navController.navigate(Article(id = it.id)) },
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        articles = uiState.recentArticles,
-                        categories = uiState.categories
-                    )
-                }
+        HorizontalPager(state = pagerState) { page ->
+            when (pages[page]) {
+                NewsTab.ALL_NEWS -> NewsPage(
+                    onArticleClick = { navController.navigate(Article(id = it.id)) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    articles = uiState.randomArticles,
+                    categories = uiState.categories
+                )
+                NewsTab.HEADERS -> HeadlinesPage(
+                    onArticleClick = { navController.navigate(Article(id = it.id)) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    articles = uiState.recentArticles,
+                    categories = uiState.categories
+                )
             }
         }
     }
 }
 
 @Composable
-private fun AllNews(
+private fun NewsPage(
     articles: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
     categories: List<CategoryUiState>,
@@ -112,7 +125,7 @@ private fun AllNews(
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxSize()
     ) {
         item { Title(text = stringResource(R.string.news_tab_title)) }
         items(items = articles) { article ->
@@ -130,7 +143,7 @@ private fun AllNews(
 }
 
 @Composable
-private fun HeadlinesNews(
+private fun HeadlinesPage(
     articles: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
     categories: List<CategoryUiState>,
@@ -138,7 +151,7 @@ private fun HeadlinesNews(
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxSize()
     ) {
         item { Title(text = stringResource(R.string.haders_tab_title)) }
         items(items = articles) { article ->
@@ -164,7 +177,8 @@ private fun Title(
         textAlign = TextAlign.Center,
         fontSize = 16.sp,
         style = MaterialTheme.typography.bodyMedium,
-        modifier = modifier.alpha(.64f)
+        modifier = modifier
+            .alpha(.64f)
             .padding(vertical = 20.dp)
     )
 }

@@ -9,16 +9,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,13 +35,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import dvx.news.app.R
 import dvx.news.app.ui.components.DVXTopAppBar
-import dvx.news.app.ui.components.HorizontalTabPager
 import dvx.news.app.ui.components.NotificationAlertDialog
-import dvx.news.app.ui.states.SettingsTab
+import dvx.news.app.ui.components.Screen
+import dvx.news.app.ui.components.Tab
+import dvx.news.app.ui.states.SettingsPage
 import dvx.news.app.ui.states.ThemeUiState
 import dvx.news.app.ui.states.localizedName
 import dvx.news.app.ui.themes.DVXTheme
 import dvx.news.app.ui.viewModels.MainViewModel
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,37 +55,51 @@ internal fun SettingsScreen(
 ) {
     val uiState by mainViewModel.uiState.collectAsState()
     val settings = uiState.settings
-    Scaffold(
+
+    val pages = SettingsPage.entries
+    val pagerState = rememberPagerState(pageCount = pages::size)
+
+    val coroutineScope = rememberCoroutineScope()
+    Screen(
         modifier = modifier,
         topBar = {
             DVXTopAppBar(
                 title = stringResource(R.string.settings),
-                onBackClick = navController::navigateUp
-            )
+                onBackClick = navController::navigateUp,
+                selectedTabIndex = pagerState.currentPage
+            ) {
+                pages.forEachIndexed { index, page ->
+                    Tab(
+                        text = page.localizedName,
+                        selected = index == pagerState.currentPage,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        }
+                    )
+                }
+            }
         },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
-    ) { paddings ->
-        HorizontalTabPager(
-            tabs = SettingsTab.entries,
-            initialTab = SettingsTab.REPRESENTATION,
-            modifier = Modifier.padding(paddings)
-        ) { tab ->
-            when (tab) {
-                SettingsTab.REPRESENTATION -> Representation(
+    ) {
+        HorizontalPager(state = pagerState) { page ->
+            when (pages[page]) {
+                SettingsPage.REPRESENTATION -> RepresentationPage(
                     currentTheme = uiState.settings.theme,
                     onThemeSelect = {
                         val newSettings = settings.copy(theme = it)
                         uiState.onSettingsChange(newSettings)
                     }
                 )
-                SettingsTab.MESSAGES -> Messages()
+                SettingsPage.MESSAGES -> MessagesPage()
             }
         }
     }
 }
 
 @Composable
-private fun Messages() {
+private fun MessagesPage() {
     Column(modifier = Modifier.fillMaxSize()) {
         var isOpenedAlertDialog by remember { mutableStateOf(true) }
         when {
@@ -96,14 +114,14 @@ private fun Messages() {
 }
 
 @Composable
-private fun Representation(
+private fun RepresentationPage(
     currentTheme: ThemeUiState,
     onThemeSelect: (ThemeUiState) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val dividerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .24f)
     Column(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Title(text = stringResource(R.string.settings1_main))
@@ -172,7 +190,7 @@ private fun SelectableItem(
 @Preview
 @Composable
 private fun RepresentationPreview() = DVXTheme {
-    Representation(
+    RepresentationPage(
         currentTheme = ThemeUiState.SYSTEM,
         onThemeSelect = {}
     )

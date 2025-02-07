@@ -2,6 +2,7 @@ package dvx.news.app.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -10,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -56,25 +58,36 @@ fun DVXTopAppBar(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
-    scrollBehavior: TopAppBarScrollBehavior? = null
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    selectedTabIndex: Int = 0,
+    tabs: (@Composable () -> Unit)? = null,
 ) {
-    CenterAlignedTopAppBar(
-        modifier = modifier,
-        title = {
-            if (title != null) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-        },
-        scrollBehavior = scrollBehavior,
-        navigationIcon = { BackButton(onClick = onBackClick) },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            scrolledContainerColor = MaterialTheme.colorScheme.surfaceVariant
+    Column(modifier = modifier) {
+        CenterAlignedTopAppBar(
+            title = {
+                if (title != null) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            },
+            scrollBehavior = scrollBehavior,
+            navigationIcon = { BackButton(onClick = onBackClick) },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                scrolledContainerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
         )
-    )
+        if (tabs != null) {
+            SecondaryTabRow(
+                selectedTabIndex = selectedTabIndex,
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ) {
+                tabs()
+            }
+        }
+    }
 }
 
 @Composable

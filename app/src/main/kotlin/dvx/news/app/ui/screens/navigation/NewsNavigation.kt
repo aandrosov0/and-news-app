@@ -4,8 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import dvx.news.app.ui.states.NewsTab
 import dvx.news.app.ui.screens.NewsScreen
+import dvx.news.app.ui.states.NewsTab
 import kotlinx.serialization.Serializable
 
 @Serializable
