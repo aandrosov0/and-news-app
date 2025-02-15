@@ -1,6 +1,5 @@
 package dvx.news.app.ui
 
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,13 +32,13 @@ fun App(mainViewModel: MainViewModel = koinInject()) {
     LaunchedEffect(Unit) { mainViewModel.load() }
     val uiState by mainViewModel.uiState.collectAsState()
 
-    DVXTheme(theme = uiState.settings.theme) {
-        if (uiState.isLoading || uiState.error != null) {
-            SplashScreen(
-                error = uiState.error,
-                onRetryClick = mainViewModel::load
-            )
-        } else {
+    if (uiState.isLoading || uiState.error != null) {
+        SplashScreen(
+            error = uiState.error,
+            onRetryClick = mainViewModel::load
+        )
+    } else {
+        DVXTheme(theme = uiState.settings.theme) {
             AppContent()
         }
     }
@@ -80,10 +79,9 @@ private fun AppContent(
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        contentWindowInsets = WindowInsets(0)
-    ) { paddingValues ->
+    ) { innerPaddings ->
         AppNavigation(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier.padding(bottom = innerPaddings.calculateBottomPadding()),
             navController = navController
         )
     }

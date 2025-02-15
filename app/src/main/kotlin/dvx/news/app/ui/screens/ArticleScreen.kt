@@ -51,7 +51,6 @@ import dvx.news.app.ui.states.ArticleTextTypeUiState
 import dvx.news.app.ui.states.ArticleUiState
 import dvx.news.app.ui.states.RefreshableScreenState
 import dvx.news.app.ui.themes.DVXTheme
-import dvx.news.app.ui.themes.openSansCondFontFamily
 import dvx.news.app.ui.viewModels.ArticleViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -192,7 +191,6 @@ private fun Headline(
     Text(
         text = text,
         textAlign = TextAlign.Center,
-        fontFamily = openSansCondFontFamily,
         lineHeight = 1.em,
         fontSize = 42.sp,
         letterSpacing = (-2).sp,
@@ -214,7 +212,6 @@ private fun Subheading(
     Text(
         text = text,
         textAlign = TextAlign.Center,
-        fontFamily = openSansCondFontFamily,
         lineHeight = 27.28.sp,
         fontSize = 26.04.sp,
         fontWeight = FontWeight.ExtraBold,

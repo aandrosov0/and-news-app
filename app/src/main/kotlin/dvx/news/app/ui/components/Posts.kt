@@ -6,11 +6,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.em
 import dvx.news.app.R
 import dvx.news.app.ui.themes.DVXTheme
 
@@ -42,7 +44,7 @@ fun VerticalPost(
         Image(
             painter = image,
             contentDescription = stringResource(R.string.post_image),
-            modifier = Modifier.then(if (minimized) Modifier.size(170.dp) else Modifier.fillMaxWidth()),
+            modifier = Modifier.then(if (minimized) Modifier.aspectRatio(1f) else Modifier.fillMaxWidth()),
             contentScale = ContentScale.Crop
         )
         Subheadline(text = subheadline)
@@ -66,7 +68,9 @@ fun HorizontalPost(
             painter = image,
             contentDescription = stringResource(R.string.post_image),
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier
+                .size(100.dp)
+                .aspectRatio(1f)
         )
         Column {
             Subheadline(text = subheadline)
@@ -138,11 +142,11 @@ private fun Headline(
     Text(
         text = text,
         modifier = modifier,
-        fontSize = 20.sp,
+        color = LocalContentColor.current,
         overflow = TextOverflow.Ellipsis,
-        lineHeight = 21.sp,
+        lineHeight = 0.96.em,
         maxLines = 3,
-        style = MaterialTheme.typography.bodyLarge,
+        style = MaterialTheme.typography.titleMedium,
     )
 }
 

@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import dvx.news.app.R
 import dvx.news.app.ui.themes.DVXTheme
-import dvx.news.app.ui.themes.openSansCondFontFamily
 
 @Composable
 fun Thumbnail(
@@ -89,13 +88,10 @@ private fun Headline(
             .background(MaterialTheme.colorScheme.primary)
             .padding(horizontal = 2.5.dp),
         color = MaterialTheme.colorScheme.onPrimary,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.W700,
-        lineHeight = 16.sp,
-        fontFamily = openSansCondFontFamily,
         textAlign = TextAlign.Center,
         overflow = TextOverflow.Ellipsis,
-        maxLines = 1
+        maxLines = 1,
+        style = MaterialTheme.typography.labelSmall
     )
 }
 
@@ -109,11 +105,11 @@ private fun Subheadline(
         modifier = modifier,
         color = MaterialTheme.colorScheme.onPrimary,
         fontSize = 20.sp,
-        fontWeight = FontWeight.W800,
-        fontFamily = openSansCondFontFamily,
+        fontWeight = FontWeight.ExtraBold,
         letterSpacing = (-0.5).sp,
-        lineHeight = 1.em,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        lineHeight = 0.96.em,
+        style = MaterialTheme.typography.headlineMedium
     )
 }
 

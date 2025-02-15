@@ -3,35 +3,113 @@ package dvx.news.app.ui.themes
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import dvx.news.app.adaptCurrentTheme
 import dvx.news.app.ui.states.ThemeUiState
 
-val lightColorScheme = lightColorScheme(
-    primary = primaryColor,
-    onPrimary = onPrimaryColor,
-    tertiary = tertiaryColor,
-    surface = surfaceLightColor,
-    onSurface = onSurfaceLightColor,
-    surfaceVariant = surfaceVariantLightColor,
-    onSurfaceVariant = onSurfaceVariantLightColor
-)
+internal val lightColorScheme
+    get() = lightColorScheme(
+        primary = primaryColor,
+        onPrimary = onPrimaryColor,
+        tertiary = tertiaryColor,
+        surface = surfaceLightColor,
+        onSurface = onSurfaceLightColor,
+        surfaceVariant = surfaceVariantLightColor,
+        onSurfaceVariant = onSurfaceVariantLightColor
+    )
 
-val darkColorScheme = darkColorScheme(
-    primary = primaryColor,
-    onPrimary = onPrimaryColor,
-    tertiary = tertiaryColor,
-    surface = surfaceDarkColor,
-    onSurface = onSurfaceDarkColor,
-    surfaceVariant = surfaceVariantDarkColor,
-    onSurfaceVariant = onSurfaceVariantDarkColor,
-)
+internal val darkColorScheme
+    get() = darkColorScheme(
+        primary = primaryColor,
+        onPrimary = onPrimaryColor,
+        tertiary = tertiaryColor,
+        surface = surfaceDarkColor,
+        onSurface = onSurfaceDarkColor,
+        surfaceVariant = surfaceVariantDarkColor,
+        onSurfaceVariant = onSurfaceVariantDarkColor,
+    )
+
+internal val typography
+    get() = Typography(
+        displayLarge = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        displayMedium = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        displaySmall = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        headlineLarge = TextStyle(
+            fontSize = 58.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        headlineMedium = TextStyle(
+            lineHeight = 1.083.em,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        headlineSmall = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        titleLarge = TextStyle(
+            color = primaryColor,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        titleMedium = TextStyle(
+            fontSize = 20.sp,
+            color = primaryColor,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        titleSmall = TextStyle(
+            color = primaryColor,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        bodyLarge = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        bodyMedium = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        bodySmall = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        labelLarge = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        labelMedium = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansCondensedFontFamily
+        ),
+        labelSmall = TextStyle(
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            lineHeight = 1.3.em,
+            fontFamily = openSansCondensedFontFamily
+        )
+    )
 
 @Composable
 fun DVXTheme(
@@ -44,73 +122,9 @@ fun DVXTheme(
         ThemeUiState.DARK -> darkColorScheme
     }
 
-    val typography = MaterialTheme.typography.copy(
-        bodySmall = TextStyle(
-            fontSize = 12.5.sp,
-            lineHeight = 24.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = openSansCondFontFamily,
-            color = colorScheme.onSurface
-        ),
-        bodyMedium = TextStyle(
-            color = colorScheme.onSurface,
-            fontSize = 20.sp,
-            lineHeight = 24.sp,
-            fontWeight = FontWeight.W600,
-            fontFamily = openSansCondFontFamily
-        ),
-        bodyLarge = TextStyle(
-            fontSize = 24.sp,
-            lineHeight = 27.sp,
-            fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold,
-            color = colorScheme.onSurface
-        ),
-        labelMedium = TextStyle(
-            fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            lineHeight = 18.sp,
-            color = colorScheme.primary,
-        ),
-        titleSmall = TextStyle(
-            fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            lineHeight = 18.sp,
-            color = colorScheme.primary
-        ),
-        titleMedium = TextStyle(
-            fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp,
-            lineHeight = 24.sp,
-            color = colorScheme.primary
-        ),
-        titleLarge = TextStyle(
-            fontSize = 27.sp,
-            fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold,
-            lineHeight = 24.sp,
-            color = colorScheme.primary
-        ),
-        headlineSmall = MaterialTheme.typography.headlineSmall.copy(
-            fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold,
-        ),
-        headlineMedium = MaterialTheme.typography.headlineMedium.copy(
-            fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold,
-        ),
-        headlineLarge = MaterialTheme.typography.headlineLarge.copy(
-            fontFamily = openSansCondFontFamily,
-            fontWeight = FontWeight.Bold,
-        )
-    )
-
     val context = LocalContext.current
     if (context is Activity) {
-        context.adaptCurrentTheme(colorScheme == lightColorScheme)
+        context.adaptCurrentTheme(theme == ThemeUiState.BRIGHT)
     }
 
     MaterialTheme(
