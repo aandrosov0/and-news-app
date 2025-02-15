@@ -32,7 +32,7 @@ class MainViewModel(
     fun load() {
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
             _uiState.value = try {
                 articlesRepository.getRecent(refresh = true)
                 articlesRepository.getRandom(refresh = true)

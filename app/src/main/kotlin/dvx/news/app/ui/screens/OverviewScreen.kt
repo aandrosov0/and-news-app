@@ -43,11 +43,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import dvx.news.app.R
 import dvx.news.app.ui.components.DVXTopLogoAppBar
 import dvx.news.app.ui.screens.navigation.Category
-import dvx.news.app.ui.screens.navigation.Includes
 import dvx.news.app.ui.screens.navigation.News
 import dvx.news.app.ui.screens.navigation.Settings
 import dvx.news.app.ui.states.CategoryUiState
@@ -60,7 +58,7 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun OverviewScreen(
-    navController: NavController,
+    onNavigateScreen: (Any) -> Unit,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = koinInject(),
 ) {
@@ -69,12 +67,7 @@ internal fun OverviewScreen(
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            DVXTopLogoAppBar(
-                title = stringResource(R.string.menu),
-                scrollBehavior = scrollBehavior
-            )
-        },
+        topBar = { DVXTopLogoAppBar(scrollBehavior = scrollBehavior) },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) { paddings ->
         Column(
@@ -86,16 +79,15 @@ internal fun OverviewScreen(
         ) {
             Actions(
                 onProfileClick = { },
-                onSettingsClick = { navController.navigate(Settings) },
+                onSettingsClick = { onNavigateScreen(Settings) },
             )
             Topics(
-                onHeadlines = { navController.navigate(News(NewsTab.HEADERS)) },
-                onNews = { navController.navigate(News(NewsTab.ALL_NEWS)) },
-                onIncludes = { navController.navigate(Includes) }
+                onHeadlines = { onNavigateScreen(News(NewsTab.HEADERS)) },
+                onNews = { onNavigateScreen(News(NewsTab.ALL_NEWS)) },
             )
             Categories(
                 categories = uiState.categories,
-                onCategoryClick = { navController.navigate(Category(it.id, it.name)) }
+                onCategoryClick = { onNavigateScreen(Category(it.id, it.name)) }
             )
         }
     }
@@ -132,13 +124,11 @@ private fun Actions(
 private fun Topics(
     onHeadlines: () -> Unit,
     onNews: () -> Unit,
-    onIncludes: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val topics = listOf(
         R.string.headlines,
         R.string.news_ticker,
-        R.string.includes
     )
     Column(modifier = modifier.padding(top = 28.dp)) {
         Title(text = stringResource(R.string.top_topics))
@@ -151,7 +141,6 @@ private fun Topics(
                     when (topic) {
                         R.string.headlines -> onHeadlines()
                         R.string.news_ticker -> onNews()
-                        R.string.includes -> onIncludes()
                     }
                 },
                 expandable = false

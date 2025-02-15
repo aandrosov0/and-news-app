@@ -10,5 +10,5 @@ import kotlinx.serialization.Serializable
 data object Home
 
 internal fun NavGraphBuilder.homeDestination(navController: NavController) {
-    composable<Home> { HomeScreen(navController = navController) }
+    composable<Home> { HomeScreen(onNavigateScreen = navController::navigate) }
 }

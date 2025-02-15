@@ -78,6 +78,7 @@ class DVXNewsClient(
         skipDomainCheck: Boolean = false,
     ): DVXArticleContent {
         val url = "$ARTICLE_URL?domain_name=$domain&language_id=$language&article_id=$id&skip_domain_check=$skipDomainCheck"
+        println(url)
         val request = Request.Builder()
             .url(url)
             .build()

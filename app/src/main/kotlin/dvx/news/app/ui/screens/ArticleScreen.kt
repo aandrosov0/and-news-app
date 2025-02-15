@@ -14,12 +14,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -30,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
@@ -58,29 +59,36 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 internal fun ArticleScreen(
     id: Long,
-    navController: NavController,
+    onNavigateUp: () -> Unit,
+    onNavigateScreen: (Any) -> Unit,
     modifier: Modifier = Modifier,
     articleViewModel: ArticleViewModel = koinViewModel(),
 ) {
     LaunchedEffect(Unit) { articleViewModel.getArticle(id) }
     val uiState by articleViewModel.uiState.collectAsState()
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Screen(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         state = RefreshableScreenState(
             error = uiState.error,
             isRefreshing = uiState.isLoading,
             onRefresh = { articleViewModel.getArticle(id, refresh = true) }
         ),
-        topBar = { DVXTopAppBar(onBackClick = navController::navigateUp) },
+        topBar = {
+            DVXTopAppBar(
+                onBackClick = onNavigateUp,
+                scrollBehavior = scrollBehavior
+            )
+        },
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Content(
             article = uiState.article,
-            onArticleClick = { navController.navigate(Article(id = it.id)) },
+            onArticleClick = { onNavigateScreen(Article(id = it.id)) },
             recommendedEndBlock = uiState.recommendedEndBlock,
             recommendedMiddleBlock = uiState.recommendedMiddleBlock,
-            contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp)
+            contentPadding = PaddingValues(top = 16.dp, bottom = 40.dp),
         )
     }
 }
@@ -172,8 +180,7 @@ private fun Subheadline(
         lineHeight = 28.sp,
         letterSpacing = (-0.5).sp,
         style = MaterialTheme.typography.titleLarge,
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     )
 }
 

@@ -7,6 +7,7 @@ import dvx.news.app.ui.core.ViewModelExceptionConverter
 import dvx.news.app.ui.states.CategoryScreenUiState
 import dvx.news.app.ui.states.ErrorUiState
 import dvx.news.app.ui.states.asState
+import dvx.news.data.exceptions.DataLayerException
 import dvx.news.data.repositories.ArticlesRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,7 @@ class CategoryViewModel(
             _uiState.value = try {
                 val articles = articlesRepository.getByCategory(categoryId).map { it.asState() }
                 CategoryScreenUiState(articles = articles)
-            } catch (exception: Exception) {
+            } catch (exception: DataLayerException) {
                 CategoryScreenUiState(error = exceptionConverter.convert(exception))
             }
         }

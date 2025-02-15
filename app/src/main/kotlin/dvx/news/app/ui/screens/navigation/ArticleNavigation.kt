@@ -13,6 +13,10 @@ data class Article(val id: Long)
 internal fun NavGraphBuilder.articleDestination(navController: NavController) {
     composable<Article> { backStackEntry ->
         val route = backStackEntry.toRoute<Article>()
-        ArticleScreen(id = route.id, navController = navController)
+        ArticleScreen(
+            id = route.id,
+            onNavigateUp = navController::navigateUp,
+            onNavigateScreen = navController::navigate
+        )
     }
 }

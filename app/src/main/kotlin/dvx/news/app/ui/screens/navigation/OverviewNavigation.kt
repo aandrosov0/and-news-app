@@ -10,5 +10,5 @@ import kotlinx.serialization.Serializable
 data object Overview
 
 internal fun NavGraphBuilder.overviewDestination(navController: NavController) {
-    composable<Overview> { OverviewScreen(navController = navController) }
+    composable<Overview> { OverviewScreen(onNavigateScreen = navController::navigate) }
 }

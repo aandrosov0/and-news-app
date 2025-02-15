@@ -10,5 +10,5 @@ import kotlinx.serialization.Serializable
 data object Settings
 
 internal fun NavGraphBuilder.settingsDestination(navController: NavController) {
-    composable<Settings> { SettingsScreen(navController = navController) }
+    composable<Settings> { SettingsScreen(onNavigateUp = navController::navigateUp) }
 }

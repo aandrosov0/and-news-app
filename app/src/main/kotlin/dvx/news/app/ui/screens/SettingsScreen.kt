@@ -32,7 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import dvx.news.app.R
 import dvx.news.app.ui.components.DVXTopAppBar
 import dvx.news.app.ui.components.NotificationAlertDialog
@@ -49,7 +48,7 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsScreen(
-    navController: NavController,
+    onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = koinInject(),
 ) {
@@ -65,7 +64,7 @@ internal fun SettingsScreen(
         topBar = {
             DVXTopAppBar(
                 title = stringResource(R.string.settings),
-                onBackClick = navController::navigateUp,
+                onBackClick = onNavigateUp,
                 selectedTabIndex = pagerState.currentPage
             ) {
                 pages.forEachIndexed { index, page ->

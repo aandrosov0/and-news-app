@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,16 +36,14 @@ fun VerticalPost(
     subheadline: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    minimized: Boolean = false
 ) {
-    Column(
-        modifier = modifier.clickable(onClick = onClick)
-            .width(intrinsicSize = IntrinsicSize.Min)
-    ) {
+    Column(modifier = modifier.clickable(onClick = onClick)) {
         Image(
             painter = image,
             contentDescription = stringResource(R.string.post_image),
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.then(if (minimized) Modifier.size(170.dp) else Modifier.fillMaxWidth()),
+            contentScale = ContentScale.Crop
         )
         Subheadline(text = subheadline)
         Headline(text = headline)
@@ -68,7 +65,7 @@ fun HorizontalPost(
         Image(
             painter = image,
             contentDescription = stringResource(R.string.post_image),
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Crop,
             modifier = Modifier.size(100.dp)
         )
         Column {
@@ -114,7 +111,6 @@ fun VerticalPostCard(
                 image = image,
                 headline = headline,
                 subheadline = subheadline,
-                onClick = {}
             )
         }
     }
@@ -144,6 +140,7 @@ private fun Headline(
         modifier = modifier,
         fontSize = 20.sp,
         overflow = TextOverflow.Ellipsis,
+        lineHeight = 21.sp,
         maxLines = 3,
         style = MaterialTheme.typography.bodyLarge,
     )

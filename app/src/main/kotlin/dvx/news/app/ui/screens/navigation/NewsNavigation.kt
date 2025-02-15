@@ -14,6 +14,10 @@ data class News(val tab: NewsTab)
 internal fun NavGraphBuilder.newsDestination(navController: NavController) {
     composable<News> { backStackEntry ->
         val route = backStackEntry.toRoute<News>()
-        NewsScreen(navController = navController, initialTab = route.tab)
+        NewsScreen(
+            initialTab = route.tab,
+            onNavigateUp = navController::navigateUp,
+            onNavigateScreen = navController::navigate
+        )
     }
 }

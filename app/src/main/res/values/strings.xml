@@ -37,4 +37,5 @@
     <string name="news_ticker">Newsticker</string>
     <string name="top_topics">TOP-THEMEN</string>
     <string name="tick">Tick</string>
+    <string name="retry">Retry</string>
 </resources>

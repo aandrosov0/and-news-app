@@ -1,7 +1,6 @@
 package dvx.news.app.ui
 
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -10,7 +9,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -36,8 +34,11 @@ fun App(mainViewModel: MainViewModel = koinInject()) {
     val uiState by mainViewModel.uiState.collectAsState()
 
     DVXTheme(theme = uiState.settings.theme) {
-        if (uiState.isLoading) {
-            SplashScreen()
+        if (uiState.isLoading || uiState.error != null) {
+            SplashScreen(
+                error = uiState.error,
+                onRetryClick = mainViewModel::load
+            )
         } else {
             AppContent()
         }
@@ -78,15 +79,11 @@ private fun AppContent(
                 destinations = topLevelRoutes
             )
         },
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
-    ) { paddings ->
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        contentWindowInsets = WindowInsets(0)
+    ) { paddingValues ->
         AppNavigation(
-            modifier = Modifier
-                .padding(
-                    start = paddings.calculateStartPadding(LocalLayoutDirection.current),
-                    end = paddings.calculateEndPadding(LocalLayoutDirection.current),
-                    bottom = paddings.calculateBottomPadding()
-                ),
+            modifier = Modifier.padding(paddingValues),
             navController = navController
         )
     }

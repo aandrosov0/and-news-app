@@ -2,7 +2,6 @@ package dvx.news.app.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,10 +34,9 @@ fun Thumbnail(
     image: Painter,
     headline: String,
     subheadline: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier.clickable(onClick = onClick)) {
+    Box(modifier = modifier) {
         Image(
             painter = image,
             contentDescription = headline,
@@ -139,7 +137,6 @@ private fun ThumbnailPreview() = DVXTheme {
         image = painterResource(R.drawable.img_rectangle_preview),
         headline = "Handball-Star überrascht",
         subheadline = "Dieses Interview ist jetzt schon legendär",
-        onClick = {}
     )
 }
 

@@ -28,14 +28,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import dvx.news.app.R
 import dvx.news.app.ui.components.DVXTopAppBar
 import dvx.news.app.ui.components.Screen
@@ -56,7 +58,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 internal fun NewsScreen(
     initialTab: NewsTab,
-    navController: NavController,
+    onNavigateUp: () -> Unit,
+    onNavigateScreen: (Any) -> Unit,
     modifier: Modifier = Modifier,
     newsViewModel: NewsViewModel = koinViewModel(),
 ) {
@@ -80,7 +83,7 @@ internal fun NewsScreen(
         topBar = {
             DVXTopAppBar(
                 title = stringResource(R.string.news),
-                onBackClick = navController::navigateUp,
+                onBackClick = onNavigateUp,
                 selectedTabIndex = pagerState.currentPage,
             ) {
                 pages.forEachIndexed { index, page ->
@@ -100,13 +103,13 @@ internal fun NewsScreen(
         HorizontalPager(state = pagerState) { page ->
             when (pages[page]) {
                 NewsTab.ALL_NEWS -> NewsPage(
-                    onArticleClick = { navController.navigate(Article(id = it.id)) },
+                    onArticleClick = { onNavigateScreen(Article(id = it.id)) },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     articles = uiState.randomArticles,
                     categories = uiState.categories
                 )
                 NewsTab.HEADERS -> HeadlinesPage(
-                    onArticleClick = { navController.navigate(Article(id = it.id)) },
+                    onArticleClick = { onNavigateScreen(Article(id = it.id)) },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     articles = uiState.recentArticles,
                     categories = uiState.categories
@@ -174,12 +177,13 @@ private fun Title(
 ) {
     Text(
         text = text,
-        textAlign = TextAlign.Center,
-        fontSize = 16.sp,
-        style = MaterialTheme.typography.bodyMedium,
         modifier = modifier
             .alpha(.64f)
             .padding(vertical = 20.dp)
+            .fillMaxWidth(),
+        fontSize = 16.sp,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.bodyMedium
     )
 }
 
@@ -205,7 +209,10 @@ private fun Item(
         )
         VerticalPostCard(
             image = rememberAsyncImagePainter(
-                model = imageUrl,
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(true)
+                    .build(),
                 placeholder = painterResource(R.drawable.img_rectangle_preview)
             ),
             headline = headline,
