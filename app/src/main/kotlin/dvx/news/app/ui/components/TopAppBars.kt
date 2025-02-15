@@ -10,6 +10,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Text
@@ -68,7 +69,8 @@ fun DVXTopAppBar(
                 if (title != null) {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.bodyMedium,
+                        color = LocalContentColor.current,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
             },

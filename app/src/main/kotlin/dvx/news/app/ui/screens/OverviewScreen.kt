@@ -262,7 +262,7 @@ private fun ActionButton(
             )
             Text(
                 text = label,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }

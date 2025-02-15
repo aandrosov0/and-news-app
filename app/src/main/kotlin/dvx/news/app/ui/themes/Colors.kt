@@ -15,4 +15,4 @@ val onSurfaceVariantLightColor = Color(0XFF000000)
 val surfaceDarkColor = Color(0XFF343a40)
 val onSurfaceDarkColor = Color(0XFFFFFFFF)
 val surfaceVariantDarkColor = Color(0XFF212529)
-val onSurfaceVariantDarkColor = primaryColor
+val onSurfaceVariantDarkColor = Color.White

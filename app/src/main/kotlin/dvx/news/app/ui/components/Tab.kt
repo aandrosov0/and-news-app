@@ -1,5 +1,6 @@
 package dvx.news.app.ui.components
 
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +22,8 @@ fun Tab(
         text = {
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyMedium,
+                color = LocalContentColor.current,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = modifier.alpha(if (selected) 1f else .64f)
             )
         }

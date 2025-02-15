@@ -79,8 +79,9 @@ private fun Error(
     ) {
         Text(
             text = text,
+            color = Color.White,
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
         RetryButton(onClick = onRetryClick)
     }
