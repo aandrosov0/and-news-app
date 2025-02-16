@@ -95,6 +95,7 @@ internal val typography
             fontFamily = openSansCondensedFontFamily
         ),
         labelLarge = TextStyle(
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = openSansCondensedFontFamily
         ),

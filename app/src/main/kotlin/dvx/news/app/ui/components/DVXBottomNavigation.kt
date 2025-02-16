@@ -118,7 +118,7 @@ fun DVXNavigationItem(
         if (label != null) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.labelSmall,
                 textAlign = TextAlign.Center,
                 color = animateColorAsState(
                     targetValue = if (selected) labelColors.selected else labelColors.unselected,
