@@ -22,7 +22,7 @@ class DVXNewsClient(
     private val exceptionInterceptor: ExceptionInterceptor = ExceptionInterceptorImpl
 
     companion object {
-        private const val API_URL = "https://devapi.adlink.net"
+        private const val API_URL = "https://api.adlink.net"
         const val ARTICLE_URL = "$API_URL/websites/article"
         const val ARTICLES_URL = "$API_URL/websites/articles"
         const val CATEGORIES_URL = "$API_URL/websites/domain"
@@ -39,6 +39,8 @@ class DVXNewsClient(
         val request = Request.Builder()
             .url(url)
             .build()
+        
+        println(url)
 
         try {
             client.newCall(request).execute().use { response ->

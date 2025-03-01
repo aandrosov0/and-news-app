@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil3.ImageLoader
 import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dvx.news.app.R
 import dvx.news.app.ui.states.ArticleUiState
@@ -53,15 +53,18 @@ fun LazyGridScope.feed(
         items = articles,
         span = { index, _ -> determineSpan(index) }
     ) { index, article ->
+        val squared = index % THUMBNAIL_STEP != 0
+
+        val placeholder = if (squared) R.drawable.img_square_preview else R.drawable.img_rectangle_preview
         val image = rememberAsyncImagePainter(
-            model = ImageRequest.Builder(LocalContext.current)
-                .size(640, 480)
-                .data(article.imageUrl)
+            model = if (squared) article.squareImageUrl else article.imageUrl,
+            imageLoader = ImageLoader.Builder(LocalContext.current)
                 .crossfade(true)
                 .build(),
-            placeholder = painterResource(R.drawable.img_rectangle_preview),
+            placeholder = painterResource(placeholder),
         )
-        if (index % THUMBNAIL_STEP == 0) {
+
+        if (!squared) {
             Thumbnail(
                 image = image,
                 headline = article.headline,
@@ -77,7 +80,6 @@ fun LazyGridScope.feed(
                 subheadline = article.subheadline,
                 onClick = { onArticleClick(article) },
                 modifier = Modifier.padding(horizontal = 8.dp),
-                minimized = true
             )
         }
     }

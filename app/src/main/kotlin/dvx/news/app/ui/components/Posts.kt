@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -37,15 +36,13 @@ fun VerticalPost(
     headline: String,
     subheadline: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    minimized: Boolean = false
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.clickable(onClick = onClick)) {
         Image(
             painter = image,
             contentDescription = stringResource(R.string.post_image),
-            modifier = Modifier.then(if (minimized) Modifier.aspectRatio(1f) else Modifier.fillMaxWidth()),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.FillWidth
         )
         Subheadline(text = subheadline)
         Headline(text = headline)
@@ -67,10 +64,7 @@ fun HorizontalPost(
         Image(
             painter = image,
             contentDescription = stringResource(R.string.post_image),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(100.dp)
-                .aspectRatio(1f)
+            modifier = Modifier.size(100.dp)
         )
         Column {
             Subheadline(text = subheadline)

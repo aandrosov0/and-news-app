@@ -10,7 +10,9 @@ data class DVXArticle(
     val subheadline: String,
     val headline: String,
     val slug: String?,
+    @SerialName("square_variant_id") val squareVariantId: Long,
     @SerialName("lead_paragraph") val leadParagraph: String,
     val time: String,
     @SerialName("image_url") val imageUrl: String,
+    @SerialName("square_image_url") val squareImageUrl: String,
 )

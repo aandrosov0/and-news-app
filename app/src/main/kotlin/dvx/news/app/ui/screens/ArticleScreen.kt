@@ -337,7 +337,7 @@ private fun MiddleRecommendations(
                 val painter = if (LocalInspectionMode.current) {
                     painterResource(R.drawable.ic_void)
                 } else {
-                    rememberAsyncImagePainter(article.imageUrl)
+                    rememberAsyncImagePainter(article.squareImageUrl)
                 }
                 HorizontalPost(
                     image = painter,

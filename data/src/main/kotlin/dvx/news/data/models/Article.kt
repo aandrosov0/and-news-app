@@ -11,6 +11,7 @@ data class Article(
     val leadParagraph: String,
     val time: String,
     val imageUrl: String,
+    val squareImageUrl: String,
 )
 
 fun DVXArticle.toArticle() = Article(
@@ -22,4 +23,5 @@ fun DVXArticle.toArticle() = Article(
     leadParagraph = leadParagraph,
     time = time,
     imageUrl = imageUrl,
+    squareImageUrl = squareImageUrl
 )

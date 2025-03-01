@@ -11,6 +11,7 @@ data class ArticleUiState(
     val leadParagraph: String = "",
     val time: String = "",
     val imageUrl: String = "",
+    val squareImageUrl: String = "",
 )
 
 fun Article.asState() = ArticleUiState(
@@ -21,5 +22,6 @@ fun Article.asState() = ArticleUiState(
     slug = slug,
     leadParagraph = leadParagraph,
     time = time,
-    imageUrl = imageUrl
+    imageUrl = imageUrl,
+    squareImageUrl = squareImageUrl
 )
