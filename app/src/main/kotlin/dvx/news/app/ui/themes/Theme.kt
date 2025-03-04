@@ -15,8 +15,7 @@ import androidx.compose.ui.unit.sp
 import dvx.news.app.adaptCurrentTheme
 import dvx.news.app.ui.states.ThemeUiState
 
-internal val lightColorScheme
-    get() = lightColorScheme(
+internal val lightColorScheme = lightColorScheme(
         primary = primaryColor,
         onPrimary = onPrimaryColor,
         tertiary = tertiaryColor,
@@ -26,8 +25,7 @@ internal val lightColorScheme
         onSurfaceVariant = onSurfaceVariantLightColor
     )
 
-internal val darkColorScheme
-    get() = darkColorScheme(
+internal val darkColorScheme = darkColorScheme(
         primary = primaryColor,
         onPrimary = onPrimaryColor,
         tertiary = tertiaryColor,
@@ -125,7 +123,7 @@ fun DVXTheme(
 
     val context = LocalContext.current
     if (context is Activity) {
-        context.adaptCurrentTheme(theme == ThemeUiState.BRIGHT)
+        context.adaptCurrentTheme(colorScheme == lightColorScheme)
     }
 
     MaterialTheme(

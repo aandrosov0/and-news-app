@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import dvx.news.app.R
 import dvx.news.app.ui.themes.DVXTheme
 
@@ -137,9 +138,8 @@ private fun Headline(
         text = text,
         modifier = modifier,
         color = LocalContentColor.current,
-        overflow = TextOverflow.Ellipsis,
         lineHeight = 0.96.em,
-        maxLines = 3,
+        fontSize = 18.sp,
         style = MaterialTheme.typography.titleMedium,
     )
 }
