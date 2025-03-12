@@ -174,7 +174,7 @@ private fun Subheadline(
     Text(
         text = text,
         textAlign = TextAlign.Center,
-        fontWeight = FontWeight.ExtraBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 19.sp,
         lineHeight = 28.sp,
         letterSpacing = (-0.5).sp,
