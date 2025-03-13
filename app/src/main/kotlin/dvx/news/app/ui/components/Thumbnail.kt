@@ -52,8 +52,8 @@ fun Thumbnail(
                 }
         )
         ThumbnailInfo(
-            headline = headline,
-            subheadline = subheadline,
+            headline = subheadline,
+            subheadline = headline,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(8.5.dp)
@@ -72,8 +72,8 @@ private fun ThumbnailInfo(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Headline(text = headline)
         Subheadline(text = subheadline)
+        Headline(text = headline)
     }
 }
 
