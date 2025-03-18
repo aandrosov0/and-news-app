@@ -6,6 +6,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
@@ -49,7 +50,7 @@ fun DVXBottomNavigation(
 ) {
     var categoryId by remember { mutableLongStateOf(0) }
     NavigationBar(
-        modifier = modifier,
+        modifier = modifier.defaultMinSize(minHeight = 70.dp),
         containerColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
         destinations.forEach { topLevelRoute ->
@@ -112,8 +113,8 @@ fun DVXNavigationItem(
                 label = "Icon Color"
             ).value,
             modifier = Modifier
-                .size(32.dp)
-                .padding(bottom = 8.dp)
+                .size(24.dp)
+                .padding(bottom = 4.dp)
         )
         if (label != null) {
             Text(

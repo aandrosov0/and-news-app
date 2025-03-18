@@ -45,8 +45,14 @@ fun VerticalPost(
             contentDescription = stringResource(R.string.post_image),
             contentScale = ContentScale.FillWidth
         )
-        Subheadline(text = subheadline)
-        Headline(text = headline)
+        Subheadline(
+            text = subheadline,
+            modifier = Modifier.padding(top = 6.dp)
+        )
+        Headline(
+            text = headline,
+            modifier = Modifier.padding(top = 2.dp)
+        )
     }
 }
 
@@ -138,8 +144,8 @@ private fun Headline(
         text = text,
         modifier = modifier,
         color = LocalContentColor.current,
-        lineHeight = 0.96.em,
-        fontSize = 18.sp,
+        lineHeight = 1.2.em,
+        fontSize = 19.sp,
         style = MaterialTheme.typography.titleMedium,
     )
 }

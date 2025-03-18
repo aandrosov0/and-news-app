@@ -36,7 +36,7 @@ fun Feed(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 103.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy((-8).dp),
+        horizontalArrangement = Arrangement.spacedBy((-10.5).dp),
     ) {
         feed(
             articles = articles,
@@ -79,7 +79,7 @@ fun LazyGridScope.feed(
                 headline = article.headline,
                 subheadline = article.subheadline,
                 onClick = { onArticleClick(article) },
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier.padding(horizontal = 10.5.dp),
             )
         }
     }
