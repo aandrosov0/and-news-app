@@ -45,7 +45,6 @@ import dvx.news.app.ui.components.Tab
 import dvx.news.app.ui.components.VerticalPostCard
 import dvx.news.app.ui.screens.navigation.Article
 import dvx.news.app.ui.states.ArticleUiState
-import dvx.news.app.ui.states.CategoryUiState
 import dvx.news.app.ui.states.NewsTab
 import dvx.news.app.ui.states.RefreshableScreenState
 import dvx.news.app.ui.states.localizedName
@@ -106,13 +105,11 @@ internal fun NewsScreen(
                     onArticleClick = { onNavigateScreen(Article(id = it.id)) },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     articles = uiState.randomArticles,
-                    categories = uiState.categories
                 )
                 NewsTab.HEADERS -> HeadlinesPage(
                     onArticleClick = { onNavigateScreen(Article(id = it.id)) },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     articles = uiState.recentArticles,
-                    categories = uiState.categories
                 )
             }
         }
@@ -123,7 +120,6 @@ internal fun NewsScreen(
 private fun NewsPage(
     articles: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
-    categories: List<CategoryUiState>,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -137,7 +133,7 @@ private fun NewsPage(
                 headline = article.headline,
                 subheadline = article.subheadline,
                 createdAt = article.time,
-                category = categories.find { it.id == article.categoryId }?.name ?: "",
+                category = article.categoryName,
                 onClick = { onArticleClick(article) },
                 thumbnail = true
             )
@@ -149,7 +145,6 @@ private fun NewsPage(
 private fun HeadlinesPage(
     articles: List<ArticleUiState>,
     onArticleClick: (ArticleUiState) -> Unit,
-    categories: List<CategoryUiState>,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -163,7 +158,7 @@ private fun HeadlinesPage(
                 headline = article.headline,
                 subheadline = article.subheadline,
                 createdAt = article.time,
-                category = categories.find { it.id == article.categoryId }?.name ?: "",
+                category = article.categoryName,
                 onClick = { onArticleClick(article) }
             )
         }

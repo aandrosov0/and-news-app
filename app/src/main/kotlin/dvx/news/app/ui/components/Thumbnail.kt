@@ -72,8 +72,8 @@ private fun ThumbnailInfo(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Subheadline(text = subheadline)
         Headline(text = headline)
+        Subheadline(text = subheadline)
     }
 }
 

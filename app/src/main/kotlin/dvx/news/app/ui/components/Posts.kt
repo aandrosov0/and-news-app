@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -47,11 +48,11 @@ fun VerticalPost(
         )
         Subheadline(
             text = subheadline,
-            modifier = Modifier.padding(top = 6.dp)
+            modifier = Modifier.padding(top = 3.5.dp)
         )
         Headline(
             text = headline,
-            modifier = Modifier.padding(top = 2.dp)
+            modifier = Modifier.offset(y = (-4).dp)
         )
     }
 }
@@ -129,7 +130,9 @@ private fun Subheadline(
     Text(
         text = text,
         modifier = modifier,
+        fontSize = 15.sp,
         overflow = TextOverflow.Ellipsis,
+        lineHeight = 1.em,
         maxLines = 1,
         style = MaterialTheme.typography.titleSmall,
     )
@@ -144,9 +147,8 @@ private fun Headline(
         text = text,
         modifier = modifier,
         color = LocalContentColor.current,
-        lineHeight = 1.2.em,
+        lineHeight = 1.1.em,
         fontSize = 19.sp,
-        style = MaterialTheme.typography.titleMedium,
     )
 }
 

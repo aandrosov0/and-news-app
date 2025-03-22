@@ -35,7 +35,7 @@ fun Feed(
         columns = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 103.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(10.5.dp),
         horizontalArrangement = Arrangement.spacedBy((-10.5).dp),
     ) {
         feed(

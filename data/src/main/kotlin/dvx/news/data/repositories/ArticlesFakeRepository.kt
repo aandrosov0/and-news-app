@@ -22,6 +22,7 @@ class ArticlesFakeRepository : ArticlesRepository {
             slug = "climate-summit-2023",
             leadParagraph = "World leaders gather in New York to address the urgent climate crisis.",
             time = "2023-10-01 09:00:00",
+            categoryName = "Category",
             imageUrl = "https://cdn.vox-cdn.com/thumbor/M5p0PraMoMZGpqjMk2uJW5uoVTM=/0x0:6720x4480/1200x800/filters:focal(2823x1703:3897x2777)/cdn.vox-cdn.com/uploads/chorus_image/image/65304903/1176587267.jpg.0.jpg",
             squareImageUrl = "https://cdn.vox-cdn.com/thumbor/M5p0PraMoMZGpqjMk2uJW5uoVTM=/0x0:6720x4480/1200x800/filters:focal(2823x1703:3897x2777)/cdn.vox-cdn.com/uploads/chorus_image/image/65304903/1176587267.jpg.0.jpg",
         ),
@@ -34,7 +35,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             leadParagraph = "Artificial intelligence is set to transform patient care and diagnostics.",
             time = "2023-10-02 10:30:00",
             imageUrl = "https://www.healthcareitnews.com/sites/hitnai/files/GettyImages-1066949512_1.jpg",
-            squareImageUrl = "https://www.healthcareitnews.com/sites/hitnai/files/GettyImages-1066949512_1.jpg"
+            squareImageUrl = "https://www.healthcareitnews.com/sites/hitnai/files/GettyImages-1066949512_1.jpg",
+            categoryName = "Category",
         ),
         Article(
             id = 3,
@@ -45,7 +47,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             leadParagraph = "Investors are on edge as economic indicators show mixed signals.",
             time = "2023-10-03 11:15:00",
             imageUrl = "https://www.bankrate.com/2022/08/24115227/what-is-market-volatility.jpeg",
-            squareImageUrl = "https://www.bankrate.com/2022/08/24115227/what-is-market-volatility.jpeg"
+            squareImageUrl = "https://www.bankrate.com/2022/08/24115227/what-is-market-volatility.jpeg",
+            categoryName = "Category",
         ),
         Article(
             id = 4,
@@ -57,6 +60,7 @@ class ArticlesFakeRepository : ArticlesRepository {
             time = "2023-10-04 12:00:00",
             imageUrl = "https://www.letsgolearn.com/wp-content/uploads/2021/04/7171827696_182f40822f_b.jpg",
             squareImageUrl = "https://www.letsgolearn.com/wp-content/uploads/2021/04/7171827696_182f40822f_b.jpg",
+            categoryName = "Category",
         ),
         Article(
             id = 5,
@@ -68,6 +72,7 @@ class ArticlesFakeRepository : ArticlesRepository {
             time = "2023-10-05 13:45:00",
             imageUrl = "https://sportblurb.com/wp-content/uploads/2021/12/Custom-dimensions-900x500-px-7-1-1-768x427.jpeg",
             squareImageUrl = "https://sportblurb.com/wp-content/uploads/2021/12/Custom-dimensions-900x500-px-7-1-1-768x427.jpeg",
+            categoryName = "Category",
         ),
         Article(
             id = 6,
@@ -79,6 +84,7 @@ class ArticlesFakeRepository : ArticlesRepository {
             time = "2023-10-06 14:30:00",
             imageUrl = "https://cdn.mos.cms.futurecdn.net/Phxj4Z77PkqMRXEsknUJFQ.jpg",
             squareImageUrl = "https://cdn.mos.cms.futurecdn.net/Phxj4Z77PkqMRXEsknUJFQ.jpg",
+            categoryName = "Category",
         ),
         Article(
             id = 7,
@@ -90,6 +96,7 @@ class ArticlesFakeRepository : ArticlesRepository {
             time = "2023-10-07 15:15:00",
             imageUrl = "https://www.budgetdumpster.com/blog/wp-content/uploads/2016/11/litter-cleanup.jpg",
             squareImageUrl = "https://www.budgetdumpster.com/blog/wp-content/uploads/2016/11/litter-cleanup.jpg",
+            categoryName = "Category",
         ),
         Article(
             id = 8,
@@ -101,6 +108,7 @@ class ArticlesFakeRepository : ArticlesRepository {
             time = "2023-10-08 16:00:00",
             imageUrl = "https://aijournalism.net/wp-content/uploads/2021/10/getty_493339904_210896.jpg",
             squareImageUrl = "https://aijournalism.net/wp-content/uploads/2021/10/getty_493339904_210896.jpg",
+            categoryName = "Category",
         ),
         Article(
             id = 9,
@@ -112,6 +120,7 @@ class ArticlesFakeRepository : ArticlesRepository {
             time = "2023-10-09 17:45:00",
             imageUrl = "https://cdn.powerofpositivity.com/wp-content/uploads/2020/12/flu-season-survival-canva.jpg",
             squareImageUrl = "https://cdn.powerofpositivity.com/wp-content/uploads/2020/12/flu-season-survival-canva.jpg",
+            categoryName = "Category",
         ),
         Article(
             id = 10,
@@ -123,6 +132,7 @@ class ArticlesFakeRepository : ArticlesRepository {
             time = "2023-10-10 18:30:00",
             imageUrl = "https://www.tripfore.com/wp-content/uploads/2019/11/13.-Readers-Digest-1536x1024.jpg",
             squareImageUrl = "https://www.tripfore.com/wp-content/uploads/2019/11/13.-Readers-Digest-1536x1024.jpg",
+            categoryName = "Category",
         )
     )
 
