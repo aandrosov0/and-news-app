@@ -10,17 +10,17 @@ kotlin {
 }
 
 android {
-    namespace = "dvx.news.app"
+    namespace = "com.dvx.news"
 
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "dvx.news.app"
+        applicationId = "com.dvx.news"
 
         minSdk = 24
         targetSdk = 35
 
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0.0"
     }
 
@@ -31,9 +31,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android.txt")
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"))
         }
     }
 }
