@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,7 +26,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -174,8 +174,8 @@ private fun Subheadline(
     Text(
         text = text,
         textAlign = TextAlign.Center,
-        fontWeight = FontWeight.Bold,
-        fontSize = 19.sp,
+        fontWeight = FontWeight.W800,
+        fontSize = 21.sp,
         lineHeight = 28.sp,
         letterSpacing = (-0.5).sp,
         style = MaterialTheme.typography.titleLarge,
@@ -195,12 +195,8 @@ private fun Headline(
         fontSize = 42.sp,
         letterSpacing = (-2).sp,
         fontWeight = FontWeight.ExtraBold,
-        style = MaterialTheme.typography.bodyLarge.copy(
-            platformStyle = PlatformTextStyle(
-                includeFontPadding = false
-            )
-        ),
-        modifier = modifier
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = modifier.offset(y = -4.dp)
     )
 }
 
