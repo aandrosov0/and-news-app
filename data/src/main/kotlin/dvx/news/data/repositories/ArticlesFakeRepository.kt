@@ -17,14 +17,14 @@ class ArticlesFakeRepository : ArticlesRepository {
         Article(
             id = 1,
             categoryId = 30,
-            subheadline = "Global leaders meet to discuss climate change",
-            headline = "Climate Summit 2023: A Call to Action",
+            subheadline = "In an interview with \"Meet the Press,\" the Pennsylvania governor said the country is at an \"inflection point\" and he hoped it would go in a direction of healing and unity. ",
+            headline = "The Trump administration has halted funds for global HIV/AIDS programs. No one knows how big the impact is ",
             slug = "climate-summit-2023",
             leadParagraph = "World leaders gather in New York to address the urgent climate crisis.",
             time = "2023-10-01 09:00:00",
             categoryName = "Category",
-            imageUrl = "https://cdn.vox-cdn.com/thumbor/M5p0PraMoMZGpqjMk2uJW5uoVTM=/0x0:6720x4480/1200x800/filters:focal(2823x1703:3897x2777)/cdn.vox-cdn.com/uploads/chorus_image/image/65304903/1176587267.jpg.0.jpg",
-            squareImageUrl = "https://cdn.vox-cdn.com/thumbor/M5p0PraMoMZGpqjMk2uJW5uoVTM=/0x0:6720x4480/1200x800/filters:focal(2823x1703:3897x2777)/cdn.vox-cdn.com/uploads/chorus_image/image/65304903/1176587267.jpg.0.jpg",
+            imageUrl = "https://media.cnn.com/api/v1/images/stellar/prod/001-gettyimages-2212121980.jpg?c=original&q=w_1202,c_fill/f_avif",
+            squareImageUrl = "https://media.cnn.com/api/v1/images/stellar/prod/001-gettyimages-2212121980.jpg?c=original&q=w_1202,c_fill/f_avif",
         ),
         Article(
             id = 2,
@@ -34,8 +34,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             slug = "ai-in-medicine",
             leadParagraph = "Artificial intelligence is set to transform patient care and diagnostics.",
             time = "2023-10-02 10:30:00",
-            imageUrl = "https://www.healthcareitnews.com/sites/hitnai/files/GettyImages-1066949512_1.jpg",
-            squareImageUrl = "https://www.healthcareitnews.com/sites/hitnai/files/GettyImages-1066949512_1.jpg",
+            imageUrl = "https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2222616956.jpg?c=original&q=w_860,c_fill/f_avif",
+            squareImageUrl = "https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2222616956.jpg?c=original&q=w_860,c_fill/f_avif",
             categoryName = "Category",
         ),
         Article(
@@ -182,7 +182,7 @@ class ArticlesFakeRepository : ArticlesRepository {
     }
 
     override suspend fun getByCategory(categoryId: Long): List<Article> {
-        delay(3.seconds)
+        delay(1.seconds)
         return articles
     }
 }

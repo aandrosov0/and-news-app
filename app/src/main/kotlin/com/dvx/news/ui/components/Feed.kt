@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -62,6 +63,7 @@ fun LazyGridScope.feed(
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(placeholder),
+            contentScale = if (squared) ContentScale.Crop else ContentScale.FillWidth
         )
 
         if (!squared) {

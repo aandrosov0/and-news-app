@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -44,7 +45,8 @@ fun VerticalPost(
         Image(
             painter = image,
             contentDescription = stringResource(R.string.post_image),
-            contentScale = ContentScale.FillWidth
+            modifier = Modifier.aspectRatio(1f),
+            contentScale = ContentScale.Crop
         )
         Subheadline(
             text = subheadline,

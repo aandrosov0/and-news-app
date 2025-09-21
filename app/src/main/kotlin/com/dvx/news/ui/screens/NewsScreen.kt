@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -209,7 +210,8 @@ private fun Item(
                     .data(imageUrl)
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(R.drawable.img_rectangle_preview)
+                placeholder = painterResource(R.drawable.img_rectangle_preview),
+                contentScale = ContentScale.FillWidth
             ),
             headline = headline,
             subheadline = subheadline,
