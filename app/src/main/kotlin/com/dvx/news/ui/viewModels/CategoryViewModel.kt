@@ -23,7 +23,7 @@ class CategoryViewModel(
 
     private var getJob: Job? = null
 
-    fun get(categoryId: Long, refresh: Boolean = false) {
+    fun get(categoryId: String, refresh: Boolean = false) {
         getJob?.cancel()
         getJob = viewModelScope.launch {
             if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }

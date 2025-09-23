@@ -8,7 +8,7 @@ import com.dvx.news.ui.screens.ArticleScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Article(val id: Long)
+data class Article(val id: String)
 
 internal fun NavGraphBuilder.articleDestination(navController: NavController) {
     composable<Article> { backStackEntry ->

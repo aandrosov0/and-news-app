@@ -30,9 +30,17 @@ class NewsViewModel(
             if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }
 
             _uiState.value = try {
-                val recentArticles = articlesRepository.getRecent(refresh).map { it.asState() }
-                val randomArticles = articlesRepository.getRandom(refresh).map { it.asState() }
                 val categories = categoriesRepository.getAll(refresh).map { it.asState() }
+                val recentArticles = articlesRepository.getRecent(refresh).map { article ->
+                    article.asState().copy(
+                        categoryName = categories.firstOrNull { it.id == article.categoryId }?.name ?: ""
+                    )
+                }
+                val randomArticles = articlesRepository.getRandom(refresh).map { article ->
+                    article.asState().copy(
+                        categoryName = categories.firstOrNull { it.id == article.categoryId }?.name ?: ""
+                    )
+                }
 
                 NewsScreenUiState(
                     recentArticles = recentArticles,

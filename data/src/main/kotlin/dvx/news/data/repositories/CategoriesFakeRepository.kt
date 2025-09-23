@@ -5,23 +5,23 @@ import dvx.news.data.models.Category
 class CategoriesFakeRepository : CategoriesRepository {
     private val categories = listOf(
         Category(
-            id = 30,
+            id = "30",
             name = "News"
         ),
         Category(
-            id = 55,
+            id = "55",
             name = "Cars"
         ),
         Category(
-            id = 52,
+            id = "52",
             name = "Soccer"
         ),
         Category(
-            id = 18,
+            id = "18",
             name = "Lifestyle"
         ),
         Category(
-            id = 196,
+            id = "196",
             name = "Games"
         )
     )

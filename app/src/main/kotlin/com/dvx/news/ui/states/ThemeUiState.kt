@@ -17,7 +17,7 @@ val ThemeUiState.localizedName: String
     @Composable
     get() = stringResource(
         when (this) {
-            ThemeUiState.SYSTEM -> R.string.headlines
+            ThemeUiState.SYSTEM -> R.string.system_theme
             ThemeUiState.BRIGHT -> R.string.bright
             ThemeUiState.DARK -> R.string.dark
         }

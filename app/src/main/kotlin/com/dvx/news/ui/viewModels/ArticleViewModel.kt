@@ -23,7 +23,7 @@ class ArticleViewModel(
 
     private var getArticleJob: Job? = null
 
-    fun getArticle(id: Long, refresh: Boolean = false) {
+    fun getArticle(id: String, refresh: Boolean = false) {
         getArticleJob?.cancel()
         getArticleJob = viewModelScope.launch {
             if (refresh) { _uiState.value = _uiState.value.copy(isLoading = true) }

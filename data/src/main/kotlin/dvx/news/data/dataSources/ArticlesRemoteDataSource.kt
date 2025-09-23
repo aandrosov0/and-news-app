@@ -23,8 +23,8 @@ class ArticlesRemoteDataSource(private val api: DVXNewsClient) : ArticlesDataSou
         .random
         .map(DVXArticle::toArticle)
 
-    override suspend fun getArticle(id: Long): ArticleContent {
-        val article = api.getArticle(id, skipDomainCheck = SKIP_DOMAIN_CHECK)
+    override suspend fun getArticle(id: String): ArticleContent {
+        val article = api.getArticle(id.toLong(), skipDomainCheck = SKIP_DOMAIN_CHECK)
         val images = article.images
         val text = article.text
 
@@ -49,8 +49,8 @@ class ArticlesRemoteDataSource(private val api: DVXNewsClient) : ArticlesDataSou
         )
     }
 
-    override suspend fun getByCategory(categoryId: Long) = api
-        .getArticles(categoryId = categoryId, skipDomainCheck = SKIP_DOMAIN_CHECK)
+    override suspend fun getByCategory(categoryId: String) = api
+        .getArticles(categoryId = categoryId.toLong(), skipDomainCheck = SKIP_DOMAIN_CHECK)
         .recent
         .map(DVXArticle::toArticle)
 }

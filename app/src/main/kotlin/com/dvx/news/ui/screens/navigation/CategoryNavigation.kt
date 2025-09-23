@@ -8,7 +8,7 @@ import com.dvx.news.ui.screens.CategoryScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Category(val id: Long, val name: String)
+data class Category(val id: String, val name: String)
 
 internal fun NavGraphBuilder.categoryDestination(navController: NavController) {
     composable<Category> { backStackEntry ->

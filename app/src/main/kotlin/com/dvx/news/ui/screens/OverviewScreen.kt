@@ -50,7 +50,7 @@ import com.dvx.news.ui.screens.navigation.Settings
 import com.dvx.news.ui.states.CategoryUiState
 import com.dvx.news.R
 import com.dvx.news.ui.states.NewsTab
-import com.dvx.news.ui.states.iconId
+import com.dvx.news.ui.states.iconResId
 import com.dvx.news.ui.themes.DVXTheme
 import com.dvx.news.ui.viewModels.MainViewModel
 import org.koin.compose.koinInject
@@ -161,7 +161,7 @@ private fun Categories(
         categories.forEach { category ->
             HorizontalDivider()
             DropdownButton(
-                icon = painterResource(category.iconId),
+                icon = painterResource(category.iconResId),
                 label = category.name,
                 onClick = { onCategoryClick(category) }
             )

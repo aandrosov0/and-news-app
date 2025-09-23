@@ -48,7 +48,7 @@ class ArticlesRepositoryImpl(
         }
     }
 
-    override suspend fun getArticle(articleId: Long) = withContext(dispatcher) {
+    override suspend fun getArticle(articleId: String) = withContext(dispatcher) {
         try {
             articlesDataSource.getArticle(articleId)
         } catch (exception: Exception) {
@@ -56,7 +56,7 @@ class ArticlesRepositoryImpl(
         }
     }
 
-    override suspend fun getByCategory(categoryId: Long) = withContext(dispatcher) {
+    override suspend fun getByCategory(categoryId: String) = withContext(dispatcher) {
         try {
             articlesDataSource.getByCategory(categoryId)
         } catch (exception: Exception) {

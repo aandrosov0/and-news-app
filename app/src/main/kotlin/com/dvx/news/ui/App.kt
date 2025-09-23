@@ -21,10 +21,10 @@ import com.dvx.news.ui.screens.navigation.AppNavigation
 import com.dvx.news.ui.screens.navigation.Category
 import com.dvx.news.ui.screens.navigation.Home
 import com.dvx.news.ui.screens.navigation.Overview
-import com.dvx.news.ui.states.iconId
 import com.dvx.news.ui.themes.DVXTheme
 import com.dvx.news.ui.viewModels.MainViewModel
 import com.dvx.news.R
+import com.dvx.news.ui.states.iconResId
 import org.koin.compose.koinInject
 
 @Composable
@@ -55,7 +55,7 @@ private fun AppContent(
         add(
             TopLevelRoute(
                 name = stringResource(R.string.home),
-                icon = painterResource(R.drawable.ic_startseite),
+                icon = painterResource(R.drawable.ic_home),
                 route = Home
             )
         )
@@ -64,7 +64,7 @@ private fun AppContent(
             add(
                 TopLevelRoute(
                     name = route.name,
-                    icon = painterResource(category.iconId),
+                    icon = painterResource(category.iconResId),
                     route = route
                 )
             )

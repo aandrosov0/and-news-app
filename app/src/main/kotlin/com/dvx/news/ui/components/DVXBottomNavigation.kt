@@ -17,7 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -48,7 +49,7 @@ fun DVXBottomNavigation(
     destinations: List<TopLevelRoute>,
     modifier: Modifier = Modifier,
 ) {
-    var categoryId by remember { mutableLongStateOf(0) }
+    var categoryId by remember { mutableStateOf("") }
     NavigationBar(
         modifier = modifier.defaultMinSize(minHeight = 70.dp),
         containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -67,7 +68,7 @@ fun DVXBottomNavigation(
                     categoryId = if (topLevelRoute.route is Category) {
                         topLevelRoute.route.id
                     } else {
-                        0
+                        ""
                     }
                 },
                 modifier = Modifier.weight(1f),
@@ -120,6 +121,9 @@ fun DVXNavigationItem(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
+                softWrap = true,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 color = animateColorAsState(
                     targetValue = if (selected) labelColors.selected else labelColors.unselected,
@@ -152,7 +156,7 @@ private fun DVXBottomAppBarPreview() = DVXTheme {
         destinations = listOf(
             TopLevelRoute(
                 name = "Home",
-                icon = painterResource(R.drawable.ic_startseite),
+                icon = painterResource(R.drawable.ic_home),
                 route = Unit
             ),
             TopLevelRoute(name = "Home", icon = painterResource(R.drawable.ic_mehr), route = Unit),

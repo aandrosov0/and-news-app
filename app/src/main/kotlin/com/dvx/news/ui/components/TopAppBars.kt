@@ -118,7 +118,8 @@ private fun AppLogo(modifier: Modifier = Modifier) {
     ) {
         Image(
             painter = painterResource(R.drawable.ic_logo),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.size(32.dp)
         )
         Text(
             text = stringResource(R.string.news).uppercase(),

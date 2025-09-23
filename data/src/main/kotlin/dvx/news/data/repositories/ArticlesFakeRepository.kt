@@ -15,8 +15,8 @@ class ArticlesFakeRepository : ArticlesRepository {
 
     private val articles = listOf(
         Article(
-            id = 1,
-            categoryId = 30,
+            id = "1",
+            categoryId = "30",
             subheadline = "In an interview with \"Meet the Press,\" the Pennsylvania governor said the country is at an \"inflection point\" and he hoped it would go in a direction of healing and unity. ",
             headline = "The Trump administration has halted funds for global HIV/AIDS programs. No one knows how big the impact is ",
             slug = "climate-summit-2023",
@@ -27,8 +27,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             squareImageUrl = "https://media.cnn.com/api/v1/images/stellar/prod/001-gettyimages-2212121980.jpg?c=original&q=w_1202,c_fill/f_avif",
         ),
         Article(
-            id = 2,
-            categoryId = 52,
+            id = "2",
+            categoryId = "52",
             subheadline = "New technology promises to revolutionize healthcare",
             headline = "AI in Medicine: The Future of Healthcare",
             slug = "ai-in-medicine",
@@ -39,8 +39,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             categoryName = "Category",
         ),
         Article(
-            id = 3,
-            categoryId = 30,
+            id = "3",
+            categoryId = "30",
             subheadline = "Stock markets react to economic forecasts",
             headline = "Market Volatility: What Investors Need to Know",
             slug = "market-volatility",
@@ -51,8 +51,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             categoryName = "Category",
         ),
         Article(
-            id = 4,
-            categoryId = 30,
+            id = "4",
+            categoryId = "30",
             subheadline = "New legislation aims to improve education",
             headline = "Education Reform: A Step Towards Equity",
             slug = "education-reform",
@@ -63,8 +63,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             categoryName = "Category",
         ),
         Article(
-            id = 5,
-            categoryId = 52,
+            id = "5",
+            categoryId = "52",
             subheadline = "Sports teams prepare for the upcoming season",
             headline = "2023 Sports Season: What to Expect",
             slug = "2023-sports-season",
@@ -75,8 +75,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             categoryName = "Category",
         ),
         Article(
-            id = 6,
-            categoryId = 18,
+            id = "6",
+            categoryId = "18",
             subheadline = "New discoveries in space exploration",
             headline = "NASA's Latest Mission: Exploring Mars",
             slug = "nasa-mars-mission",
@@ -87,8 +87,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             categoryName = "Category",
         ),
         Article(
-            id = 7,
-            categoryId = 18,
+            id = "7",
+            categoryId = "18",
             subheadline = "Local community rallies for a cause",
             headline = "Community Unites for Environmental Cleanup",
             slug = "community-cleanup",
@@ -99,8 +99,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             categoryName = "Category",
         ),
         Article(
-            id = 8,
-            categoryId = 52,
+            id = "8",
+            categoryId = "52",
             subheadline = "New trends in the tech industry",
             headline = "Tech Innovations: What's Next?",
             slug = "tech-innovations",
@@ -111,8 +111,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             categoryName = "Category",
         ),
         Article(
-            id = 9,
-            categoryId = 18,
+            id = "9",
+            categoryId = "18",
             subheadline = "Health officials warn about flu season",
             headline = "Flu Season 2023: What You Need to Know",
             slug = "flu-season-2023",
@@ -123,8 +123,8 @@ class ArticlesFakeRepository : ArticlesRepository {
             categoryName = "Category",
         ),
         Article(
-            id = 10,
-            categoryId = 52,
+            id = "10",
+            categoryId = "52",
             subheadline = "Cultural festival celebrates diversity",
             headline = "Annual Cultural Festival: A Celebration of Unity",
             slug = "cultural-festival-2023",
@@ -146,7 +146,7 @@ class ArticlesFakeRepository : ArticlesRepository {
         return articles
     }
 
-    override suspend fun getArticle(articleId: Long): ArticleContent {
+    override suspend fun getArticle(articleId: String): ArticleContent {
         delay(DELAY.seconds)
         return ArticleContent(
             id = articleId,
@@ -181,7 +181,7 @@ class ArticlesFakeRepository : ArticlesRepository {
         )
     }
 
-    override suspend fun getByCategory(categoryId: Long): List<Article> {
+    override suspend fun getByCategory(categoryId: String): List<Article> {
         delay(1.seconds)
         return articles
     }

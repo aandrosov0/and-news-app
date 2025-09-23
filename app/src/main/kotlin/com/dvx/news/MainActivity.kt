@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             KoinApplication(application = {
                 androidContext(this@MainActivity)
-                modules(fakeDataModule, uiModule)
+                modules(dataModule, uiModule)
             }) {
                 App()
             }

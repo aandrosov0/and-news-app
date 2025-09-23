@@ -6,6 +6,7 @@
 .gradle/
 build/
 
+data/src/main/kotlin/dvx/news/data/appwrite/AppwriteConfig.kt
 # Local configuration file (sdk path, etc)
 local.properties
 

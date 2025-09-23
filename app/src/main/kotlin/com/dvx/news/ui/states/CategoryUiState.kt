@@ -7,29 +7,35 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CategoryUiState(
-    val id: Long = 0,
+    val id: String = "",
     val name: String = "",
+    val iconId: String = "",
 )
 
 @Serializable
-val CategoryUiState.iconId: Int
-    @Composable get() = when (id) {
-        55L -> R.drawable.ic_car
-        52L -> R.drawable.ic_soccer
-        18L -> R.drawable.ic_lifestyle
-        30L -> R.drawable.ic_news
-        196L -> R.drawable.ic_games
-        41L -> R.drawable.ic_sport
-        158L -> R.drawable.ic_entertainment
-        106L -> R.drawable.ic_erotic
-        31L -> R.drawable.ic_politic
-        8L -> R.drawable.ic_advisor
-        104L -> R.drawable.ic_health
-        105L -> R.drawable.ic_deal
+val CategoryUiState.iconResId: Int
+    @Composable get() = when (iconId) {
+        "ic_car" -> R.drawable.ic_car
+        "ic_soccer" -> R.drawable.ic_soccer
+        "ic_lifestyle" -> R.drawable.ic_lifestyle
+        "ic_news" -> R.drawable.ic_news
+        "ic_games" -> R.drawable.ic_games
+        "ic_sport" -> R.drawable.ic_sport
+        "ic_entertainment" -> R.drawable.ic_entertainment
+        "ic_erotic" -> R.drawable.ic_erotic
+        "ic_politic" -> R.drawable.ic_politic
+        "ic_advisor" -> R.drawable.ic_advisor
+        "ic_health" -> R.drawable.ic_health
+        "ic_deal" -> R.drawable.ic_deal
+        "ic_world" -> R.drawable.ic_world
+        "ic_community" -> R.drawable.ic_community
+        "ic_culture" -> R.drawable.ic_culture
+        "ic_fire" -> R.drawable.ic_fire
         else -> R.drawable.ic_void
     }
 
 fun Category.asState() = CategoryUiState(
     id = id,
-    name = name
+    name = name,
+    iconId = iconId
 )

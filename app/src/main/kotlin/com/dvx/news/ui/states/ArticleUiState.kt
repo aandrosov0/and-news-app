@@ -3,8 +3,8 @@ package com.dvx.news.ui.states
 import dvx.news.data.models.Article
 
 data class ArticleUiState(
-    val id: Long = 0,
-    val categoryId: Long? = null,
+    val id: String = "",
+    val categoryId: String? = null,
     val categoryName: String = "",
     val subheadline: String = "",
     val headline: String = "",

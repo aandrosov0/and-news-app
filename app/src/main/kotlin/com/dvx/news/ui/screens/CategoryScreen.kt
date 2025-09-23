@@ -20,7 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CategoryScreen(
-    categoryId: Long,
+    categoryId: String,
     categoryTitle: String,
     onNavigateUp: () -> Unit,
     onNavigateScreen: (Any) -> Unit,

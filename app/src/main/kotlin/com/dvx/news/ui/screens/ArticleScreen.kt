@@ -57,7 +57,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ArticleScreen(
-    id: Long,
+    id: String,
     onNavigateUp: () -> Unit,
     onNavigateScreen: (Any) -> Unit,
     modifier: Modifier = Modifier,
@@ -196,7 +196,7 @@ private fun Headline(
         letterSpacing = (-2).sp,
         fontWeight = FontWeight.ExtraBold,
         style = MaterialTheme.typography.bodyLarge,
-        modifier = modifier.offset(y = -4.dp)
+        modifier = modifier.offset(y = -4.dp).fillMaxWidth()
     )
 }
 
