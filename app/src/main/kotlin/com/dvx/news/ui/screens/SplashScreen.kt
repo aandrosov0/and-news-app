@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.dvx.news.ui.states.ErrorUiState
 import com.dvx.news.ui.themes.DVXTheme
 import com.dvx.news.R
+import com.dvx.news.ui.StatusBarsAppearance
 
 @Composable
 fun SplashScreen(
@@ -33,6 +34,7 @@ fun SplashScreen(
     error: ErrorUiState? = null,
     onRetryClick: () -> Unit = {}
 ) {
+    StatusBarsAppearance(light = false)
     Box(
         modifier = modifier
             .background(Color(0xFFD30403))
